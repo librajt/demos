@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cube</title>
+		<meta charset=UTF-8>
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta id="viewport" name="viewport" content="width=device-width,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<style>
+			body,html{margin:0px;}
+			#box {
+				width: 100%;
+				height: 100%;
+				position: absolute; 
+				-webkit-perspective: 2000px; 
+			}
+			#layer{
+				width: 100%; 
+				height: 100%; 
+				position: absolute; 
+				-webkit-transform-style: preserve-3d; 
+				-webkit-transition-property: -webkit-transform; 
+				-webkit-transition-duration: 550ms; 
+				-webkit-transition-timing-function: ease-out; 
+				-webkit-transition-delay: initial;
+				top: 0px; 
+				left: 0px;
+			}
+			.slide {
+				position: absolute; 
+				top: 0px; 
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background: black;
+				overflow: hidden;
+				z-index: 2;
+			}
+			.slide:nth-child(1){background-color: #ff455e;}
+			.slide:nth-child(2){background-color: #2EB8A1;}
+			.slide:nth-child(3){background-color: #FEEA83;}
+			.slide:nth-child(4){background-color: #355C7D;}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="layer" style="-webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, 0deg);">
+				<div class="slide" style="-webkit-transform: rotate3d(0, 1, 0, 0deg) translate3d(0px, 0px, 160px);"></div>
+				<div class="slide" style="-webkit-transform: rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, 160px);"></div>
+				<div class="slide" style="-webkit-transform: rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, 160px);"></div>
+				<div class="slide" style="-webkit-transform: rotate3d(0, 1, 0, 270deg) translate3d(0px, 0px, 160px);"></div>
+			</div>
+		</div>
+	</body>
+	<script>
+		function transform() {
+			width = $(document).width();
+			height = $(document).height();
+			
+			$('#layer').css('-webkit-transform', 'translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, ' + degree + 'deg)');
+
+			$('.slide:nth-child(1)').css('-webkit-transform', 'rotate3d(0, 1, 0, 0deg) translate3d(0px, 0px, ' + width/2 + 'px)');
+			$('.slide:nth-child(2)').css('-webkit-transform', 'rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, ' + width/2 + 'px)');
+			$('.slide:nth-child(3)').css('-webkit-transform', 'rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, ' + width/2 + 'px)');
+			$('.slide:nth-child(4)').css('-webkit-transform', 'rotate3d(0, 1, 0, 270deg) translate3d(0px, 0px, ' + width/2 + 'px)');
+		}
+		
+		var d=document,
+		g='getElementById',
+		doc=d[g]("box");
+		md=d[g]("layer");
+		var startX=startY=lastX=lastY=curX=curY=0;
+		var status=1;
+		var curDeg=0;
+
+		doc.addEventListener("touchstart",function(event){
+			startX=event.touches[0].pageX;
+			startY=event.touches[0].pageY;
+		},false);
+		doc.addEventListener("touchmove",function(event){
+			event.preventDefault(); 
+			curX = event.targetTouches[0].pageX - startX+lastX; 
+			curY = event.targetTouches[0].pageY - startY+lastY;
+			md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curX/4 + 'deg); ';
+		},false);
+		doc.addEventListener("touchend",function(event){
+			console.log("startX " + startX + "--startY " + startY + "--lastX " + lastX + "--lastY " + lastY + "--curX " + curX + "--curY " + curY + "--curDeg " + curDeg);
+			if(curX-lastX>50){
+				curDeg += 90;
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+			}
+			else if(curX-lastX<-50){
+				curDeg -= 90;
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+			}
+			else{
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+			}
+			lastX = curDeg * 4;
+		},false);
+		
+		document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+		document.addEventListener('orientationchange', transform);
+
+	</script>
+</html>
