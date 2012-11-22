@@ -1,0 +1,106 @@
+
+/* focus image player  */
+.potPlayer {
+  position: relative;
+  width: 640px;
+  margin: auto;
+}
+.pots {
+  position: relative;
+  height: 320px;
+  width: 640px;
+  margin: auto;
+  overflow: hidden;
+  background: #282828;
+}
+.pot {
+  display: block;
+  width: 640px;
+}
+.pot .img img {
+  height: 320px;
+  width: 640px;
+}
+.potPlayer .stats {
+  width: 20px;
+  height: 90px;
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  top: 50%;
+  margin-top: -45px;
+  background: url("data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAEOCAYAAACJszdEAAACoUlEQVR4XuyRMWuDQBiGPav2R2Rwc+oQyJTJ/6BZsmZIBsmvaaeuplt/QLK6BMcQyKLnLxAJFR0q4fq9cFlauLuCYw5eDs/ne+DjZUIIa8xj/1/wED6Ezh1gjI0p/BshhEfXmrKgzCVwpHxS3hlj36YrQzahK6e8UkKKJxPKtxyMkbAoimeC9wRMFZtNwYDVCn3f39A6L7oCwIDVCfG9tMwPWFsldB3HmZnaJOsqhaYyWd6gEz51XXcxFfZ9X2BGWUpZlgdTIed8ryvlFsfxrm3bSicDE0XRB2ZUwqGqqmuSJFtIVTIwYDGjFFK+0jTlQRCssix7q+v6dAeapjnjDf/AgIXwd1PIT7t1r9IwGEZxXI0KRRfpIF2F0ujuZME9S+llBHoruZFcRCB3kKGQQXGoUqpY8KPa+pHo88AjiKDvW3Aq/8Ah8Pb0dGry+/n/bko6kmNJV3Jq6dpZxzqbPg+HSnIveZc8SXYl21Z4tbMHu1c+gx829ihZSO4kwbcfe7PUSz2+7AsvmtV6Baw+RRhkEH0pAg4lB5J9K1xLLiSlUKReRl87cutLTiQt7Vladta3jnswTdOgqqrI3hm/XU3taNc5GEXRURAEey41aEe7Tn2JV9pL2Kbt1Fej0Wj6Dmr3X/VVy+XU13g8nvkOTiaTZ6e+siyb+g7meX7r1NdgMLgcjUbOd7F24ji+cuprJlev1zvT0b/GtKNdL30VRTENw/A8SZKb4XA4/yqUZTnXM/1MOyuqL/SFvhhkEH2hL/SFvtAX+kJfDDLIIPpCX+gLfaEv9IUcGGQQfaEv9IW+0Bf6Ql8MMoi+0Bf6Ql/oC32hL+TAIIPoC32hL/SFvtAX+mKQQfSFvtAX+kJf6At9Mcggg+gLfaEv9IW+0Bf6+gThvwF9aESawAAAAABJRU5ErkJggg==") repeat-y;
+  -webkit-background-size: 20px auto;
+  background-size: 20px auto;
+}
+.pots .wrap,
+.pot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.pots {
+  -webkit-perspective: 2000px;
+}
+.pots .wrap {
+  -webkit-transform-style: preserve-3d;
+}
+@-webkit-keyframes potAnimi {
+  0% {
+    -webkit-transform: rotatex(90deg);
+    transform: rotatex(90deg);
+  }
+  3.333% {
+    -webkit-transform: rotatex(0deg);
+    transform: rotatex(0deg);
+  }
+  30.000% {
+    -webkit-transform: rotatex(0deg);
+    transform: rotatex(0deg);
+  }
+  33.333% {
+    -webkit-transform: rotatex(-90deg);
+    transform: rotatex(-90deg);
+  }
+  100% {
+    -webkit-transform: rotatex(-90deg);
+    transform: rotatex(-90deg);
+  }
+}
+.potPlayer .pot {
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: potAnimi 12s linear 0 infinite normal;
+}
+.pot:nth-child(1) {
+  -webkit-animation-delay: -0.5s;
+}
+.pot:nth-child(2) {
+  -webkit-animation-delay: -8.5s;
+}
+.pot:nth-child(3) {
+  -webkit-animation-delay: -4.5s;
+}
+
+@-webkit-keyframes potStats {
+  0% {
+    background-position: 0px 0px;
+  }
+  33.33% {
+    background-position: 0px 0px;
+  }
+  33.34% {
+    background-position: 0px 30px;
+  }
+  66.67% {
+    background-position: 0px 30px;
+  }
+  66.68% {
+    background-position: 0px 60px;
+  }
+  100% {
+    background-position: 0px 60px;
+  }
+}
+.potPlayer .stats {
+  -webkit-animation: potStats 12s linear 0 infinite normal;
+}
