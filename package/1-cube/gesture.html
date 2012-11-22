@@ -53,16 +53,17 @@
 		</div>
 	</body>
 	<script>
+		function $(d) {return document.querySelector(d); }
 		function transform() {
-			width = $(document).width();
-			height = $(document).height();
+			width = document.width;
+			height = document.height;
 			
-			$('#layer').css('-webkit-transform', 'translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, ' + degree + 'deg)');
+			$('#layer').style.cssText='-webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, ' + 0 + 'deg)';
 
-			$('.slide:nth-child(1)').css('-webkit-transform', 'rotate3d(0, 1, 0, 0deg) translate3d(0px, 0px, ' + width/2 + 'px)');
-			$('.slide:nth-child(2)').css('-webkit-transform', 'rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, ' + width/2 + 'px)');
-			$('.slide:nth-child(3)').css('-webkit-transform', 'rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, ' + width/2 + 'px)');
-			$('.slide:nth-child(4)').css('-webkit-transform', 'rotate3d(0, 1, 0, 270deg) translate3d(0px, 0px, ' + width/2 + 'px)');
+			$('.slide:nth-child(1)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 0deg) translate3d(0px, 0px, ' + width/2 + 'px)';
+			$('.slide:nth-child(2)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, ' + width/2 + 'px)';
+			$('.slide:nth-child(3)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, ' + width/2 + 'px)';
+			$('.slide:nth-child(4)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 270deg) translate3d(0px, 0px, ' + width/2 + 'px)';
 		}
 		
 		var d=document,
@@ -81,26 +82,27 @@
 			event.preventDefault(); 
 			curX = event.targetTouches[0].pageX - startX+lastX; 
 			curY = event.targetTouches[0].pageY - startY+lastY;
-			md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curX/4 + 'deg); ';
+			md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curX/4 + 'deg); ';
 		},false);
 		doc.addEventListener("touchend",function(event){
-			console.log("startX " + startX + "--startY " + startY + "--lastX " + lastX + "--lastY " + lastY + "--curX " + curX + "--curY " + curY + "--curDeg " + curDeg);
 			if(curX-lastX>50){
 				curDeg += 90;
-				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
 			}
 			else if(curX-lastX<-50){
 				curDeg -= 90;
-				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
 			}
 			else{
-				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -160px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
+				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
 			}
 			lastX = curDeg * 4;
 		},false);
 		
 		document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 		document.addEventListener('orientationchange', transform);
+		
+		transform();
 
 	</script>
 </html>
