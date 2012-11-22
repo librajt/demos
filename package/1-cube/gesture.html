@@ -4,7 +4,7 @@
 		<title>Cube</title>
 		<meta charset=UTF-8>
 		<meta http-equiv="Cache-Control" content="no-cache">
-		<meta id="viewport" name="viewport" content="width=device-width,user-scalable=no">
+		<meta id="viewport" name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<style>
 			body,html{margin:0px;}
@@ -53,12 +53,16 @@
 		</div>
 	</body>
 	<script>
+		var startX=startY=lastX=lastY=curX=curY=0;
+		var status=1;
+		var curDeg=0;
+		
 		function $(d) {return document.querySelector(d); }
 		function transform() {
 			width = document.width;
 			height = document.height;
 			
-			$('#layer').style.cssText='-webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, ' + 0 + 'deg)';
+			$('#layer').style.cssText='-webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, ' + curDeg + 'deg)';
 
 			$('.slide:nth-child(1)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 0deg) translate3d(0px, 0px, ' + width/2 + 'px)';
 			$('.slide:nth-child(2)').style.cssText='-webkit-transform: rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, ' + width/2 + 'px)';
@@ -70,9 +74,6 @@
 		g='getElementById',
 		doc=d[g]("box");
 		md=d[g]("layer");
-		var startX=startY=lastX=lastY=curX=curY=0;
-		var status=1;
-		var curDeg=0;
 
 		doc.addEventListener("touchstart",function(event){
 			startX=event.touches[0].pageX;
