@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=5.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>手机搜狐</title>
+
+<style>
+    body{background:#EEE;}
+    .chart{position:relative;width:400px;height:400px;border-radius:50%;background:#ACC;}
+    .pie,.pie .wp{position:absolute;width:400px;height:400px;}
+    .pie{clip:rect(200px, 400px, 400px, 0px);}
+    .pie .wp{display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;clip:rect(0px, 400px, 200px, 0px);-webkit-transform:rotate(10deg);}
+    .pie .wp .inn{background:#FFF;border-radius:50%;width:400px;height:400px;}
+    .pie .pnm{position:absolute;right:0;top:200px;width:50%;text-align:right;font-size:14px;line-height:30px;color:#FF0;border-top:1px solid #CCC;}
+    
+    .pie.pie2{clip:rect(0px, 400px, 400px, 0px);}
+    .pie.pie2 .wp{clip:rect(000px, 400px, 200px, 0px);}
+    .pie.pie2 .wp.fill{clip:rect(200px, 400px, 400px, 0px);-webkit-transform:rotate(0deg)!important;}
+    
+    
+    .pie:nth-child(n+1) .wp .inn{background:#BC3603;}
+    .pie:nth-child(n+2) .wp .inn{background:#D97904;}
+    .pie:nth-child(n+3) .wp .inn{background:#F2B705;}
+    .pie:nth-child(n+4) .wp .inn{background:#86AD00;}
+    .pie:nth-child(n+5) .wp .inn{background:#0092B9;}
+    
+    .test .pnm{border:0;}
+    
+</style>
+
+
+</head>
+<body>
+
+    <div class="chart test">
+        <div class="pie" style="-webkit-transform:rotate(  0deg);"><div class="wp" style="-webkit-transform:rotate(10deg);"><div class="inn" style="width:250px;height:250px;"></div></div><div class="pnm">CHINA</div></div>
+        <div class="pie" style="-webkit-transform:rotate( 10deg);"><div class="wp" style="-webkit-transform:rotate(60deg);"><div class="inn" style="width:380px;height:380px;"></div></div><div class="pnm">CHINA</div></div>
+        <div class="pie" style="-webkit-transform:rotate( 70deg);"><div class="wp" style="-webkit-transform:rotate(70deg);"><div class="inn" style="width:300px;height:300px;"></div></div><div class="pnm">CHINA</div></div>
+        <div class="pie" style="-webkit-transform:rotate(140deg);"><div class="wp" style="-webkit-transform:rotate(140deg);"><div class="inn" style="width:400px;height:400px;"></div></div><div class="pnm">CHINA</div></div>
+        <div class="pie" style="-webkit-transform:rotate(280deg);"><div class="wp" style="-webkit-transform:rotate(80deg);"><div class="inn" style="width:300px;height:300px;"></div></div><div class="pnm">CHINA</div></div>
+    </div>
+    
+    
+    <div class="chart">
+        <div class="pie" style="-webkit-transform:rotate(  0deg);">
+            <div class="wp" style="-webkit-transform:rotate(60deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="pnm">CHINA</div>
+        </div>
+    </div>
+    
+    <div class="chart">
+        <div class="pie" style="-webkit-transform:rotate(  0deg);">
+            <div class="wp" style="-webkit-transform:rotate(160deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="pnm">CHINA</div>
+        </div>
+    </div>
+    
+    <div class="chart">
+        <div class="pie pie2" style="-webkit-transform:rotate(  0deg);">
+            <div class="wp" style="-webkit-transform:rotate(240deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="wp fill" style="-webkit-transform:rotate(240deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="pnm">CHINA</div>
+        </div>
+    </div>
+    
+    <div class="chart">
+        <div class="pie pie2" style="-webkit-transform:rotate(  0deg);">
+            <div class="wp" style="-webkit-transform:rotate(310deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="wp fill" style="-webkit-transform:rotate(310deg);"><div class="inn" style="width:380px;height:380px;"></div></div>
+            <div class="pnm">CHINA</div>
+        </div>
+    </div>
+    
+    <h3>from:</h3>
+    <ul>
+        <li><a href="#" target="_blank">http://css3c.com/css3/css3-charts/index.html</a></li>
+        <li><a href="#" target="_blank">http://www.cnfen.com/PreView/code/chart/4/</a></li>
+    </ul>
+
+</body>
+</html>
