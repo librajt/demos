@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>手机搜狐</title>
+
+<style>
+	body{margin:0;background:#000;overflow:hidden;}
+	.help{cursor:pointer;text-decoration:underline;position:absolute;width:90px;height:20px;color:#FFF;margin-top:-20px;}
+</style>
+<script>
+	function toggle(d){
+		var c = document.querySelector(d);
+		c.classList.remove('close');
+		c.classList.toggle('on');
+		return false;
+	}
+</script>
+<link rel="stylesheet" href="card.css" media="all">
+</head>
+<body>
+<!-- 将标签添加到页面中，添加类on即可触发动画。1-4分别对应左上、右上、右下、左下四角 -->
+<div class="card card1 on" style="top:20px;left:10px;"><!-- 定位 -->
+	<a class="help" onclick="return toggle('.card1')">CLICK ME</a><!-- 演示用辅助标签 -->
+	<div class="body" onclick="document.querySelector('.card1').classList.add('close');">
+		<div class="scope"></div>
+		<div class="main">
+			<div class="mask"></div>
+			<div class="cnt">
+				<div class="logo"><img src="card.gif" alt></div>
+				<div class="pv">
+					PV:
+					<div class="nums">
+						<div class="cells">
+							<div class="wrap">
+								<div class="cell"><div class="num n1">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n9">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n4">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell cell-com"><div class="com n">,</div></div>
+								<div class="cell"><div class="num n7">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n5">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n3">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell cell-com"><div class="com n">,</div></div>
+								<div class="cell"><div class="num n8">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n4">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n6">0 1 2 3 4 5 6 7 8 9</div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="uv">
+					UV:
+					<div class="nums">
+						<div class="cells">
+							<div class="wrap">
+								<div class="cell"><div class="num n4">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell cell-com"><div class="com n">,</div></div>
+								<div class="cell"><div class="num n7">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n5">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n3">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell cell-com"><div class="com n">,</div></div>
+								<div class="cell"><div class="num n8">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n4">0 1 2 3 4 5 6 7 8 9</div></div>
+								<div class="cell"><div class="num n6">0 1 2 3 4 5 6 7 8 9</div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card card2" style="top:20px;right:10px;">
+	<a class="help" onclick="return toggle('.card2')">CLICK ME</a>
+	<div class="body" onclick="document.querySelector('.card2').classList.add('close');">
+		<div class="scope"></div>
+		<div class="main">
+			<div class="mask"></div>
+			<div class="cnt">
+				123
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card card3" style="bottom:20px;right:10px;">
+	<a class="help" onclick="return toggle('.card3')">CLICK ME</a>
+	<div class="body" onclick="document.querySelector('.card3').classList.add('close');">
+		<div class="scope"></div>
+		<div class="main">
+			<div class="mask"></div>
+			<div class="cnt">
+				123
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card card4" style="bottom:20px;left:10px;">
+	<a class="help" onclick="return toggle('.card4')">CLICK ME</a>
+	<div class="body" onclick="document.querySelector('.card4').classList.add('close');">
+		<div class="scope"></div>
+		<div class="main">
+			<div class="mask"></div>
+			<div class="cnt">
+				123
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

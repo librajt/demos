@@ -1,0 +1,21 @@
+* {margin: 0;padding: 0;}
+body {background-color: #000;}
+
+.pvCount{position:absolute;position:fixed;bottom:30px;right:45px;width:670px;-webkit-transform-origin:100% 100%;}
+.pvCount .des{font-family:h1;font-size:30px;color:#999999;text-align:right;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:20px;margin-bottom:20px;}
+
+.cells{overflow: hidden;height: 80px;}
+.cells .wrap{height: 90px;margin:-12px 0; }
+.cell{width: 70px; text-align:center;height: 90px; line-height:90px;font-size: 120px; color:#fff;overflow: hidden;position: relative;float: left;}
+.cell-com{width: 20px;line-height: 70px;}
+.com,.num{font:normal 80px/90px "Arial Bold";-webkit-transition: top 0.5s ease-out;position:absolute;top:90px;}
+
+
+.cell:nth-child(1) .num,.com{-webkit-transition-duration:2.0s;}
+.cell:nth-child(2) .num{-webkit-transition-duration:1.7s;}
+.cell:nth-child(3) .num{-webkit-transition-duration:1.4s;}
+.cell:nth-child(4) .num{-webkit-transition-duration:1.2s;}
+.cell:nth-child(5) .num{-webkit-transition-duration:1.0s;}
+.cell:nth-child(6) .num{-webkit-transition-duration:0.8s;}
+.cell:nth-child(7) .num{-webkit-transition-duration:0.7s;}
+.cell:nth-child(8) .num{-webkit-transition-duration:0.6s;}

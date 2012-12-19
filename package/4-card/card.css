@@ -1,0 +1,143 @@
+/* main */
+.cells{overflow:hidden;height:30px;}
+.cells .wrap{height:30px;}
+.cell{width:20px;text-align:center;height:30px;line-height:30px;overflow:hidden;position:relative;float:left;}
+.cell-com{width:10px;margin-top:-0px;}
+.com,.num{position:absolute;top:30px;}
+
+.com.n{top:0;}
+.num.n0{top:0;}
+.num.n1{top:-30px;}
+.num.n2{top:-60px;}
+.num.n3{top:-90px;}
+.num.n4{top:-120px;}
+.num.n5{top:-150px;}
+.num.n6{top:-180px;}
+.num.n7{top:-210px;}
+.num.n8{top:-240px;}
+.num.n9{top:-270px;}
+
+
+/*  */
+.card{position:absolute;}
+.card .body{position:absolute;overflow:hidden;width:0;height:0;}
+
+.card .scope{position:absolute;left:0;top:0;width:10px;height:10px;border:2px solid #A4C8FF;border-radius:50%;}
+.card .scope:before,.card .scope:after{content:'';position:absolute;border-top:1px solid #97BBEE;}
+.card .scope:before{width:44px;left:12px;top:5px;}
+.card .scope:after{width:68px;left:56px;top:5px;-webkit-transform-origin:0 0;-webkit-transform:rotate(45deg);}
+
+.card .main{position:absolute;overflow:hidden;top:56px;left:106px;border:3px solid #FFFFFF;border-width:3px 0;height:300px;}
+
+.card .mask{position:absolute;top:10px;bottom:10px;width:100%;background:#FFF;}
+
+.card .cnt{margin:10px 0;width:450px;background:-webkit-linear-gradient(top, rgba(44, 66, 161, 0.9) 4px, rgba(62, 83, 171, 0.9) 5px);background-size:5px 5px;height:280px;box-sizing:border-box;padding:20px;}
+.card .cnt .logo{text-align:center;height:94px;margin-bottom:7px;background:#FFF;}
+.card .cnt .pv,.card .cnt .uv{border-radius:2px;color:#FFF;font:bold 30px/1.5 "\5fae\8f6f\96c5\9ed1";margin-top:1px;box-sizing:border-box;padding:10px 20px;}
+.card .cnt .pv{border:1px solid rgba(255,255,255,.66);background:rgba(47,123,167,.66);}
+.card .cnt .uv{border:1px solid rgba(255,255,255,.44);background:rgba(0,136,42,.44);}
+
+.card .cnt .wp{display:inline-block;}
+.card .cnt .nums{display:inline-block;vertical-align:-3px;}
+
+
+/*  */
+.card2{-webkit-transform-origin:0 0;-webkit-transform:scale(-1,1);}
+.card2 .cnt{-webkit-transform:scale(-1,1);}
+
+.card3{-webkit-transform-origin:0 0;-webkit-transform:scale(-1,-1);}
+.card3 .cnt{-webkit-transform:scale(-1,-1);}
+
+.card4{-webkit-transform-origin:0 0;-webkit-transform:scale(1,-1);}
+.card4 .cnt{-webkit-transform:scale(1,-1);}
+
+/*  */
+.card.close{-webkit-transition:-webkit-transform 1s;-webkit-transform:perspective(990px) rotate3d(0, 1, .1, -150deg)}
+.card2.close{-webkit-transition:-webkit-transform 1s;-webkit-transform:perspective(990px) scale(-1,1) rotate3d(0, 1, .1, -150deg)}
+.card3.close{-webkit-transition:-webkit-transform 1s;-webkit-transform:perspective(990px) scale(-1,-1) rotate3d(0, 1, .2, -150deg)}
+.card4.close{-webkit-transition:-webkit-transform 1s;-webkit-transform:perspective(990px) scale(1,-1) rotate3d(0, 1, .2, -150deg)}
+
+/*  */
+@-webkit-keyframes body{
+		0%	{ width:14px;height:14px; }
+		  /* circle */
+	   20%	{ width:14px;height:14px; }
+		 /* scope1 */
+	   30%	{ width:58px;height:14px; }
+		 /* scope2 */
+	   40%	{ width:106px;height:56px; }
+		 /* main - border */
+	   50%	{ width:556px;height:62px; }
+		 /* main */
+	   80%	{ width:556px;height:400px; }
+		 /* cnt, mask */
+	  100%	{ width:556px;height:400px; }
+}
+@-webkit-keyframes circle{
+		0%	{ width:0;height:0;left:7px;top:7px; }
+	   20%	{ width:10px;height:10px;left:0px;top:0px; }
+}
+@-webkit-keyframes main{
+		0%	{ height:0px; }
+	   50%	{ height:0px; }
+	   80%	{ height:300px; }
+}
+@-webkit-keyframes mask{
+		0%	{ opacity:0; }
+	   70%	{ opacity:0; }
+	   80%	{ opacity:1; }
+	  100%	{ opacity:0; }
+}
+@-webkit-keyframes cnt{
+		0%	{ opacity:0; }
+	   80%	{ opacity:0; }
+}
+@-webkit-keyframes nums{
+		0%	{ width:0; }
+	   50%	{ width:0; }
+	  100%	{ width:200px; }
+}
+@-webkit-keyframes num{
+		0%	{ top:50px; }
+}
+@-webkit-keyframes cntMask{
+		0%	{ background:#FFF;opacity:0; }
+	   10%	{ background:#FFF;opacity:1; }
+}
+@-webkit-keyframes cntMaskImg{
+		0%	{ opacity:0; }
+	   10%	{ opacity:0; }
+}
+
+.card.on .body,.card.on .scope,.card.on .main,.card.on .mask,.card.on .cnt,.card.on .com,.card.on .num,.card.on .logo,.card.on .logo img,.card.on .pv,.card.on .uv{-webkit-animation:blank 1s ease-out 0 1 normal both;}
+.card.on .body{-webkit-animation-name:body;}
+.card.on .scope{-webkit-animation-name:circle;}
+.card.on .main{-webkit-animation-name:main;}
+.card.on .mask{-webkit-animation-name:mask;}
+.card.on .cnt{-webkit-animation-name:cnt;}
+
+.card.on .logo,.card.on .pv,.card.on .uv{-webkit-animation-name:cntMask;}
+.card.on .logo{-webkit-animation-delay:1.2s;}
+.card.on .logo img{-webkit-animation-name:cntMaskImg;-webkit-animation-delay:1.2s;}
+.card.on .pv{-webkit-animation-delay:1.4s;}
+.card.on .uv{-webkit-animation-delay:1.6s;}
+
+.card.on .com,.card.on .num{-webkit-animation-name:num;-webkit-animation-delay:1.2s;-webkit-animation-duration:.5s;}
+.card.on .uv .com,.card.on .uv .num{-webkit-animation-delay:1.4s;}
+
+.card.on .cell:nth-child(1) .num{-webkit-animation-duration:1.4s;}
+.card.on .cell:nth-child(2) .num{-webkit-animation-duration:1.2s;}
+.card.on .cell:nth-child(3) .num{-webkit-animation-duration:1.0s;}
+.card.on .cell:nth-child(4) .num{-webkit-animation-duration:0.9s;}
+.card.on .cell:nth-child(5) .num{-webkit-animation-duration:0.8s;}
+.card.on .cell:nth-child(6) .num{-webkit-animation-duration:0.7s;}
+.card.on .cell:nth-child(7) .num{-webkit-animation-duration:0.6s;}
+
+
+
+
+
+
+
+
+
