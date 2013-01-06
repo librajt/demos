@@ -40,6 +40,8 @@
 			.slide:nth-child(2){background-color: #2EB8A1;}
 			.slide:nth-child(3){background-color: #FEEA83;}
 			.slide:nth-child(4){background-color: #355C7D;}
+			
+			.silence{-webkit-transition:none!important;}
 		</style>
 	</head>
 	<body>
@@ -78,6 +80,7 @@
 		doc.addEventListener("touchstart",function(event){
 			startX=event.touches[0].pageX;
 			startY=event.touches[0].pageY;
+			md.classList.add('silence');
 		},false);
 		doc.addEventListener("touchmove",function(event){
 			event.preventDefault(); 
@@ -86,6 +89,7 @@
 			md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curX/4 + 'deg); ';
 		},false);
 		doc.addEventListener("touchend",function(event){
+			md.classList.remove('silence');
 			if(curX-lastX>50){
 				curDeg += 90;
 				md.style.cssText=' -webkit-transform: translate3d(0px, 0px, -' + width/2 + 'px) rotate3d(0, 1, 0, '+ curDeg + 'deg); ';
