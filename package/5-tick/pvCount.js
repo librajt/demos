@@ -34,7 +34,7 @@ function a(t){
 
 window.getPvCount = function() {
     var c = a(100000000);
-    var cmd = document.querySelector('#console');
+    var cmd = $('#console');
     cmd.innerHTML += c + '\r\n';
     cmd.scrollTop = cmd.scrollHeight;
     if(c) setPvNum(c);
