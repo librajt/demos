@@ -1,0 +1,68 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>cloud</title>
+</head>
+<body>
+
+<style>
+*{padding:0;margin:0;}
+body{background:#4584B4 url(bg.png) repeat-x;overflow-x:hidden;}
+.c{background:url(cloud10.png) 0 center repeat-x;position:fixed;top:0%;left:55%;margin:0 0 0 -1280px;width:2560px;height:100%;-webkit-animation:iC1 12s linear 0 infinite normal;}
+
+.c2       {-webkit-animation-delay:-3s; background-position:64px center; }
+.c3       {-webkit-animation-delay:-6s; background-position:128px center; }
+.c4       {-webkit-animation-delay:-9s; background-position:192px center; }
+
+
+@-webkit-keyframes iC1
+{
+	  0%    {-webkit-transform:scale(0);opacity:0;top:120%;}
+	 10%    {-webkit-transform:scale(1);opacity:0;top:40%;}
+	 50%    {opacity:1;top:60%;}
+	 90%    {-webkit-transform:scale(10);top:140%;opacity:1;}
+	100%    {-webkit-transform:scale(12);top:200%;opacity:0;}
+}
+
+/*
+
+body{background:#4584B4;}
+.Bgs{display:block;}
+.Bgs p{background: url(http://mrdoob.com/lab/javascript/webgl/clouds/cloud10.png) 55% center repeat-x;position:fixed;z-index:-1;top:0%;left:50%;margin:0 0 0 -1280px;width:2560px;height:100%;-webkit-animation:iC1 12s ease-in 0 infinite normal;body{background:#4584B4;}
+.Bgs{display:block;}
+.Bgs p{background: url(http://mrdoob.com/lab/javascript/webgl/clouds/cloud10.png) 55% center repeat-x;position:fixed;z-index:-1;top:0%;left:50%;margin:0 0 0 -1280px;width:2560px;height:100%;-webkit-animation:iC1 12s ease-in 0 infinite normal;}
+.Bgs .Bg2{-webkit-animation-delay:-8s; background-position:53% center; }
+.Bgs .Bg3{-webkit-animation-delay:-4s; background-position:47% center; }
+@-webkit-keyframes iC1
+{
+	  0%    {-webkit-transform:scale(0);opacity:0;top:80%;}
+	 30%    {opacity:1;top:50%;}
+	 70%    {opacity:1;top:70%;}
+	 90%    {top:80%;}
+	100%    {-webkit-transform:scale(8);opacity:0;top:80%;}
+}}
+.Bgs .Bg2{-webkit-animation-delay:-8s; background-position:53% center; }
+.Bgs .Bg3{-webkit-animation-delay:-4s; background-position:47% center; }
+@-webkit-keyframes iC1
+{
+	  0%    {-webkit-transform:scale(0);opacity:0;top:80%;}
+	 30%    {opacity:1;top:50%;}
+	 70%    {opacity:1;top:70%;}
+	 90%    {top:80%;}
+	100%    {-webkit-transform:scale(8);opacity:0;top:80%;}
+}
+*/
+
+</style>
+
+
+<div class="c c1">1</div>
+<div class="c c2">2</div>
+<div class="c c3">3</div>
+<div class="c c4">4</div>
+
+
+
+</body>
+</html>
