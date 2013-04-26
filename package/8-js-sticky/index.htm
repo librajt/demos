@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>JS sticky</title>
+<style>
+    body{margin:0;}
+    
+    .mod{overflow:hidden;}
+    .mod .hdWrap.fixed{position:fixed;top:-1px;left:0;right:0;}
+    .mod .ttl{padding:0 10px;font-size:16px;color:#333333;line-height:24px;background:#CCCCCC;border:1px solid #999999;border-width:1px 0;}
+    .mod .it{padding:0 10px;font-size:14px;color:#666666;line-height:36px;border-bottom:1px solid #CCCCCC;}
+    .mod .it:last-child{border:0;}
+    
+</style>
+</head>
+<body>
+    <h1>Sticky Test List</h1>
+    <h3>work on desktop modern browsers</h3>
+    
+    <div class="mod">
+        <div class="hd">
+            <div class="hdWrap"><div class="ttl">Adobe</div></div>
+        </div>
+        <div class="bd">
+            <div class="ls">
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mod">
+        <div class="hd">
+            <div class="hdWrap"><div class="ttl">Bootstrap</div></div>
+        </div>
+        <div class="bd">
+            <div class="ls">
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mod">
+        <div class="hd">
+            <div class="hdWrap"><div class="ttl">Colorpicker</div></div>
+        </div>
+        <div class="bd">
+            <div class="ls">
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mod">
+        <div class="hd">
+            <div class="hdWrap"><div class="ttl">Danger</div></div>
+        </div>
+        <div class="bd">
+            <div class="ls">
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mod">
+        <div class="hd">
+            <div class="hdWrap"><div class="ttl">Environment</div></div>
+        </div>
+        <div class="bd">
+            <div class="ls">
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+                <div class="it">Monday</div>
+                <div class="it">Tuesday</div>
+                <div class="it">Wednesday</div>
+                <div class="it">Thursday</div>
+                <div class="it">Friday</div>
+                <div class="it">Saturday</div>
+                <div class="it">Sunday</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function onScroll(e) {
+            var mods, mod, i, hd, bd, hdTop, hdHeight, bdBottom, windowTop, el;
+            
+            mods = document.querySelectorAll('.mod');
+            mods = [].slice.call(mods);
+            windowTop = window.scrollY;
+            
+            mods.forEach(function(val, i) {
+                mod = val;
+                hd = mod.querySelector('.hd');
+                bd = mod.querySelector('.bd');
+                hdTop = hd.offsetTop + 1;  // border-top
+                hdHeight = hd.offsetHeight;
+                bdBottom = hdTop + bd.offsetHeight + 1;  // border-bottom
+                el = mod.querySelector('.hdWrap');
+                hd.style.height = el.offsetHeight + 'px';
+                
+                if (hdTop <= windowTop && windowTop <= bdBottom + hdHeight) {
+                    el.classList.add('fixed');
+                    if (windowTop > bdBottom) {
+                        el.style.marginTop = bdBottom - windowTop + 'px';
+                    }
+                    else {
+                        el.style.marginTop = '';
+                    }
+                }
+                else {
+                    el.classList.remove('fixed');
+                    el.style.marginTop = '';
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', onScroll, false);
+    </script>
+</body>
+</html>
