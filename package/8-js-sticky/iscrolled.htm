@@ -439,16 +439,13 @@
                             onScroll(-self.y, true, function() {
                                 if (count++ >= 100) clearInterval(myInterval);
                             });
-                            console.log('setInterval');
                         }, 40);
                     }
-                    console.log('touchend');
                 },
                 onScrollEnd: function() {
                     clearInterval(myInterval);
                     scrolled = false;
                     onScroll(-this.y);
-                    console.log('onScrollEnd');
                 }
             });
         }
