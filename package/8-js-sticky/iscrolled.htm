@@ -91,6 +91,87 @@
             
             <div class="mod">
                 <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Colorpicker</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Monday</div>
+                        <div class="it">Tuesday</div>
+                        <div class="it">Wednesday</div>
+                        <div class="it">Thursday</div>
+                        <div class="it">Friday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Danger</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Saturday</div>
+                        <div class="it">Sunday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Colorpicker</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Monday</div>
+                        <div class="it">Tuesday</div>
+                        <div class="it">Wednesday</div>
+                        <div class="it">Thursday</div>
+                        <div class="it">Friday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Danger</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Saturday</div>
+                        <div class="it">Sunday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Colorpicker</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Monday</div>
+                        <div class="it">Tuesday</div>
+                        <div class="it">Wednesday</div>
+                        <div class="it">Thursday</div>
+                        <div class="it">Friday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
+                    <div class="hdWrap"><div class="ttl">Danger</div></div>
+                </div>
+                <div class="bd">
+                    <div class="ls">
+                        <div class="it">Saturday</div>
+                        <div class="it">Sunday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod">
+                <div class="hd">
                     <div class="hdWrap"><div class="ttl">Environment</div></div>
                 </div>
                 <div class="bd">
@@ -131,7 +212,7 @@
     </div>
 
     <script>
-        function onScroll(top) {
+        function onScroll(top, callback) {
             var mods, mod, i, hd, bd, hdTop, hdHeight, bdBottom, windowTop, el;
             
             mods = document.querySelectorAll('.page .mod');
@@ -160,17 +241,37 @@
                     }
                 }
             });
+            
+            if (callback) callback();
         };
         
-        var myScroll;
+        /*
+         * onTouchEnd 到 onScrollEnd 是惯性动画执行的过程
+         * 在此期间，用定时器延续 onScrollMove 事件，其中的 40ms = 1s / 25fps
+         * 为了阻止定时器永久执行，设定了定时器执行次数为100，即大约4s后惯性动画执行完毕
+         *
+         */
+        
+        var myScroll, myInterval, count = 0;
         
         function loaded() {
             myScroll = new iScroll('scrollPage', {
                 onScrollMove: function() {
                     onScroll(-this.y);
                 },
+                onTouchEnd: function() {
+                    var self = this;
+                    count = 0;
+                    myInterval = setInterval(function() {
+                        onScroll(-self.y, function() {
+                            if (count++ >= 100) myInterval = clearInterval(myInterval);
+                        });
+                        console.log('touchend');
+                    }, 40);
+                },
                 onScrollEnd: function() {
-                    onScroll(-this.y);
+                    myInterval = clearInterval(myInterval);
+                    console.log('onScrollEnd');
                 }
             });
         }
