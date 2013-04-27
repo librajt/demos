@@ -20,7 +20,6 @@
     .page{position:absolute;top:0;bottom:0;left:0;right:0;}
     .pageWrap{position:absolute;top:0;left:0;right:0;}
     
-    
 </style>
 <script src="http://lab.cubiq.org/iscroll/src/iscroll-lite.js"></script>
 </head>
@@ -32,7 +31,7 @@
         <div class="pageWrap">
         
             <h1>Sticky Test - iScroll version</h1>
-            <h3>works well on desktop modern browsers</h3>
+            <h3>works well on mobile modern browsers</h3>
             <h4><a href="index.htm">see desktop versition</a></h4>
             
             <div class="mod">
@@ -262,15 +261,17 @@
                 onTouchEnd: function() {
                     var self = this;
                     count = 0;
+                    clearInterval(myInterval);
                     myInterval = setInterval(function() {
                         onScroll(-self.y, function() {
-                            if (count++ >= 100) myInterval = clearInterval(myInterval);
+                            if (count++ >= 100) clearInterval(myInterval);
                         });
-                        console.log('touchend');
+                        console.log('setInterval');
                     }, 40);
+                    console.log('touchend');
                 },
                 onScrollEnd: function() {
-                    myInterval = clearInterval(myInterval);
+                    clearInterval(myInterval);
                     console.log('onScrollEnd');
                 }
             });
