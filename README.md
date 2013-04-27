@@ -7,4 +7,4 @@ demos
 ├─5-js-time-tick  
 ├─6-js-slide-top  
 ├─7-css-animation-cloudy-sky  
-└─8-js-sticky  
+└─8-js-sticky-with-iscroll  
