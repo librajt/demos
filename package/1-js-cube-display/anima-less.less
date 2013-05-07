@@ -60,11 +60,12 @@
                 
                 .frames(@index - 1);
                 
-                // 计算每一张幻灯片展示结束展示下一张幻灯片时，多面体旋转的角度值
+                // 计算每一张幻灯片展示结束时退出画面并展示下一张幻灯片时，多面体旋转的角度值
                 @anniD0: ~`Math.floor(360 / @{n} * (@{index} - 1) * 100) / 100 + 'deg'`;
                 @anniD1: ~`Math.floor(360 / @{n} * @{index} * 100) / 100 + 'deg'`;
                 
-                // 生成每一张幻灯片展示结束展示下一张幻灯片时的两个keyframe
+                // 生成每一张幻灯片展示结束时退出画面并展示下一张幻灯片时的两个keyframe。
+                // 5%的时间用来做过渡动画
                 (~`Math.floor(100 / @{n} * @{index} * 100) / 100 - 5 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD0));}
                 (~`Math.floor(100 / @{n} * @{index} * 100) / 100 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD1));}
                 
@@ -145,6 +146,7 @@
 .debug .pots{.transform-style(preserve-3d);#cube-animation .init .transform(/*perspective(@potDist)*/ rotate3d(0, 1, 0, -68deg));}
 .debug .pots{.perspective(0);overflow:initial;}
 
+// 属性名不能由字符串拼接，因此 .keyframe 调用的时候对前缀及名字的组合采用了手动的方式
 @-webkit-keyframes potPlayer1 {
     #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderWebkit);
 }
