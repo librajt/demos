@@ -1,0 +1,154 @@
+@venderWebkit:webkit;
+@venderMoz:moz;
+@venderMs:ms;
+@venderO:o;
+@venderW3:w3;
+
+.perspective(@dist){
+    -webkit-perspective:@dist;
+       -moz-perspective:@dist;
+        -ms-perspective:@dist;
+         -o-perspective:@dist;
+            perspective:@dist;
+}
+
+.transform-style(@style){
+    -webkit-transform-style:@style;
+       -moz-transform-style:@style;
+        -ms-transform-style:@style;
+         -o-transform-style:@style;
+            transform-style:@style;
+}
+
+#cube-animation {
+    
+    .keyframes {
+        .transform(@transform) {
+            
+            .local() when (@vender = @venderWebkit) {
+                -webkit-transform: @transform;
+            }
+            .local() when (@vender = @venderMoz) {
+                -moz-transform: @transform;
+            }
+            .local() when (@vender = @venderMs) {
+                -ms-transform: @transform;
+            }
+            .local() when (@vender = @venderO) {
+                -o-transform: @transform;
+            }
+            .local() when (@vender = @venderW3) {
+                transform: @transform;
+            }
+            
+            .local;
+        }
+        
+        .vertical(@n:3, @round:320, @time:4s, @name, @vender) {
+        
+            @anniR: ~`Math.floor(0.5 * @{round} / Math.tan(Math.PI / @{n}) * 100) / 100 + 'px'`;
+            @-anniR: ~"-@{anniR}";
+            
+            .frames(@index) when (@index > 0) {
+                
+                .frames(@index - 1);
+                
+                @anniD0: ~`Math.floor(360 / @{n} * (@{index} - 1) * 100) / 100 + 'deg'`;
+                @anniD1: ~`Math.floor(360 / @{n} * @{index} * 100) / 100 + 'deg'`;
+                
+                (~`Math.floor(100 / @{n} * @{index} * 100) / 100 - 5 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD0));}
+                (~`Math.floor(100 / @{n} * @{index} * 100) / 100 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD1));}
+                
+            }
+            
+            .frames(0) {
+                0% {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, 0deg));}
+            }
+            
+            .frames(@n);
+            
+        }
+    }
+    
+    .init(@n:3, @round:320, @time:4s, @name) {
+    
+        .transform(@transform) {
+            -webkit-transform: @transform;
+               -moz-transform: @transform;
+                -ms-transform: @transform;
+                 -o-transform: @transform;
+                    transform: @transform;
+        }
+        
+        @clears: ~`'n+' + (@{n} + 1)`;
+        
+        @anniR: ~`Math.floor(0.5 * @{round} / Math.tan(Math.PI / @{n}) * 100) / 100 + 'px'`;
+        @-anniR: ~"-@{anniR}";
+
+        .potChild(@index) when (@index > 0) {
+            
+            .potChild(@index - 1);
+            
+            @anniD: ~`Math.floor(360 / @{n} * (@{index} - 1) * 100) / 100 * (0 - 1) + 'deg'`;
+            
+            .potPlayer .pot:nth-child(@index){.transform(rotate3d(1, 0, 0, @anniD) translate3d(0px, 0px, @anniR) );}
+        }
+        
+        .potChild(0) {}
+        
+        .potPlayer .wrap{
+            -webkit-animation:@time linear 0s infinite normal @name;
+               -moz-animation:@time linear 0s infinite normal @name;
+                -ms-animation:@time linear 0s infinite normal @name;
+                 -o-animation:@time linear 0s infinite normal @name;
+                    animation:@time linear 0s infinite normal @name;
+        }   
+        .potChild(@n);
+        .potPlayer .pot:nth-child(@clears){display:none;}
+    }
+    
+}
+
+@potDist:400px;
+@potWidth:320px;
+@potHeight:160px;
+@potRound:160;
+@potNum:6;
+@potTime:18s;
+@potAnimName:potPlayer1;
+
+*{margin:0;}
+
+.potPlayer{position:relative;width:@potWidth;margin:auto;}
+.pots{position:relative;height:@potHeight;width:@potWidth;margin:auto;background:#282828;overflow:hidden;}
+.pot{display:block;}
+.pot .img{background:#282828;}
+.pot .img img{height:@potHeight;width:@potWidth;}
+
+.pots .wrap,.pot{position:absolute;width:100%;height:100%;}
+.pots{.perspective(@potDist);}
+.pots .wrap{.transform-style(preserve-3d);}
+
+.debug .potPlayer{.perspective(@potDist * 3);}
+.debug .pots{.transform-style(preserve-3d);#cube-animation .init .transform(/*perspective(@potDist)*/ rotate3d(0, 1, 0, -68deg));}
+.debug .pots{.perspective(0);overflow:initial;}
+
+@-webkit-keyframes potPlayer1 {
+    #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderWebkit);
+}
+@-moz-keyframes potPlayer1 {
+    #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderMoz);
+}
+@-ms-keyframes potPlayer1 {
+    #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderMs);
+}
+@-o-keyframes potPlayer1 {
+    #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderO);
+}
+@keyframes potPlayer1 {
+    #cube-animation .keyframes .vertical(@potNum, @potRound, @potTime, @potAnimName, @venderW3);
+}
+
+#cube-animation .init(@potNum, @potRound, @potTime, @potAnimName);
+
+
