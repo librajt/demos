@@ -23,6 +23,7 @@
 #cube-animation {
     
     .keyframes {
+        
         .transform(@transform) {
             
             .local() when (@vender = @venderWebkit) {
@@ -44,8 +45,14 @@
             .local;
         }
         
+        // @n: 幻灯片的数量
+        // @round: 动画旋转平面圆的直径
+        // @time: 整个动画周期
+        // @name: keyframes的名字
+        // @vender: 当前keyframes的私有前缀
         .vertical(@n:3, @round:320, @time:4s, @name, @vender) {
         
+            // 计算幻灯片旋转后需要做的偏移，以组装成多面体状。计算方式详细说明可见 张鑫旭文章
             @anniR: ~`Math.floor(0.5 * @{round} / Math.tan(Math.PI / @{n}) * 100) / 100 + 'px'`;
             @-anniR: ~"-@{anniR}";
             
@@ -53,9 +60,11 @@
                 
                 .frames(@index - 1);
                 
+                // 计算每一张幻灯片展示结束展示下一张幻灯片时，多面体旋转的角度值
                 @anniD0: ~`Math.floor(360 / @{n} * (@{index} - 1) * 100) / 100 + 'deg'`;
                 @anniD1: ~`Math.floor(360 / @{n} * @{index} * 100) / 100 + 'deg'`;
                 
+                // 生成每一张幻灯片展示结束展示下一张幻灯片时的两个keyframe
                 (~`Math.floor(100 / @{n} * @{index} * 100) / 100 - 5 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD0));}
                 (~`Math.floor(100 / @{n} * @{index} * 100) / 100 + '%'`) {.transform(translate3d(0px, 0px, @-anniR) rotate3d(1, 0, 0, @anniD1));}
                 
@@ -80,8 +89,6 @@
                     transform: @transform;
         }
         
-        @clears: ~`'n+' + (@{n} + 1)`;
-        
         @anniR: ~`Math.floor(0.5 * @{round} / Math.tan(Math.PI / @{n}) * 100) / 100 + 'px'`;
         @-anniR: ~"-@{anniR}";
 
@@ -89,8 +96,10 @@
             
             .potChild(@index - 1);
             
+            // 计算每一张幻灯片要组成多面体要旋转的角度
             @anniD: ~`Math.floor(360 / @{n} * (@{index} - 1) * 100) / 100 * (0 - 1) + 'deg'`;
             
+            // 生成每一张幻灯片初始静止状态代码
             .potPlayer .pot:nth-child(@index){.transform(rotate3d(1, 0, 0, @anniD) translate3d(0px, 0px, @anniR) );}
         }
         
@@ -104,6 +113,9 @@
                     animation:@time linear 0s infinite normal @name;
         }   
         .potChild(@n);
+        
+        // 生成选择器序号，选择指定幻灯片数量以外多余的页面dom并隐藏。为了方便更改数量而不去修改html而想出的办法
+        @clears: ~`'n+' + (@{n} + 1)`;
         .potPlayer .pot:nth-child(@clears){display:none;}
     }
     
