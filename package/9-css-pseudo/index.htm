@@ -45,6 +45,7 @@
         </div>
 
         <div class="cnt">
+            <h3>说明</h3>
             <p>无论是伪类还是伪元素，都属于CSS选择器的范畴。所以它们的定义可以在CSS标准的选择器章节找到。<a href="http://www.w3.org/TR/selectors/" target="_blank">http://www.w3.org/TR/selectors/</a></p>
             <p>伪类和伪元素的引入都是因为在文档树里有些信息无法被充分描述，比如CSS没有“段落的第一行”之类的选择器。</p>
             <p>
@@ -58,6 +59,7 @@
             </p>
             <p>内容来自：<a href="http://www.swordair.com/blog/2012/12/606/" target="_blank">http://www.swordair.com/blog/2012/12/606/</a></p>
             
+            <h3>标准中的伪类和伪元素</h3>
             <p>
                 伪类：<br>
                 - 动态伪类【 :link ， :visited 、 :hover ， :active ， :focus 】 <br>
@@ -74,9 +76,9 @@
                 - ::before ， ::after <br>
                 - ::selection 
             </p>
-            <p></p>
-            <p></p>
-            <p></p>
+            
+            <h3>webkit私有伪类和伪元素</h3>
+            <p>参见：<a href="http://stackoverflow.com/questions/7492568/what-are-the-well-known-webkit-specific-pseudo-elements" target="_blank">http://stackoverflow.com/questions/7492568/what-are-the-well-known-webkit-specific-pseudo-elements</a></p>
         </div>
     </div>
     
@@ -87,13 +89,21 @@
         <div class="bd">
             <div class="ls">
                 <div class="it hover">
-                    <h3>链接点击之后变色</h3>
+                    <h3>链接滑过变色</h3>
                     <style>
                         .hover .demo a{-webkit-transition:all 1s linear;}
                         .hover .demo a:hover{color:#000;padding-right:120px;background-color:#CCC;}
                     </style>
                     <div class="demo"><a href="#hover">ANCHOR</a></div>
                     <div class="opt"><button onclick="document.querySelector('.hover .demo').innerHTML = '<a href=#hover?' + Math.random() + '>ANCHOR</a>'">换个链接</button></div>
+                </div>
+                <div class="it focus">
+                    <h3>文本框聚集变色</h3>
+                    <style>
+                        .focus .demo input{-webkit-transition:all 1s linear;outline:0;border:1px solid #B00;color:#000;}
+                        .focus .demo input:focus{color:#08C;background-color:#CCC;border-color:#08C;}
+                    </style>
+                    <div class="demo"><input type="text" value="test"></div>
                 </div>
             </div>
         </div>
@@ -147,6 +157,7 @@
                         
                         .checked .demo .tab-radio{display:none;}
                         .checked .demo .tab{display:block;width:61px;-webkit-box-sizing:border-box;border:1px solid #CCC;padding:10px;text-align:center;float:left;margin-bottom:-1px;margin-right:-1px;margin-left:-60px;clear:left;}
+                        .checked .demo :checked + .tab{background:#CCC;}
                         
                         .checked .demo .content{-webkit-transition:all 1s linear;height:0;overflow:hidden;background:#FFF;}
                         .checked .demo .content .wrap{border:1px solid #CCC;padding:10px;-webkit-box-sizing:border-box;height:100%;}
@@ -169,6 +180,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="it combine">
+                    <h3>选择器组合</h3>
+                    <div class="code">
+                        E F ： E 的所有F子元素
+                        E > F ： E 的第一代F子元素
+                        E + F ： E 的相邻F兄弟元素
+                        E ~ F ： E 的所有F兄弟元素
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -176,12 +196,11 @@
     
     <div class="mod">
         <div class="hd">
-            <div class="hdWrap"><div class="ttl">:nth-child() ， :nth-last-child() ， :nth-of-type() ， :nth-last-of-type() ， :first-child ， :last-child ， :first-of-type ， :last-of-type ， :only-child:only-of-type ， :empty</div></div>
+            <div class="hdWrap"><div class="ttl">结构伪类</div></div>
         </div>
         <div class="bd">
             <div class="ls">
                 <div class="it nth-child">
-                    <h3>说明</h3>
                     <div class="code">
                         :root 根元素，一般指html
                         :nth-child() 选择某个元素的一个或多个特定的子元素
@@ -217,7 +236,7 @@
                 </div>
                 <div class="it after after-2">
                     <h3>生成元素属性</h3>
-                    <style>.after-2 .demo a:after{content:'(' attr(href) ')';}</style>
+                    <style>.after-2 .demo a:hover:after{content:'(' attr(href) ')';position:absolute;margin:18px 0 0 -70px;color:#FFF;background:rgba(0,0,0,.6);padding:5px;}</style>
                     <div class="demo">
                         点击<a href="http://m.sohu.com" target="_blank">这个链接</a>转到手机搜狐
                     </div>
@@ -281,15 +300,40 @@
                     <style>
                         @-webkit-keyframes iLoading{
                               0% {-webkit-transform:rotate(0deg);} 
-                            100% {-webkit-transform:rotate(-360deg);} 
+                            100% {-webkit-transform:rotate(360deg);} 
                         }
                         .after-6 .demo .btn{display:block;width:120px;padding:10px;background:#348ED5;border:1px solid #77B4D2;border-radius:5px;box-shadow:0 2px 2px 0px #BDBDBD, 0 1px 0px 0px rgba(255, 255, 255, 0.62) inset;text-decoration:none;}
                         .after-6 .demo .btn b{display:block;font-size:18px;text-align:center;color:#FFF;text-shadow:0 1px 2px #000;}
-                        .after-6 .demo .loading b:before{font-family:"wingdings 3";content:"Q";display:inline-block;margin-right:10px;}
+                        .after-6 .demo .loading b:before{font-family:"wingdings 3";content:"P";display:inline-block;margin-right:10px;}
                         .after-6 .demo .loading b:before{-webkit-animation:iLoading 1s linear 0 infinite normal;}
                     </style>
                     <div class="demo">
                         <p><a href="javascript:;" class="btn" onclick="this.classList.toggle('loading')"><b>发表中</b></a></p>
+                    </div>
+                </div>
+                <div class="it after after-7">
+                    <h3>before/after伪元素、box-shadow与transition/animation</h3>
+                    <style>
+                        .after-7 .demo .shadow{padding:90px;}
+                        .after-7 .demo .shadow .i {
+                            width: 3px; height:3px; zoom:5;
+                            border-radius: 100%;                      /* 圆角 */
+                            box-shadow: 0 -10px 0 1px #333,           /* 上, 1px 扩展 */
+                                        10px 0px #333,                /* 右 */    
+                                        0 10px #333,                  /* 下 */
+                                        -10px 0 #333,                 /* 左 */
+                                        -7px -7px 0 .5px #333,        /* 左上, 0.5px扩展 */
+                                        7px -7px 0 1.5px #333,        /* 右上, 1.5px扩展 */                    
+                                        7px 7px #333,                 /* 右下 */
+                                        -7px 7px #333;                /* 左下 */
+                        }
+                        .after-7 .demo .loading .i{-webkit-animation:iLoading 1s linear 0 infinite normal;}
+                    </style>
+                    <div class="demo">
+                        <div class="shadow" onclick="this.classList.toggle('loading')">
+                            <div class="i"></div>
+                        </div>
+                        <p>代码来自：<a href="http://www.zhangxinxu.com/wordpress/?p=3357" target="_blank">http://www.zhangxinxu.com/wordpress/?p=3357</a></p>
                     </div>
                     
                     <h3>美妙案例</h3>
@@ -310,7 +354,6 @@
         <div class="bd">
             <div class="ls">
                 <div class="it selection">
-                    <h3>说明</h3>
                     <style>.selection .demo .selection::selection{background:#B00;color:#FFF;}</style>
                     <div class="demo">
                         只能设置两个属性： <span class="selection">background</span> 和 <span class="selection">color</span>
