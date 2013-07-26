@@ -1,0 +1,9 @@
+@import "_reset.less";
+
+.demo{margin:20px auto;width:300px;overflow:hidden;
+    ol{counter-reset:sectioncounter;width:1000px;.flexbox();.transition-transform(1s);}
+    li{position:relative;background:#08c;border:1px solid #CCC;height:98px;width:98px;.flex();
+        &:before{content:counter(sectioncounter);counter-increment:sectioncounter;line-height:100px;position:absolute;width:100%;text-align:center;font-size:32px;}
+    }
+    .btns{font-size:18px;line-height:2;}
+}
