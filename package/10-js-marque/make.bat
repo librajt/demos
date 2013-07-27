@@ -1,0 +1,1 @@
+lessc ie10.less > ie10.css --compress

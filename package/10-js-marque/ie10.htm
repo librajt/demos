@@ -59,67 +59,84 @@
     var _EVT_MOVE = 'ontouchmove'  in window ? 'touchmove'  : hasPointerSupport ? 'MSPointerMove' : 'mousemove';
     var _EVT_UP   = 'ontouchend'   in window ? 'touchend'   : hasPointerSupport ? 'MSPointerUp'   : 'mouseup';
     var _EVT_TRANSITIONEND = ('ontransitionend' in window || IE10Plus) ? 'transitionend' : vendor.vendor + 'TransitionEnd';
-
-    var marque = function(args) {
-        this.l = 100;
-        this.s = 300;
-        this.c = 0;
-        this.duration = 400;
-        this.f = true;  // ' --<--------'
-        this.parent = document.querySelector(args.parent);
-        this.el = document.querySelector(args.el);
-        this.el.style.width = this.el.children.length * this.l + 'px';
-        this.w = this.el.clientWidth;
-        this.tick;
-        
-        this.transform(vendor.cssVendor + 'transform: translateZ(0);');
-        this.initTransition();
-        
-        this.startX = this.lastX = this.curX = 0;
-        this.bindSwipe();
-        
-        if (args.auto) {
-            this.move(true);
+    
+    function _EVT_WRAP(e) {
+        if (_EVT_DOWN == 'touchstart') {
+            if (!e.touches[0]) return;
+            e.x = e.touches[0].pageX;
+            e.y = e.touches[0].pageY;
+        }
+        else if (_EVT_DOWN == 'MSPointerDown') {
+            e.x = e.tiltX;
+            e.y = e.tiltY;
         }
         else {
-            this.pause();
+            e.x = e.pageX;
+            e.y = e.pageX;
+        }
+    }
+
+    var marque = function(args) {
+        var _ = this;
+        _.cellWidth = 100;
+        _.step = 300;
+        _.duration = 400;
+        _.forward = true;  // ' --<--------'
+        _.parent = document.querySelector(args.parent);
+        _.el = document.querySelector(args.el);
+        _.el.style.width = _.el.children.length * _.cellWidth + 'px';
+        _.width = _.el.clientWidth;
+        
+        _.startX = _.lastX = _.curX = 0;
+        
+        _.transform(0);
+        _.initTransition();
+        
+        _.bindSwipe();
+        
+        if (args.auto) {
+            _.move(true);
+        }
+        else {
+            _.pause();
         }
 
     };
     
     marque.prototype = {
         move: function(auto) {
-            this.pause();
-            this.status('RUNNING');
-            if (this.f) {
-                this.log('cur:  --<--------');
-                this.c -= this.s;
-                if (this.c <= -this.w + this.s) {
-                    this.c = -this.w + this.s
-                    this.f = !this.f;
-                    this.log('next:  -->');
+            var _ = this;
+            _.pause();
+            _.status('RUNNING');
+            if (_.forward) {
+                _.log('cur:  --<--------');
+                _.curX -= _.step;
+                if (_.curX <= -_.width + _.step) {
+                    _.curX = -_.width + _.step
+                    _.forward = !_.forward;
+                    _.log('next:  -->');
                 }
             }
             else {
-                this.log('cur:  -->--------');
-                this.c += this.s;
-                if (this.c >= 0) {
-                    this.c = 0;
-                    this.f = !this.f;
-                    this.log('next:  <--');
+                _.log('cur:  -->--------');
+                _.curX += _.step;
+                if (_.curX >= 0) {
+                    _.curX = 0;
+                    _.forward = !_.forward;
+                    _.log('next:  <--');
                 }
             }
             
-            this.transform(this.c);
-            this.lastX = this.c;
+            _.transform(_.curX);
+            _.lastX = _.curX;
             
-            var self = this;
+            var _ = this;
             if (auto) {
-                self.tick = setTimeout(function() {self.pause(); self.move(auto);}, 2000);
-                setTimeout(function() {self.status('AUTO');}, self.duration);
+                _.tick = setTimeout(function() { _.move(auto); }, 2000);
+                setTimeout(function() { _.status('AUTO'); }, _.duration);
             }
             else {
-                setTimeout(function() {self.pause();}, self.duration);
+                setTimeout(function() { _.pause(); }, _.duration);
             }
         },
         
@@ -129,40 +146,44 @@
         },
         
         bindSwipe: function() {
-            var self = this;
-            self.el.addEventListener(_EVT_DOWN, function(e) {
-                self.pause();
-                self.startX = e.tiltX || e.touches[0].pageX;
-                self.transition('none');
-            }, 0);
-            
-            self.el.addEventListener(_EVT_MOVE, function(e) {
+            var _ = this;
+            function start(e) {
+                _EVT_WRAP(e);
+                _.pause();
+                _.startX = e.x;
+                _.transition('none');
+                _.el.addEventListener(_EVT_MOVE, drag, 0);
+            }
+            function end(e) {
+                if (_.forward && _.curX > _.lastX) {
+                    _.log('next:  -->');
+                    _.forward = !_.forward;
+                }
+                else if (!_.forward && _.curX < _.lastX) {
+                    _.log('next:  <--');
+                    _.forward = !_.forward;
+                }
+                
+                _.lastX = _.curX;
+                _.curX = _.lastX == 0 ? 0 : Math.floor(_.lastX / _.cellWidth + (_.forward ? 1 : 0)) * _.cellWidth;
+                _.initTransition();
+                _.move(true);
+                _.el.removeEventListener(_EVT_MOVE, drag, 0);
+            }
+            function drag(e) {
+                _EVT_WRAP(e);
                 e.preventDefault(); 
-                self.curX = (e.tiltX || e.touches[0].pageX) - self.startX + self.lastX; 
-                if (self.curX <= 0 && self.curX >= (self.s - self.w)) {
-                    self.transform(self.curX);
-                }
-                else {
-                    self.curX = (self.curX > 0 ? 0 : self.s - self.w);
-                }
-            }, 0);
+                _.curX = e.x - _.startX + _.lastX; 
+                //if (_.curX <= 0 && _.curX >= (_.step - _.width)) {
+                    _.transform(_.curX);
+                //}
+                //else {
+                //    _.curX = (_.curX > 0 ? 0 : _.step - _.width);
+                //}
+            }
             
-            self.el.addEventListener(_EVT_UP, function(e) {
-                
-                if (self.f && self.curX > self.lastX) {
-                    self.log('next:  -->');
-                    self.f = !self.f;
-                }
-                else if (!self.f && self.curX < self.lastX) {
-                    self.log('next:  <--');
-                    self.f = !self.f;
-                }
-                
-                self.lastX = self.curX;
-                self.c = Math.floor(self.lastX / self.l + (self.f ? 1 : 0)) * self.l;
-                self.initTransition();
-                self.move(true);
-            }, 0);
+            _.el.addEventListener(_EVT_DOWN, start, 0);
+            _.el.addEventListener(_EVT_UP, end, 0);
         },
         
         transform: function(x) {
@@ -174,7 +195,8 @@
         },
         
         initTransition: function() {
-            this.transition(vendor.cssVendor + 'transform ' + this.duration / 1000 + 's');
+            var _ = this;
+            _.transition(vendor.cssVendor + 'transform ' + _.duration / 1000 + 's');
         },
         
         status: function(s) {
