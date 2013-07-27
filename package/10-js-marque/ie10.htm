@@ -22,9 +22,30 @@
         <li></li>
         <li></li>
         <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
     </ol>
+    <div class="status"></div>
     <div class="btns">
-        <a href="javascript:;" class="btn" onclick="m.start()">START</a>
+        <a href="javascript:;" class="btn" onclick="m.move()">STEP</a>
+        |
+        <a href="javascript:;" class="btn" onclick="m.move(true)">AUTO</a>
         |
         <a href="javascript:;" class="btn" onclick="m.pause()">PAUSE</a>
     </div>
@@ -38,40 +59,141 @@
     var _EVT_MOVE = 'ontouchmove'  in window ? 'touchmove'  : hasPointerSupport ? 'MSPointerMove' : 'mousemove';
     var _EVT_UP   = 'ontouchend'   in window ? 'touchend'   : hasPointerSupport ? 'MSPointerUp'   : 'mouseup';
     var _EVT_TRANSITIONEND = ('ontransitionend' in window || IE10Plus) ? 'transitionend' : vendor.vendor + 'TransitionEnd';
-    
-    var marque = function(sel) {
-        this.el = document.querySelector(sel),
-        this.w = this.el.clientWidth,
-        this.s = 300,
-        this.c = 0,
-        this.f = true,
+
+    var marque = function(args) {
+        this.l = 100;
+        this.s = 300;
+        this.c = 0;
+        this.duration = 400;
+        this.f = true;  // ' --<--------'
+        this.parent = document.querySelector(args.parent);
+        this.el = document.querySelector(args.el);
+        this.el.style.width = this.el.children.length * this.l + 'px';
+        this.w = this.el.clientWidth;
         this.tick;
+        
+        this.transform(vendor.cssVendor + 'transform: translateZ(0);');
+        this.initTransition();
+        
+        this.startX = this.lastX = this.curX = 0;
+        this.bindSwipe();
+        
+        if (args.auto) {
+            this.move(true);
+        }
+        else {
+            this.pause();
+        }
+
     };
     
     marque.prototype = {
-        move: function() {
+        move: function(auto) {
             this.pause();
-            this.f = (this.f && this.c <= -this.w + this.s ? !this.f : (!this.f && this.c >= 0 ? !this.f : this.f));
-            //this.f ? (this.c -= this.s) : (this.c += this.s);
-            this.f ? (((this.c -= this.s) || 1) && (this.c < -this.w + this.s) && (this.c = -this.w + this.s)) : (((this.c += this.s) || 1) && (this.c > 0) && (this.c = 0));
-            this.el.style[vendor.transform] = 'translate3D(' + this.c + 'px, 0, 0)';
+            this.status('RUNNING');
+            if (this.f) {
+                this.log('cur:  --<--------');
+                this.c -= this.s;
+                if (this.c <= -this.w + this.s) {
+                    this.c = -this.w + this.s
+                    this.f = !this.f;
+                    this.log('next:  -->');
+                }
+            }
+            else {
+                this.log('cur:  -->--------');
+                this.c += this.s;
+                if (this.c >= 0) {
+                    this.c = 0;
+                    this.f = !this.f;
+                    this.log('next:  <--');
+                }
+            }
+            
+            this.transform(this.c);
+            this.lastX = this.c;
             
             var self = this;
-            this.tick = setTimeout(function() {self.move();}, 2000);
-        },
-        
-        start: function() {
-            this.move();
+            if (auto) {
+                self.tick = setTimeout(function() {self.pause(); self.move(auto);}, 2000);
+                setTimeout(function() {self.status('AUTO');}, self.duration);
+            }
+            else {
+                setTimeout(function() {self.pause();}, self.duration);
+            }
         },
         
         pause: function() {
             clearTimeout(this.tick);
+            this.status('PAUSED');
+        },
+        
+        bindSwipe: function() {
+            var self = this;
+            self.el.addEventListener(_EVT_DOWN, function(e) {
+                self.pause();
+                self.startX = e.tiltX || e.touches[0].pageX;
+                self.transition('none');
+            }, 0);
+            
+            self.el.addEventListener(_EVT_MOVE, function(e) {
+                e.preventDefault(); 
+                self.curX = (e.tiltX || e.touches[0].pageX) - self.startX + self.lastX; 
+                if (self.curX <= 0 && self.curX >= (self.s - self.w)) {
+                    self.transform(self.curX);
+                }
+                else {
+                    self.curX = (self.curX > 0 ? 0 : self.s - self.w);
+                }
+            }, 0);
+            
+            self.el.addEventListener(_EVT_UP, function(e) {
+                
+                if (self.f && self.curX > self.lastX) {
+                    self.log('next:  -->');
+                    self.f = !self.f;
+                }
+                else if (!self.f && self.curX < self.lastX) {
+                    self.log('next:  <--');
+                    self.f = !self.f;
+                }
+                
+                self.lastX = self.curX;
+                self.c = Math.floor(self.lastX / self.l + (self.f ? 1 : 0)) * self.l;
+                self.initTransition();
+                self.move(true);
+            }, 0);
+        },
+        
+        transform: function(x) {
+            this.el.style[vendor.transform] = 'translate3D(' + x + 'px, 0, 0)';
+        },
+        
+        transition: function(t) {
+            this.el.style[vendor.transition] = t;
+        },
+        
+        initTransition: function() {
+            this.transition(vendor.cssVendor + 'transform ' + this.duration / 1000 + 's');
+        },
+        
+        status: function(s) {
+            this.parent.querySelector('.status').innerHTML = s;
+        },
+        
+        log: function(e) {
+            if (this.debug) console.log(e);
         }
     
     };
     
     
-    window.m = new marque('.demo ol');
+    window.m = new marque({
+        //auto: true,
+        parent: '.demo',
+        el: '.demo ol'
+    });
+    //m.debug = true;
 
     
     
