@@ -11,7 +11,7 @@
 <body>
 
 <div class="demo">
-    <ol>
+    <ol class="marque">
         <li></li>
         <li></li>
         <li></li>
@@ -49,6 +49,7 @@
         |
         <a href="javascript:;" class="btn" onclick="m.pause()">PAUSE</a>
     </div>
+    <div class="debug"><textarea rows="8" style="display:block;width:99%;"></textarea></div>
 </div>
 
 <script src="/h5/js/src/commons/vendor.js"></script>
@@ -63,38 +64,40 @@
     function _EVT_WRAP(e) {
         if (_EVT_DOWN == 'touchstart') {
             if (!e.touches[0]) return;
-            e.x = e.touches[0].pageX;
-            e.y = e.touches[0].pageY;
-        }
-        else if (_EVT_DOWN == 'MSPointerDown') {
-            e.x = e.tiltX;
-            e.y = e.tiltY;
+            e.x = e.touches[0].clientX;
+            e.y = e.touches[0].clientY;
         }
         else {
-            e.x = e.pageX;
-            e.y = e.pageX;
+            e.x = e.clientX;
+            e.y = e.clientY;
         }
+        return e;
     }
 
     var marque = function(args) {
+        args = args || {};
+        for (var o in args) {
+            this[o] = args[o];
+        }
+        
         var _ = this;
         _.cellWidth = 100;
         _.step = 300;
         _.duration = 400;
-        _.forward = true;  // ' --<--------'
-        _.parent = document.querySelector(args.parent);
-        _.el = document.querySelector(args.el);
+        _.forward = true;  // ' -<--------'
+        _.container = document.querySelector(_.container);
+        _.el = document.querySelector(_.el);
+        _.startX = _.lastX = _.curX = 0;
+        
         _.el.style.width = _.el.children.length * _.cellWidth + 'px';
         _.width = _.el.clientWidth;
-        
-        _.startX = _.lastX = _.curX = 0;
         
         _.transform(0);
         _.initTransition();
         
         _.bindSwipe();
         
-        if (args.auto) {
+        if (_.auto) {
             _.move(true);
         }
         else {
@@ -109,28 +112,23 @@
             _.pause();
             _.status('RUNNING');
             if (_.forward) {
-                _.log('cur:  --<--------');
-                _.curX -= _.step;
+                _.curX -= _.step;  _.log('cur:  -<--------');
                 if (_.curX <= -_.width + _.step) {
                     _.curX = -_.width + _.step
-                    _.forward = !_.forward;
-                    _.log('next:  -->');
+                    _.forward = !_.forward;  _.log('next:  ->');
                 }
             }
             else {
-                _.log('cur:  -->--------');
-                _.curX += _.step;
+                _.curX += _.step;  _.log('cur:  ->--------');
                 if (_.curX >= 0) {
                     _.curX = 0;
-                    _.forward = !_.forward;
-                    _.log('next:  <--');
+                    _.forward = !_.forward;  _.log('next:  <-');
                 }
             }
             
             _.transform(_.curX);
             _.lastX = _.curX;
             
-            var _ = this;
             if (auto) {
                 _.tick = setTimeout(function() { _.move(auto); }, 2000);
                 setTimeout(function() { _.status('AUTO'); }, _.duration);
@@ -148,41 +146,40 @@
         bindSwipe: function() {
             var _ = this;
             function start(e) {
-                _EVT_WRAP(e);
+                e = _EVT_WRAP(e);
                 _.pause();
                 _.startX = e.x;
-                _.transition('none');
-                _.el.addEventListener(_EVT_MOVE, drag, 0);
-            }
-            function end(e) {
-                if (_.forward && _.curX > _.lastX) {
-                    _.log('next:  -->');
-                    _.forward = !_.forward;
-                }
-                else if (!_.forward && _.curX < _.lastX) {
-                    _.log('next:  <--');
-                    _.forward = !_.forward;
-                }
-                
                 _.lastX = _.curX;
-                _.curX = _.lastX == 0 ? 0 : Math.floor(_.lastX / _.cellWidth + (_.forward ? 1 : 0)) * _.cellWidth;
-                _.initTransition();
-                _.move(true);
-                _.el.removeEventListener(_EVT_MOVE, drag, 0);
+                _.transition('');
+                _.canDrag = true;
             }
             function drag(e) {
-                _EVT_WRAP(e);
+                if (!_.canDrag) return;
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty(); // 禁止拖放对象文本被选择的方法
+                document.body.setCapture && _.el.setCapture(); // IE下鼠标超出视口仍可被监听
+                e = _EVT_WRAP(e);
                 e.preventDefault(); 
                 _.curX = e.x - _.startX + _.lastX; 
-                //if (_.curX <= 0 && _.curX >= (_.step - _.width)) {
-                    _.transform(_.curX);
-                //}
-                //else {
-                //    _.curX = (_.curX > 0 ? 0 : _.step - _.width);
-                //}
+                _.transform(_.curX);
+            }
+            function end(e) {
+                if (!_.canDrag) return;
+                if (_.forward && _.curX > _.lastX) {
+                    _.forward = !_.forward;  _.log('next:  ->');
+                }
+                else if (!_.forward && _.curX < _.lastX) {
+                    _.forward = !_.forward;  _.log('next:  <-');
+                }
+                
+                _.curX = _.curX == 0 ? 0 : Math.floor(_.curX / _.cellWidth + (_.forward ? 1 : 0)) * _.cellWidth;
+                _.initTransition();
+                _.move(true);
+                _.canDrag = false;
+                return false;
             }
             
             _.el.addEventListener(_EVT_DOWN, start, 0);
+            _.el.addEventListener(_EVT_MOVE, drag, 0);
             _.el.addEventListener(_EVT_UP, end, 0);
         },
         
@@ -200,22 +197,32 @@
         },
         
         status: function(s) {
-            this.parent.querySelector('.status').innerHTML = s;
+            this.container.querySelector('.status').innerHTML = s;
+        },
+        
+        status: function(s) {
+            this.container.querySelector('.status').innerHTML = s;
         },
         
         log: function(e) {
-            if (this.debug) console.log(e);
+            if (this.debug) {
+                var cmd = this.container.querySelector('.debug textarea');
+                cmd.innerHTML += e + '\r\n';
+                cmd.scrollTop = cmd.scrollHeight;
+            }
         }
     
     };
     
     
-    window.m = new marque({
-        //auto: true,
-        parent: '.demo',
-        el: '.demo ol'
-    });
-    //m.debug = true;
+    window.onload = function () {
+        window.m = new marque({
+            //auto: true,
+            debug: true,
+            container: '.demo',
+            el: '.marque'
+        });
+    }
 
     
     

@@ -1,1 +1,1 @@
-lessc ie10.less > ie10.css --compress
+lessc --compress ie10.less > ie10.css
