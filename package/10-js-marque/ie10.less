@@ -2,8 +2,8 @@
 
 .demo{margin:20px auto;width:300px;overflow:hidden;
     ol{counter-reset:sectioncounter;.flexbox();}
-    li{position:relative;background:#08c;box-shadow:0 0 2px 1px #CCC inset;height:100px;width:100px;
-        &:before{content:counter(sectioncounter);counter-increment:sectioncounter;line-height:100px;position:absolute;width:100%;text-align:center;font-size:36px;}
+    li{background:#08c;box-shadow:0 0 2px 1px #CCC inset;height:100px;width:100px;line-height:100px;text-align:center;font-size:36px;
+        &:before{content:counter(sectioncounter);counter-increment:sectioncounter;}
     }
     .btns{font-size:18px;line-height:3;}
 }

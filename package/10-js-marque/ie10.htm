@@ -43,13 +43,13 @@
     </ol>
     <div class="status"></div>
     <div class="btns">
-        <a href="javascript:;" class="btn" onclick="m.move()">STEP</a>
+        <a href="javascript:m.move();" class="btn">STEP</a>
         |
-        <a href="javascript:;" class="btn" onclick="m.move(true)">AUTO</a>
+        <a href="javascript:m.move(true);" class="btn">AUTO</a>
         |
-        <a href="javascript:;" class="btn" onclick="m.pause()">PAUSE</a>
+        <a href="javascript:m.pause();" class="btn">PAUSE</a>
     </div>
-    <div class="debug"><textarea rows="8" style="display:block;width:99%;"></textarea></div>
+    <div class="debug"><textarea rows="8" style="display:block;width:300px;"></textarea></div>
 </div>
 
 <script src="/h5/js/src/commons/vendor.js"></script>
@@ -147,23 +147,66 @@
             var _ = this;
             function start(e) {
                 e = _EVT_WRAP(e);
+                // -----S----- 处理单向滑动
+                delete _.horizontal;
+                _.el.removeEventListener(_EVT_MOVE, drag, 0);
+                _.el.removeEventListener(_EVT_UP, end, 0);
+                _.el.addEventListener(_EVT_MOVE, drag, 0);
+                _.el.addEventListener(_EVT_UP, end, 0);
+               
+                _.touchCoords = {};
+                _.touchCoords.startX = e.x;
+                _.touchCoords.startY = e.y;
+                // -----E-----
                 _.pause();
                 _.startX = e.x;
                 _.lastX = _.curX;
-                _.transition('');
-                _.canDrag = true;
+                _.transition(0);
             }
             function drag(e) {
-                if (!_.canDrag) return;
+                e = _EVT_WRAP(e);
+                // -----S-----
+                if (!_.touchCoords) {
+                    return;
+                }
+                
+                _.touchCoords.stopX = e.x;
+                _.touchCoords.stopY = e.y;
+                
+                var offsetX = _.touchCoords.startX - _.touchCoords.stopX,
+                    absX = Math.abs(offsetX),
+                    absY = Math.abs(_.touchCoords.startY - _.touchCoords.stopY);
+                
+                if (typeof _.horizontal !== 'undefined') {
+                    offsetX != 0 && e.preventDefault();
+                    //b
+                } else {
+                    if (absX > absY) {
+                        _.horizontal = true;
+                        offsetX != 0 && e.preventDefault();
+                        //b
+                    } else {
+                        delete _.touchCoords;
+                        _.horizontal = false;
+                        return;
+                    }
+                }
+                // -----E-----
                 window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty(); // 禁止拖放对象文本被选择的方法
                 document.body.setCapture && _.el.setCapture(); // IE下鼠标超出视口仍可被监听
-                e = _EVT_WRAP(e);
-                e.preventDefault(); 
                 _.curX = e.x - _.startX + _.lastX; 
                 _.transform(_.curX);
             }
             function end(e) {
-                if (!_.canDrag) return;
+                // -----S-----
+                _.el.removeEventListener(_EVT_MOVE, drag, 0);
+                _.el.removeEventListener(_EVT_UP, end, 0);
+                //tb
+                
+                if (!_.touchCoords) {
+                    return;
+                }
+                // -----E-----
                 if (_.forward && _.curX > _.lastX) {
                     _.forward = !_.forward;  _.log('next:  ->');
                 }
@@ -174,13 +217,13 @@
                 _.curX = _.curX == 0 ? 0 : Math.floor(_.curX / _.cellWidth + (_.forward ? 1 : 0)) * _.cellWidth;
                 _.initTransition();
                 _.move(true);
-                _.canDrag = false;
-                return false;
+                
+                // -----S-----
+                delete _.touchCoords;
+                // -----E-----
             }
             
             _.el.addEventListener(_EVT_DOWN, start, 0);
-            _.el.addEventListener(_EVT_MOVE, drag, 0);
-            _.el.addEventListener(_EVT_UP, end, 0);
         },
         
         transform: function(x) {
@@ -188,12 +231,12 @@
         },
         
         transition: function(t) {
-            this.el.style[vendor.transition] = t;
+            this.el.style[vendor.transition] = vendor.cssVendor + 'transform ' + t / 1000 + 's';
         },
         
         initTransition: function() {
             var _ = this;
-            _.transition(vendor.cssVendor + 'transform ' + _.duration / 1000 + 's');
+            _.transition(_.duration);
         },
         
         status: function(s) {
@@ -216,6 +259,7 @@
     
     
     window.onload = function () {
+        
         window.m = new marque({
             //auto: true,
             debug: true,
