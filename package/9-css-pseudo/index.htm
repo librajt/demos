@@ -9,6 +9,7 @@
 <style>
     body, button{margin:0;}
     body{font:normal 18px/1.5 "Helvetica Neue",Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft Yahei,Arial;}
+    ul,li{list-style:none;}
     
     .mod{overflow:hidden;}
     .mod .hdWrap.fixed{position:fixed;z-index:99;top:-1px;left:0;right:0;}
@@ -262,29 +263,158 @@
                         </ol>
                         <p>代码来自：<a href="http://www.zhangxinxu.com/wordpress/?p=739" target="_blank">http://www.zhangxinxu.com/wordpress/?p=739</a></p>
                     </div>
+                    
+                    <h3>content属性说明</h3>
+                    <div class="code">
+                        取值: normal | none | [ &lt;string> | &lt;uri> | &lt;counter> | attr(&lt;identifier>) | open-quote | close-quote | no-open-quote | no-close-quote ]+ | inherit
+                        
+                        自动增长的数值是由 css 的两个属性控制的，他们是 counter-reset 和 counter-increment 。计数器由这些属性定义，然后用 counter() 和 counters() 方法获取内容属性。
+                        counter-reset 计数器重置属性可以包含一个或多个计数器的名字（例如“标识符”），后面可以跟一个可选的整数参数。通过counter-increment属性设置增长的整数值，可以作用在任何元素。他的默认值是 0，负值是容许的。
+                        counter-increment 计数器增量属性是类似的，他们基本的不同是这个增加一个计数器，其默认增量是1，负值是容许的。
+                    </div>
                 </div>
                 <div class="it after after-5">
+                    <h3>用计数器创建号码内容 - 负数计数器结合正数计数器</h3>
+                    <style>
+                        .after-5 .demo ol{counter-reset:term -1;}
+                        .after-5 .demo ol li:before{counter-increment:term 3;  content:counter(term) ". ";}
+                    </style>
+                    <div class="demo">
+                        <ol>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ol>
+                        <p>代码来自：<a href="http://www.w3cplus.com/css3/css-generated-content-counters.html" target="_blank">http://www.w3cplus.com/css3/css-generated-content-counters.html</a></p>
+                    </div>
+                </div>
+                <div class="it after after-6">
+                    <h3>用计数器创建号码内容 - 嵌套、自我嵌套</h3>
+                    <style>
+                        .after-6 .demo dl{counter-reset: term definition;}
+                        .after-6 .demo dt:before{counter-increment:term;content:counter(term) ". ";}
+                        .after-6 .demo dd:before {counter-increment:definition;content:counter(term) "." counter(definition) " ";}
+                        
+                        .after-6 .demo ol{counter-reset:item;}
+                        .after-6 .demo ol li:before{counter-increment:item;content:counters(item, ".") " ";}
+                    </style>
+                    <div class="demo">
+                        <dl>
+                            <dt></dt>
+                            <dd></dd>
+                            <dt></dt>
+                            <dd></dd>
+                            <dt></dt>
+                            <dd></dd>
+                        </dl>
+                        <p>代码来自：<a href="http://www.w3cplus.com/css3/css-generated-content-counters.html" target="_blank">http://www.w3cplus.com/css3/css-generated-content-counters.html</a></p>
+                    </div>
+                    <div class="demo">
+                        <ol>
+                            <li>
+                                <ol>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ol>
+                            </li>
+                            <li>
+                                <ol>
+                                    <li>
+                                        <ol>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ol>
+                                    </li>
+                                    <li></li>
+                                    <li></li>
+                                </ol>
+                            </li>
+                            <li></li>
+                        </ol>
+                        <p>代码来自：<a href="http://www.w3cplus.com/css3/css-generated-content-counters.html" target="_blank">http://www.w3cplus.com/css3/css-generated-content-counters.html</a></p>
+                    </div>
+                </div>
+                <div class="it after after-7">
+                    <h3>用计数器创建号码内容 - 计数器的样式</h3>
+                    <style>
+                        .after-7 .demo dl{counter-reset: term definition;}
+                        .after-7 .demo dt:before{counter-increment:term;content:counter(term, upper-latin) ". ";}
+                        .after-7 .demo dd:before {counter-increment:definition;content:counter(definition, lower-latin) " ";}
+                        
+                        .after-7 .demo ol{counter-reset:item;}
+                        .after-7 .demo ol li:before{counter-increment:item;content:counters(item, ".", lower-roman) " ";}
+                    </style>
+                    <div class="demo">
+                        <dl>
+                            <dt></dt>
+                            <dd></dd>
+                            <dt></dt>
+                            <dd></dd>
+                            <dt></dt>
+                            <dd></dd>
+                        </dl>
+                        <p>代码来自：<a href="http://www.w3cplus.com/css3/css-generated-content-counters.html" target="_blank">http://www.w3cplus.com/css3/css-generated-content-counters.html</a></p>
+                    </div>
+                    <div class="demo">
+                        <ol>
+                            <li>
+                                <ol>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ol>
+                            </li>
+                            <li>
+                                <ol>
+                                    <li>
+                                        <ol>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ol>
+                                    </li>
+                                    <li></li>
+                                    <li></li>
+                                </ol>
+                            </li>
+                            <li></li>
+                        </ol>
+                        <p>代码来自：<a href="http://www.w3cplus.com/css3/css-generated-content-counters.html" target="_blank">http://www.w3cplus.com/css3/css-generated-content-counters.html</a></p>
+                    </div>
+                    
+                    <div class="code">
+                        默认计数器是用十进制格式化的。可是，用 list-style-type 也可以修改计数器的样式。用默认语法 counter(name) （没有样式）或 counter(name, 'list-style-type') 修改默认格式。实际中，推荐以下样式：
+                        decimal
+                        decimal-leading-zero
+                        lower-roman
+                        upper-roman
+                        lower-greek
+                        lower-latin
+                        upper-latin
+                        lower-alpha
+                        upper-alpha
+                        不要忘记我们正在跟数字系统打交道。也要记住规范没有定义超出字母排序的字母系统要如何显示。例如，超过小写拉丁文的26个字母后是没有定义的。所以，对于长列表而言，推荐用数字做计数器：
+                    </div>
+                </div>
+                <div class="it after after-15">
                     <h3>为多语言内容插入正确的引号</h3>
                     <style>
                         /* 为不同语言指定引号的表现 */
-                        .after-5 .demo :lang(en) > q {quotes:'"' '"';}
-                        .after-5 .demo :lang(no) > q {quotes:"«" "»";}
-                        .after-5 .demo :lang(ch) > q {quotes:"“" "”";}
+                        .after-15 .demo :lang(en) > q {quotes:'"' '"';}
+                        .after-15 .demo :lang(no) > q {quotes:"«" "»";}
+                        .after-15 .demo :lang(ch) > q {quotes:"“" "”";}
 
                         /* 在q标签的前后插入引号 */
-                        .after-5 .demo q:before {content:open-quote;}
-                        .after-5 .demo q:after  {content:close-quote;}
+                        .after-15 .demo q:before {content:open-quote;}
+                        .after-15 .demo q:after  {content:close-quote;}
                     </style>
                     <div class="demo">
                         <p lang="en"><q>It’s only work if somebody makes you do it.</q></p>
                         <p lang="no"><q>Hvis du forteller meg nok en vits, så skal jeg slå deg til jorden.</q></p>
                         <p lang="ch"><q>欢迎来到上海，欢迎参观世博会！</q></p>
                         <p>代码来自：<a href="http://www.zhangxinxu.com/wordpress/?p=739" target="_blank">http://www.zhangxinxu.com/wordpress/?p=739</a></p>
-                    </div>
-                    
-                    <h3>content属性说明</h3>
-                    <div class="code">
-                        取值: normal | none | [ &lt;string> | &lt;uri> | &lt;counter> | attr(&lt;identifier>) | open-quote | close-quote | no-open-quote | no-close-quote ]+ | inherit
                     </div>
                     
                     <h3>quotes属性说明</h3>
@@ -323,7 +453,7 @@
                                         0 10px #333,                  /* 下 */
                                         -10px 0 #333,                 /* 左 */
                                         -7px -7px 0 .5px #333,        /* 左上, 0.5px扩展 */
-                                        7px -7px 0 1.5px #333,        /* 右上, 1.5px扩展 */                    
+                                        7px -7px 0 1.5px #333,        /* 右上, 1.5px扩展 */
                                         7px 7px #333,                 /* 右下 */
                                         -7px 7px #333;                /* 左下 */
                         }
