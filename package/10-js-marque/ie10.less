@@ -3,7 +3,7 @@
 .demo{margin:20px auto;width:300px;overflow:hidden;
     ol{counter-reset:sectioncounter;.flexbox();}
     li{background:#08c;box-shadow:0 0 2px 1px #CCC inset;height:100px;width:100px;line-height:100px;text-align:center;font-size:36px;color:#FFF;
-        &:before{content:counter(sectioncounter);counter-increment:sectioncounter;}
+        &:before{counter-increment:sectioncounter;content:counter(sectioncounter);}
         &:nth-child(even){background:#B00;}
     }
     .btns{font-size:18px;line-height:3;}

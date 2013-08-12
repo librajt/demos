@@ -9,6 +9,6 @@ img,video{vertical-align:middle;border:0}
 *{-webkit-tap-highlight-color:rgba(0,0,0,0)}
 ::-webkit-scrollbar{width:0}
 .demo{margin:20px auto;width:300px;overflow:hidden}.demo ol{counter-reset:sectioncounter;display:-webkit-box;display:-moz-box;display:box;display:-webkit-flex;display:-moz-flexbox;display:-ms-flexbox;display:flex}
-.demo li{background:#08c;box-shadow:0 0 2px 1px #ccc inset;height:100px;width:100px;line-height:100px;text-align:center;font-size:36px;color:#fff}.demo li:before{content:counter(sectioncounter);counter-increment:sectioncounter}
+.demo li{background:#08c;box-shadow:0 0 2px 1px #ccc inset;height:100px;width:100px;line-height:100px;text-align:center;font-size:36px;color:#fff}.demo li:before{counter-increment:sectioncounter;content:counter(sectioncounter)}
 .demo li:nth-child(even){background:#b00}
 .demo .btns{font-size:18px;line-height:3}
