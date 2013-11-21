@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=320.1,minimum-scale=1.0,maximum-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<title>iOS6 readmark test</title>
+<title>iOS6 reader mark</title>
 <style>body{margin:0;}</style>
 </head>
 <body>
 
-<div class="code" style="overflow:hidden;display:block;">
+<div class="wrap" style="">
 <ol>
     <li><a href="?hidereadmark">hide readmark and scroll to top</a></li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
@@ -39,53 +39,34 @@
 
 
 <script>
-if (location.search) {
+window.addEventListener('load', function() {
+    var h = window.innerHeight, wrap = document.querySelector('.wrap');
+    var ua = navigator.userAgent, ios = ua.match(/i(?:Phone|Pod)(?:.*)CPU(?: (iPhone))? OS\s([\d_\.]+)/i);
+    
+    if (!navigator.standalone && document.body.offsetHeight > window.innerHeight && location.search) {  // location.search as a flag
 
-    function setViewportWidthPorperty(value) {
-        var viewport = document.querySelector("meta[name=viewport]"),
-            content = viewport.content,
-            arr = content.split(','),
-            contArr = [],
-            prop,
-            i, len = arr.length,
-            wStr = 'width';
-        for (i = 0; i < len; i++) {
-            prop = Zepto.trim(arr[i]).split('=');
-            if (prop[0] == wStr) {
-                contArr.push(wStr + '=' + value);
-            } else {
-                contArr.push(prop[0] + '=' + prop[1]);
-            }
+        if (ios && parseInt(ios[2], 10) < 7) {  // iOS7-
+            h = (window.orientation === 0 ? screen.height - 44 : screen.width - 32) - 20;
+            if (window.innerHeight > h) h = window.innerHeight;
         }
-        content = contArr.join(', ');
-        if (content.indexOf(wStr + '=') == -1) {
-            content = wStr + '=' + value + ', ' + content;
-        }
-        viewport.content = content;
-    }
-
-    window.addEventListener('load', function() {
-        var h = innerHeight;
-        var ua = navigator.userAgent, ios = ua.match(/(iPhone|iPod);[\w\s]+(?:iPhone|)\sOS\s([\d_\.]+)/i);
-        if (ios && parseInt(ios[2].replace(/_/g, '.'), 10) < 7) {  // iOS7-
-            if (!navigator.standalone) {
-                h = (orientation === 0 ? screen.height - 44 : screen.width - 32) - 20;
-            }
-            if (innerHeight > h) h = innerHeight;
+        
+        // additional
+        if (ios && window.screen.height !== 568 && !navigator.standalone) {  // iPhone5- fix viewoport setting for adding to home screen
+            var viewport = document.querySelector("meta[name=viewport]");
+            viewport.content = viewport.content.replace(/(width=)(.+)([,;]?)/i, '$1device-width$3');
         }
 
-        document.querySelector('.code').style.height = h + 'px';
+        wrap.style.overflow = 'hidden';
+        wrap.style.height = h + 'px';
 
         setTimeout(function() {
             window.scrollTo(0,0);
-            document.querySelector('code').style.height = '';
-            if (ios && window.screen.height !== 568) {  // iPhone5+
-                setViewportWidthPorperty('device-width')
-            }
+            wrap.style.overflow = '';
+            wrap.style.height = '';
         }, 200);
-    }, false);
-
-}
+    }
+    
+}, false);
 </script>
 </body>
 </html>
