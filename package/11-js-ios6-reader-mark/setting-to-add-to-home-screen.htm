@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
+<meta name="viewport" content="width=320.1,minimum-scale=1.0,maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <title>iOS6 reader mark</title>
 <style>body{margin:0;}</style>
 </head>
@@ -48,6 +50,12 @@ window.addEventListener('load', function() {
             if (window.innerHeight > h) h = window.innerHeight;
         }
         
+        // additional
+        if (ios && window.screen.height !== 568 && !navigator.standalone) {  // iPhone5- fix viewoport setting for adding to home screen
+            var viewport = document.querySelector("meta[name=viewport]");
+            viewport.content = viewport.content.replace(/(width=)(.+)([,;]?)/i, '$1device-width$3');
+        }
+
         wrap.style.overflow = 'hidden';
         wrap.style.height = h + 'px';
 
