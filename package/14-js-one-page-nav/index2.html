@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title></title>
+<style>
+/* reset */
+*{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+h1,h2,h3,h4,h5,h6{font-size:1em;font-weight:normal;}
+ul,ol,li{list-style:none;}
+em,i,b,th{font-style:normal;font-weight:normal;}
+input,button,textarea,select,img{border:0;outline:none;vertical-align:middle;}
+body,input,button,textarea,select{font-family:Arial,"Helvetica Neue",Helvetica,"SimSun",sans-serif;}
+a{text-decoration:none;}
+
+/* tools */
+.cfx,.frame
+{zoom:1;}
+.cfx:after,.frame:after
+{content:'';display:block;height:0;overflow:hidden;clear:both;}
+
+
+/* frame */
+html{-webkit-text-size-adjust:none;height:100%;line-height:1;}
+body{background:#F6F6F6;min-height:100%;min-width:960px;margin:auto;}
+.frame{width:1000px;margin:auto;}
+.pageHead{position:fixed;top:0;left:0;right:0;width:100%;z-index:99;background:rgba(0,0,0,.3);}
+.pageBody{}
+.pageFoot{text-align:center;padding:30px 0;font-size:12px;line-height:1.5;}
+
+
+.topLogo{float:left;*display:inline;padding:10px 0 5px 0;}
+
+.topNav{float:right;*display:inline;height:32px;font-family:\5fae\8f6f\96c5\9ed1;padding:10px 0 5px 0;}
+.topNav .it{float:left;*display:inline;margin:0 32px;}
+.topNav .it a{display:inline-block;font-size:18px;line-height:28px;height:34px;color:#666666;}
+.topNav .it b{display:inline-block;}
+.topNav .it a:hover,.topNav .it_on a{height:32px;color:#D01615;}
+.topNav .it a:hover b,.topNav .it_on a b{border-bottom:4px solid #D01615;}
+
+.cnt{text-align:center;font-size:48px;line-height:3;padding:80px 0;}
+.page{position:relative;min-height:600px;}
+
+.pageBodyWrap > div:nth-child(1n){background:#96E264;}
+.pageBodyWrap > div:nth-child(2n){background:#49BAF4;}
+.pageBodyWrap > div:nth-child(3n){background:#F6E766;}
+.pageBodyWrap > div:nth-child(4n){background:#FC6667;}
+.pageBodyWrap > div:nth-child(5n){background:#E1E1E1;}
+
+html, body.haswheel{height:100%;}
+.haswheel .pageBody{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;overflow:hidden;}
+.haswheel .pageBodyWrap{height:100%;-webkit-transition:-webkit-transform 1s ease;transition:transform 1s ease;}
+.haswheel .page{height:100%;}
+</style>
+</head>
+<body>
+
+<div class="head pageHead">
+    <div class="wrap headWrap frame">
+        <div class="logo topLogo">
+            <h1><a href="index.html">Version1</a> | <a href="index2.html">Version2</a></h1>
+        </div>
+        <ul class="nav topNav">
+            <li class="it it_on"><a href="#HOME"><b>HOME</b></a></li>
+            <li class="it"><a href="#BLOG"><b>BLOG</b></a></li>
+            <li class="it"><a href="#PRODUCT"><b>PRODUCT</b></a></li>
+            <li class="it"><a href="#ABOUT"><b>ABOUT</b></a></li>
+            <li class="it"><a href="#CONTACT"><b>CONTACT</b></a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="pageBody">
+    <div class="pageBodyWrap">
+        <div class="page" id="HOME"><div class="cnt"><div>HOME</div></div></div>
+        <div class="page" id="BLOG"><div class="cnt"><div>BLOG</div></div></div>
+        <div class="page" id="PRODUCT"><div class="cnt"><div>PRODUCT</div></div></div>
+        <div class="page" id="ABOUT"><div class="cnt"><div>ABOUT</div></div></div>
+        <div class="page" id="CONTACT"><div class="cnt"><div>CONTACT</div></div></div>
+        <div class="other"><div class="cnt"><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p></div></div>
+
+    </div>
+</div>
+
+<div class="foot pageFoot">
+    <div class="wrap footWrap frame">
+        <div class="inf cp3">Copyright &copy; 2013-2014 All rights reserved.</div>
+    </div>
+</div>
+
+<script src="jquery-1.10.2.min.js"></script>
+<script src="jquery.mousewheel.js"></script>
+<script>
+    var canuse = function () {
+            var b = document.createElement("div"),
+                a = "Khtml Ms O Moz Webkit".split(" ");
+            return function (c) {
+                if (c in b.style) return true;
+                for (var c = c.replace(/^[a-z]/, function (b) {
+                    return b.toUpperCase()
+                }), d = a.length; d--;) if (a[d] + c in b.style) return true;
+                return false
+            }
+        }();
+    if (!canuse("transform") || !canuse("transition")) return;
+    $("body").addClass("haswheel");
+    var f = {},
+        e = null,
+        c = 0,
+        h = function () {
+            var b = [0],
+                c = 0,
+                a = $(window).height(); 
+            a = a > 720 ? a : 720;
+            $(".page").each(function (a, b) {
+                c += $(b).height()
+            });
+            c += 50;
+            for (var d = c % a, e = Math.floor(c / a), h = d === 0 ? e : Math.ceil(c / a), g = 0; g < e - 1;) b.push(a + b[g]), g++;
+            d && b.push(d + b[e - 1]);
+            f.arr = b;
+            f.inds = h;
+            return f
+        },
+        i = function (b) {
+            c += b;
+            b = f.inds - 1;
+            if (c < 0 || c === 0) c = 0;
+            else if (c === b || c > b) c = b;
+            $(".topNav").find("li").removeClass('it_on').eq(c).addClass("it_on");
+            var v = "translate(0px, -" + f.arr[c] + "px)";
+            $(".pageBodyWrap").css({
+                "-webkit-transform": v,
+                "-moz-transform": v,
+                "-o-transform": v,
+                "-ms-transform": v,
+                "transform": v
+            });
+        };
+    
+    h();
+    $(window).resize(function () {
+        h();
+        i(0);
+    });
+    $(window).mousewheel(function (b, c, a, d) {
+        e && window.clearTimeout(e);
+        e = window.setTimeout(function () {
+            d < 0 ? i(1) : i(-1)
+        }, 300);
+    });
+    $(window).keydown(function (b) {
+        switch (b.keyCode || b.which || b.charCode) {
+        case 38:
+            i(-1);
+            b.preventDefault();
+            break;
+        case 40:
+            i(1)
+            b.preventDefault();
+        }
+    });
+    $('.topNav li').click(function(e){
+        var idx = $(e.currentTarget).index();
+        i(idx - c);
+        return false;
+    });
+
+
+</script>
+
+</body>
+</html>

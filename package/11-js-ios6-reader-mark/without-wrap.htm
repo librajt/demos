@@ -8,13 +8,14 @@
 </head>
 <body>
 
-<article class="wrap" style="">
+<article>
+this page operate the body tag by displaying block and none 
 <ol>
     <li><a href="?hidereadmark">hide readmark and scroll to top</a></li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
     <li><a href="?">back to normal</a></li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
-    <li><a href="without-wrap.htm">without wrap version</a></li>
+    <li><a href="index.htm">wrap version</a></li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
     <li>long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text </li>
@@ -36,10 +37,9 @@
 </ol>
 </article>
 
-
 <script>
 window.addEventListener('load', function() {
-    var h = window.innerHeight, wrap = document.querySelector('.wrap');
+    var h = window.innerHeight, html = document.querySelector('html'), body = document.querySelector('body');
     var ua = navigator.userAgent, ios = ua.match(/i(?:Phone|Pod)(?:.*)CPU(?: (iPhone))? OS\s([\d_\.]+)/i);
     
     if (!navigator.standalone && document.body.offsetHeight > window.innerHeight && location.search) {  // location.search as a flag
@@ -49,13 +49,13 @@ window.addEventListener('load', function() {
             if (window.innerHeight > h) h = window.innerHeight;
         }
         
-        wrap.style.overflow = 'hidden';
-        wrap.style.height = h + 'px';
+        html.style.height = h + 'px';
+        body.style.display = 'none';
 
         setTimeout(function() {
             window.scrollTo(0,0);
-            wrap.style.overflow = '';
-            wrap.style.height = '';
+            html.style.height = '';
+            body.style.display = '';
         }, 200);
     }
     

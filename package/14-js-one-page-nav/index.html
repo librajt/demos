@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title></title>
+<style>
+/* reset */
+*{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+h1,h2,h3,h4,h5,h6{font-size:1em;font-weight:normal;}
+ul,ol,li{list-style:none;}
+em,i,b,th{font-style:normal;font-weight:normal;}
+input,button,textarea,select,img{border:0;outline:none;vertical-align:middle;}
+body,input,button,textarea,select{font-family:Arial,"Helvetica Neue",Helvetica,"SimSun",sans-serif;}
+a{text-decoration:none;}
+
+/* tools */
+.cfx,.frame
+{zoom:1;}
+.cfx:after,.frame:after
+{content:'';display:block;height:0;overflow:hidden;clear:both;}
+
+
+/* frame */
+html{-webkit-text-size-adjust:none;height:100%;line-height:1;}
+body{background:#F6F6F6;min-height:100%;min-width:960px;margin:auto;}
+.frame{width:1000px;margin:auto;}
+.pageHead{position:fixed;top:0;left:0;right:0;width:100%;z-index:99;background:rgba(0,0,0,.3);}
+.pageBody{}
+.pageFoot{text-align:center;padding:30px 0;font-size:12px;line-height:1.5;}
+
+
+.topLogo{float:left;*display:inline;padding:10px 0 5px 0;}
+
+.topNav{float:right;*display:inline;height:32px;font-family:\5fae\8f6f\96c5\9ed1;padding:10px 0 5px 0;}
+.topNav .it{float:left;*display:inline;margin:0 32px;}
+.topNav .it a{display:inline-block;font-size:18px;line-height:28px;height:34px;color:#666666;}
+.topNav .it b{display:inline-block;}
+.topNav .it a:hover,.topNav .it_on a{height:32px;color:#D01615;}
+.topNav .it a:hover b,.topNav .it_on a b{border-bottom:4px solid #D01615;}
+
+.cnt{text-align:center;font-size:48px;line-height:3;padding:80px 0;}
+.page .cnt{min-height:800px;}
+
+.pageBody > div:nth-child(1n){background:#96E264;}
+.pageBody > div:nth-child(2n){background:#49BAF4;}
+.pageBody > div:nth-child(3n){background:#F6E766;}
+.pageBody > div:nth-child(4n){background:#FC6667;}
+.pageBody > div:nth-child(5n){background:#E1E1E1;}
+</style>
+</head>
+<body>
+
+<div class="head pageHead">
+    <div class="wrap headWrap frame">
+        <div class="logo topLogo">
+            <h1><a href="index.html">Version1</a> | <a href="index2.html">Version2</a></h1>
+        </div>
+        <ul class="nav topNav">
+            <li class="it it_on"><a href="#HOME"><b>HOME</b></a></li>
+            <li class="it"><a href="#BLOG"><b>BLOG</b></a></li>
+            <li class="it"><a href="#PRODUCT"><b>PRODUCT</b></a></li>
+            <li class="it"><a href="#ABOUT"><b>ABOUT</b></a></li>
+            <li class="it"><a href="#CONTACT"><b>CONTACT</b></a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="pageBody">
+    <div class="page" id="HOME"><div class="cnt"><div>HOME</div></div></div>
+    <div class="page" id="BLOG"><div class="cnt"><div>BLOG</div></div></div>
+    <div class="page" id="PRODUCT"><div class="cnt"><div>PRODUCT</div></div></div>
+    <div class="page" id="ABOUT"><div class="cnt"><div>ABOUT</div></div></div>
+    <div class="page" id="CONTACT"><div class="cnt"><div>CONTACT</div></div></div>
+    <div class="other"><div class="cnt"><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p><p>OTHER</p><p>INFO</p></div></div>
+
+</div>
+
+<div class="foot pageFoot">
+    <div class="wrap footWrap frame">
+        <div class="inf cp3">Copyright &copy; 2013-2014 All rights reserved.</div>
+    </div>
+</div>
+
+<script src="jquery-1.10.2.min.js"></script>
+<script>
+    $('.topNav a').click(function(){
+        $("html,body").animate({scrollTop: $($(this).attr('href')).offset().top}, 600);
+        return false;
+    });
+
+    var adjustNav;
+    $(window).scroll(function(){
+        clearTimeout(adjustNav);
+        adjustNav = setTimeout(function() {
+            var top = document.documentElement.scrollTop, index = -1;
+            $('.page').each(function(i, o) {
+                if (top + 300 < o.offsetTop + o.offsetHeight) {
+                    index = i;
+                    return false;
+                }
+            });
+            $('.topNav li').removeClass('it_on');
+            if (index > -1) $('.topNav li').eq(index).addClass('it_on');
+        }, 200);
+    });
+</script>
+
+</body>
+</html>
