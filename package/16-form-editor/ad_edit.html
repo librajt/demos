@@ -1,0 +1,253 @@
+<div class="row" ng-controller="AdEditController">
+    <div class="col-md-12">
+        <h2 class="page-title">创建广告</h2>
+    </div>
+    <div class="col-md-10">
+        <section class="widget">
+            <div class="body">
+                <form class="form-horizontal" role="form" ng-submit="save()">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="ad_name">广告名称<a href="javascript:" title="广告的名称，用来对广告进行标示，不会对外展示">[?]</a></label>
+                            <div class="controls form-inline form-group">
+                                <input ng-model="ad.name" required type="text" class="medium-input" maxlength="30">
+                                最长30字
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">投放平台</label>
+
+                            <div class="controls form-group">
+                                <label class="radio-inline" ng-repeat="client in DTS.clients">
+                                    <input type="radio" ng-model="ad.client_type" value="{{client.value}}" ng-change="changeTypeList('client')">
+                                    {{client.name}}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-group ad_url_type">
+                            <label class="control-label" for="">推广商品<a href="javascript:" title="广告推广的目标链接">[?]</a></label>
+                            <div class="controls form-inline form-group">
+                                <label class="radio-inline">
+                                    <input type="radio"  ng-model="ad.url_type" value="1" ng-checked="1 == ad.url_type || !ad.url_type" ng-change="setStrategy()" />
+                                    普通链接<a href="javascript:" title="跳转的页面链接">[?]</a>
+                                </label>
+                                <label class="radio-inline"><span>链接地址</span>
+                                    <input type="url" ng-required="1 == ad.url_type" class="medium-input" ng-model="ad.url" placeholder="http://" />
+                                </label>
+                            </div>
+                            <div class="controls form-inline form-group" ng-show="ad.client_type!='PC'">
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="ad.url_type" value="2" ng-change="setStrategy()" />
+                                    iOS应用<a href="javascript:" title="AppStore地址">[?]</a>
+                                </label>
+                                <label class="radio-inline"><span>iTunes地址</span>
+                                    <input type="text" ng-required="2 == ad.url_type" class="medium-input" ng-model="ad.ios_url" placeholder="http://" />
+                                </label>
+                            </div>
+                            <div class="controls form-inline form-group" ng-show="ad.client_type!='PC'">
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="ad.url_type" value="3" ng-change="setStrategy()" />
+                                    安卓应用<a href="javascript:" title="APK包下载地址">[?]</a>
+                                </label>
+                                <label class="radio-inline"><span>APK地址</span>
+                                    <input type="url" ng-required="3 == ad.url_type" ng-model="ad.apk_url" placeholder="http://" />
+                                </label>
+                                <label class="radio-inline">应用包名
+                                    <input type="text" ng-model="ad.apk_name" placeholder="选填" />
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="">投放页面</label>
+                            <div class="controls form-group">
+                                <label class="radio-inline" ng-repeat="(key,val) in DTS.cfg[ad.client_type]">
+                                    <input type="radio" ng-model="ad.page_name" value="{{key}}" ng-change="changeTypeList('page')">
+                                    {{key}} 
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr style="border-top:1px solid #eee;"/>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="">广告位置</label>
+                            <div class="controls form-group">
+                                <select  ng-model="ad.pos_name" class="form-control small-input" ng-change="changeTypeList('pos')">
+                                    <option ng-repeat="pos in DTS.cfg[ad.client_type][ad.page_name]" value="{{pos.pos_name}}" ng-selected="(pos.pos_name == ad.pos_name)||(!ad.pos_name && $index==0)">{{pos.pos_desc}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="">广告规格</label>
+                            <div class="controls form-group">
+                                <select ng-model="ad.typeid" class="form-control small-input" ng-change="changeTypeList('type')">
+                                    <option ng-repeat="typeid in typeids" value="{{typeid}}" ng-selected="(typeid == ad.typeid)||(!ad.typeid&&$index==0)">{{getTypeName(typeid)}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{typeOb.demoImagej|json}}
+                        
+                        <div class="control-group">
+                            <div class="controls form-group">
+                                <div class="panel-group" id="goods_properties"></div>
+                                <button type="button" class="btn btn-inverse btn-xs pull-left" ng-click="addAdType()">
+                                    <i class="fa fa-plus"></i>
+                                    新添素材
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr style="border-top:1px solid #eee;"/>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">广告方向</label>
+                            <div class="controls form-inline form-group">
+                                <label for="inputKey">一级方向</label>
+                                <select ng-model="ad.first_name" class="form-control tiny-input" required ng-change="updateSecondNames()">
+                                    <option ng-repeat="name in first_names">{{name}}</option>
+                                </select>
+                                <span ng-show="second_names">
+                                    <label for="inputValue">二级方向</label>
+                                    <select ng-model="ad.second_name" class="form-control tiny-input" required ng-options="second_name for second_name in second_names" ng-change="updateDirsByNames()"></select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="control-group" ng-show="ad.second_name">
+                            <label class="control-label" for="">匹配目录</label>
+                            <div class="controls form-group">
+                                <ol class="list-group name_dirs">
+                                    <li class="list-group-item" ng-repeat="dirs in name_dirs" ng-include="category_tpl_url"></li>
+                                </ol>
+                                
+                                <div>
+                                    <button type="button" class="btn btn-inverse btn-xs pull-left" ng-click="addFirstDir()">
+                                        <i class="fa fa-plus"></i>
+                                        添加更多一级目录
+                                    </button>
+                                    最多支持添加5个一级目录
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">添加一级目录</label>
+                            <div class="controls form-inline form-group">
+                                <label>
+                                    <input type="text" class="medium-input" ng-model="first_dirs" />
+                                </label>
+                                <label class="adsenseUploader" id="listUploader1">
+                                    <input type="file" accept="text/plain" />
+                                    <button class="btn btn-small btn-primary">从文件上传</button>
+                                </label>
+                                支持txt，utf-8格式
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">添加二级目录</label>
+                            <div class="controls form-inline form-group">
+                                <label>
+                                    <input type="text" class="medium-input" ng-model="second_dirs" />
+                                </label>
+                                <label class="adsenseUploader" id="listUploader2">
+                                    <input type="file" accept="text/plain" />
+                                    <button class="btn btn-small btn-primary">从文件上传</button>
+                                </label>
+                                支持txt，utf-8格式
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="">添加吧名</label>
+                            <div class="controls form-inline form-group">
+                                <label>
+                                    <input type="text" class="medium-input" ng-model="ad.forum_names" />
+                                </label>
+                                <label class="adsenseUploader" id="listUploader3">
+                                    <input type="file" accept="text/plain" />
+                                    <button class="btn btn-small btn-primary">从文件上传</button>
+                                </label>
+                                支持txt，utf-8格式
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="ad_address">黑名单</label>
+                            <div class="controls form-inline form-group">
+                                <label >
+                                    <input type="text" class="medium-input" ng-model="ad.black_names" />
+                                </label>
+                                <label class="adsenseUploader" id="listUploader4">
+                                    <input type="file" accept="text/plain" />
+                                    <button class="btn btn-small btn-primary">从文件上传</button>
+                                </label>
+                                支持txt，utf-8格式
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">投放时间</label>
+                            <div class="controls form-inline form-group">
+                                <label >
+                                    <input id="adStartTime" type="text" class="tiny-input" ng-model="start_time" required onFocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" />
+                                </label>
+                                <span> 至 </span>
+                                <label >
+                                    <input id="adEndTime" type="text" class="tiny-input" ng-model="end_time" required onFocus="WdatePicker({minDate:'#F{$dp.$D(\'adStartTime\')}',dateFmt:'yyyy-MM-dd'})" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="">下线策略</label>
+                            <div class="controls form-inline form-group">
+                                <span ng-show="ad.url_type != 3">
+                                    <label>点击量
+                                        <input type="number" class="small-input" ng-model="ad.click" min="1" ng-required="ad.url_type != 3" />
+                                    </label>
+                                </span>
+                                <span ng-show="ad.url_type == 3">
+                                    <label>下载量
+                                        <input type="number" class="small-input" ng-model="ad.download" min="1" ng-required="ad.url_type == 3" />
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions text-right">
+                            <button type="submit" class="btn" ng-class="{true:'btn-danger',false:'disabled'}[isSubmit]">提交</button>
+                            <button type="button" class="btn btn-default" onclick="history.back()">取消</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+                <!--添加一级目录的窗口-->
+                <modal ng-show="showAddWindow">
+                    <modal-header>
+                        添加更多一级目录
+                    </modal-header>
+                    <modal-body>
+                        <div class="form-group">
+                            <label class="control-label" for="url">一级目录名</label>
+                            <input ng-model="add_first_dir" placeholder="请输入一级目录名" ng-change="showVal(add_first_dir)"  type="text" class="form-control" />
+                        </div>
+                        <!---->
+                    </modal-body>
+                    <modal-footer>
+                        <button class="btn btn-sm btn-primary" ng-click="submitFirstDir()">
+                            提交
+                        </button>
+                        <button class="btn btn-sm btn-warning" ng-click="cancleFirstDirModal()">
+                            取消
+                        </button>
+                    </modal-footer>
+                </modal>
+            </div>
+        </section>
+    </div>
+</div>
+
