@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/application.min.css">
+    <style>
+        body{background:#FFF;}
+        hr{margin:0;border-top:1px solid #CCC;}
+    </style>
+    <title>Document</title>
+</head>
+<body>
+
+<div class="form-horizontal" style="padding:20px;">
+    <hr>
+    forms:
+    <hr>
+    <adsenseproperties></adsenseproperties>
+
+    <hr>
+    elements:
+    <hr>
+    <simpletext ng-label="用户名" ng-length="10"></simpletext>
+    <simpletext ng-label="内容" ng-dobulelength="30"></simpletext>
+    <simpletext ng-label="地址" ng-pattern="URL"></simpletext>
+</div>
+
+<script src="js/angular.js"></script>
+<script src="json1.js"></script>
+<script>
+var appModule = angular.module('app', []);
+appModule.directive('adsenseproperties', function() {
+    function getProperties() {
+        var ret = '';  // default value
+
+        var properties = json;  // TODO: get from template
+
+        properties.forEach(function(property, index){
+            ret += getFormLabel(property);
+        });
+
+        return '<div>' + ret + '</div>';
+    }
+
+    function getFormLabel(property) {
+        var ret = '';
+        var type = property.type || '';
+        var attr = property.attr || '';  // TODO: attr. bind
+        if (type) {
+            ret = '<%%type%% attr1="attr1"></%%type%%>'.replace(/%%type%%/g, type).replace(/%%attr%%/g, attr);
+        }
+        console.log(ret);
+        return ret;
+    }
+
+    function link(scope, element, attrs) {
+        var a;
+    }
+
+    return {
+        restrict: 'EA',
+        template: getProperties(),
+        link: link,
+        replace: true
+    };
+});
+
+appModule.directive('simpletext', function() {
+    function getTemplate() {
+        // TODO: get attrs
+        console.log(arguments);
+        var ret = '<div>simpletext here <span ng-transclude></span></div>';
+        ret = [
+            '<div class="row goods_property" data-id="user_name-1">',
+                '<div class="col-md-8">',
+                    '<div class="control-group">',
+                        '<label class="control-label" for="form-field-user_name-value-1">',
+                            '用户名',
+                        '</label>',
+                        '<div class="controls form-group">',
+                            '<input class="small-input" type="text" id="form-field-user_name-value-1">',
+                        '</div>',
+                    '</div>',
+                '</div>',
+                '<div class="col-md-4">',
+                    '<div class="propertip" id="form-field-user_name-tip-1">',
+                        '最大7汉字字符长度',
+                    '</div>',
+                    '<div class="errmsg" id="form-field-user_name-err-1">',
+                    '</div>',
+                '</div>',
+            '</div>'
+        ].join('');
+
+        return ret;
+    }
+
+    function link(scope, element, attrs) {
+        //
+        // console.log(0);
+    }
+
+    return {
+        restrict: 'EA',
+        template: getTemplate(),
+        link: link,
+        transclude: true,
+        replace: true
+    };
+});
+
+</script>
+
+</body>
+</html>
