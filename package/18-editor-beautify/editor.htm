@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>手机搜狐</title>
+
+<link rel="stylesheet" href="codemirror-4.4/lib/codemirror.css">
+
+<script src="codemirror-4.4/lib/codemirror.js"></script>
+
+<script src="codemirror-4.4/mode/javascript/javascript.js"></script>
+<script src="codemirror-4.4/mode/xml/xml.js"></script>
+<script src="codemirror-4.4/mode/css/css.js"></script>
+<script src="codemirror-4.4/mode/htmlmixed/htmlmixed.js"></script>
+
+<script src="codemirror-4.4/addon/selection/active-line.js"></script>
+<script src="codemirror-4.4/addon/edit/matchbrackets.js"></script>
+<script src="codemirror-4.4/addon/edit/closetag.js"></script>
+<script src="codemirror-4.4/addon/edit/trailingspace.js"></script>
+
+<style type="text/css">
+  .CodeMirror {border: 1px solid black; font-size:13px}
+  .cm-trailingspace {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
+      background-position: bottom left;
+      background-repeat: repeat-x;
+    }
+</style>
+
+</head>
+<body>
+
+
+<textarea class="code" name="code" data-mode="text/html">
+<h2>TEST</h2>
+<div class="info">
+  <p>asss</p>
+  <p><a href="#3">fdf</a></p>
+</div>
+<header>head</header>
+</textarea>
+
+<textarea class="code" name="code" data-mode="javascript">
+function clone(obj){
+ if(obj == null || typeof(obj) != 'object')  
+ {
+  return obj;
+ }
+     
+ var temp = new obj.constructor();       
+ for(var key in obj)   
+ {
+  temp[key] = cloneGood(obj[key]); 
+ }
+
+ return temp;  
+}
+editors.instanceCodeMirror[0].save();
+editors.instanceCodeMirror[0].getValue();
+</textarea>
+
+<textarea class="code" name="code" data-mode="application/json">
+[
+  {
+    "name": "test",
+    "type": 1
+  },
+  {
+    "name": "test2",
+    "type": 2
+  }
+]
+</textarea>
+
+<textarea class="code" name="code" data-mode="text/css">
+/* Some example CSS */
+
+@import url("something.css");
+
+body {
+  margin: 0;
+  padding: 3em 6em;
+  font-family: tahoma, arial, sans-serif;
+  color: #000;
+}
+
+#navigation a {
+  font-weight: bold;
+  text-decoration: none !important;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 1.7em;
+}
+
+h1:before, h2:before {
+  content: "::";
+}
+
+code {
+  font-family: courier, monospace;
+  font-size: 80%;
+  color: #418A8A;
+}
+</textarea>
+
+
+<script>
+  var options = {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    autoCloseTags: true,
+    showTrailingSpace: true
+  };
+  var editors = document.querySelectorAll(".code");
+  editors = [].slice.call(editors);
+  editors.instanceCodeMirror = [];
+
+  editors.forEach(function(el, i){
+    options.mode = el.dataset.mode;
+    var cm = CodeMirror.fromTextArea(el, options);
+    editors.instanceCodeMirror.push(cm);
+  });
+</script>
+
+
+</body>
+</html>
