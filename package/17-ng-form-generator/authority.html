@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/application.min.css">
+    <style>
+        body{background:#FFF;}
+        hr{margin:0;border-top:1px solid #CCC;}
+    </style>
+    <title>Document</title>
+</head>
+<body ng-controller="appController">
+
+<div class="form-horizontal" style="padding:20px;">
+    <hr>
+    forms:
+    <hr>
+    <authority source="authority" authority-id="3">sss</authority>
+{{authority.cover_all}}
+{{authority}}
+    <hr>
+    elements:
+    <hr>
+</div>
+
+<script src="http://tb1.bdstatic.com/tb/cms/com/mis/adsense/My97DatePicker/WdatePicker.js"></script>
+<script src="js/angular.js"></script>
+<script src="js/underscore.js"></script>
+<script>
+    window.dirList = [
+        {  
+            'first_dir':'F1',
+            'second_dir':['F1_1','F1_2','F1_3'],
+            'hot_dir':{
+                '1-500热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1',
+                '500-2000热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_2'
+            }
+        },
+        {  
+            'first_dir':'F2',
+            'second_dir':['F2_1','F2_2','F2_3'],
+            'hot_dir':{
+                '1-500热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1',
+                '500-2000热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_2'
+            }
+        }
+    ];
+</script>
+<script>
+var appModule = angular.module('app', []);
+appModule.controller('appController', function($scope) {
+    $scope;
+})
+appModule.directive('authority', function() {
+
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {};
+        // scope.source.cover_all=elem.find('.coverAll').val();
+
+        var defaultSettings = {
+            'cover_all': 1,
+            'virtual_dirs': 1,
+            'first_dirs': '',
+            'second_dirs': '',
+            'forum_names': '',
+            'black _names': '',
+            'hot_dirs': '',
+            'start_time': '',
+            'end_time': ''
+        }
+
+        if (attr.authorityId) {
+            scope.authorityId = attr.authorityId;
+            // http get settings
+            // callback: restore_values(ret);
+            // defaultSettings = $.extend(defaultSettings, ret);
+            defaultSettings.forum_names = 'a,b,c,d';
+            restoreValues();
+        }
+
+        function restoreValues() {
+            scope.source.cover_all = defaultSettings.cover_all;
+            scope.source.virtual_dirs = defaultSettings.virtual_dirs;
+            scope.source.first_dirs = defaultSettings.first_dirs;
+            scope.source.second_dirs = defaultSettings.second_dirs;
+            scope.source.forum_names = defaultSettings.forum_names;
+            scope.source.black_names = defaultSettings.black_names;
+            scope.source.hot_dirs = defaultSettings.hot_dirs;
+            scope.source.start_time = defaultSettings.start_time;
+            scope.source.end_time = defaultSettings.end_time;
+        }
+
+        function getVirtualDirs() {
+            // http get
+            scope.virtualDirs = [
+                '教育知心',
+                '医疗知心'
+            ];
+        }
+        getVirtualDirs();
+
+        function getTopDirs() {
+            // http get
+            
+        }
+
+        // var $cover_all = elem.find('.coverAll');
+        // var $virtual_dirs = elem.find('.virtualDirs');
+        // var $first_dirs = elem.find('.first_dirs');
+        // var $second_dirs = elem.find('.second_dirs');
+        // var $forum_names = elem.find('forum_names');
+        // var $black_names = elem.find('black_names');
+        // var $hot_dirs = elem.find('');
+        // var $start_time = elem.find('.start_time');
+        // var $end_time = elem.find('.end_time');
+
+        // 
+
+        scope.source.dirList = window.dirList;
+
+        // 初始化checkbox状态对象
+        scope.source.dirListValue = {};
+        _.each(scope.source.dirList, function(dirs) {
+            scope.source.dirListValue[dirs.first_dir] = {};
+            scope.source.dirListValue[dirs.first_dir].checked = false;
+
+            scope.source.dirListValue[dirs.first_dir].sub_dirs = {};
+            _.each(dirs.second_dir, function(second_dir){
+                scope.source.dirListValue[dirs.first_dir]['second_dirs'][second_dir] = {};
+                scope.source.dirListValue[dirs.first_dir]['second_dirs'][second_dir].checked = false;
+            });
+            _.each(dirs.hot_dir, function(hot_dir){
+                scope.source.dirListValue[dirs.first_dir]['hot_dirs'][hot_dir] = {};
+                scope.source.dirListValue[dirs.first_dir]['hot_dirs'][hot_dir].checked = false;
+            });
+        });
+        console.log(scope.source.dirListValue);
+
+        // 点击事件
+        scope.source.onFirstDirsClick = function($event, first_dir) {
+            _.each(scope.source.dirListValue[first_dir]['second_dirs'], function (sub_dir, name) {
+                scope.source.dirListValue[first_dir]['second_dirs'][name].checked = scope.source.dirListValue[first_dir].checked;
+            });
+            console.log(scope.source.dirListValue);
+        };
+
+        scope.source.onSubDirsClick = function($event, first_dir, sub_dir, sub_type) {
+            _.each(scope.source.dirListValue[first_dir][sub_type], function (sub_dir, name) {
+                // 改变状态
+                // scope.source.dirListValue[first_dir]['sub_dirs'][name].checked;
+
+                // 若为选中，检查所有子是否都为选中状态？是-选中父：否-啥也不做
+                // 若不为选中，取消选中父
+                if (scope.source.dirListValue[first_dir][sub_type][name].checked) {
+                    var checked = true;
+                    _.each(scope.source.dirListValue[first_dir][sub_type], function(s_dir, s_name){
+                        if (!scope.source.dirListValue[first_dir][sub_type][s_name].checked) checked = false;
+                    });
+                    scope.source.dirListValue[first_dir].checked = checked;
+                }
+                else {
+                    scope.source.dirListValue[first_dir].checked = false;
+                }
+
+            });
+            console.log(scope.source.dirListValue);
+        };
+
+        // restore dirs' values
+
+        function getDirsValues() {
+            var first_dirs = [];
+            var second_dirs = [];
+            var hot_dirs = [];
+            _.each(scope.source.dirListValue, function(first_dirs, f_name) {
+                if (first_dirs.checked) first_dirs.push(f_name);
+                _.each(scope.source.dirListValue[name].sub_dirs, function(sub_dir))
+            });
+        }
+    }
+
+    return {
+        restrict: 'EA',
+        templateUrl: 't_authority.html',
+        link: link,
+        scope:{
+            source:'='
+        },
+        replace: true
+    };
+});
+
+</script>
+
+</body>
+</html>
