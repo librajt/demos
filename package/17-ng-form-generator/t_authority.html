@@ -3,7 +3,7 @@
         <label class="control-label" for="">全吧投放</label>
         <div class="controls form-inline form-group">
             <label>
-                <select name="" id="" class="coverAll" ng-model="source.cover_all">
+                <select name="" id="" ng-model="source.cover_all">
                     <option value="0">不使用</option>
                     <option value="1">使用</option>
                 </select>
@@ -15,8 +15,8 @@
         <label class="control-label" for="">选择虚拟目录</label>
         <div class="controls form-inline form-group">
             <label>
-                <select name="" id="" class="virtualDirs" ng-model="source.virtual_dirs">
-                    <option ng-repeat="opt in virtualDirs">{{opt}}</option>
+                <select name="" id="" ng-model="source.virtual_dir">
+                    <option ng-repeat="opt in virtualDirs" ng-selected="opt == source.virtual_dir">{{opt}}</option>
                 </select>
             </label>
         </div>
@@ -27,23 +27,23 @@
         <label class="control-label" for="">选择TOP目录</label>
         <div class="controls form-inline form-group">
 
-<div ng-repeat="dirs in source.dirList">
+<div ng-repeat="dirs in dirList">
     <div class="dirs" data-name="{{dirs.first_dir}}">
         <div class="first_dirs">
             <label class="checkbox-inline checkbox-item" title="全选">
-                <input type="checkbox" value="{{dirs.first_dir}}" ng-change="source.onFirstDirsClick($event, dirs.first_dir)" ng-model="source.dirListValue[dirs.first_dir].checked">
+                <input type="checkbox" value="{{dirs.first_dir}}" ng-change="onFirstDirsClick($event, dirs.first_dir)" ng-model="dirListValue[dirs.first_dir].checked">
                 <b>{{dirs.first_dir}}</b>
             </label>
         </div>
         <div class="second_dirs">
             <label class="checkbox-inline checkbox-item" ng-repeat="second_dir in dirs.second_dir">
-                <input type="checkbox" ng-value="second_dir" ng-change="source.onSubDirsClick($event, dirs.first_dir, second_dir, 'second_dirs')" ng-model="source.dirListValue[dirs.first_dir]['second_dirs'][second_dir].checked">
+                <input type="checkbox" ng-value="second_dir" ng-change="onSubDirsClick($event, dirs.first_dir, second_dir, 'second_dirs')" ng-model="dirListValue[dirs.first_dir]['second_dirs'][second_dir].checked">
                 {{second_dir}}
             </label>
         </div>
         <div class="hot_dirs">
             <label class="checkbox-inline checkbox-item" ng-repeat="(key, val) in dirs.hot_dir">
-                <input type="checkbox" value="{{val}}" ng-change="source.onSubDirsClick($event, dirs.first_dir, val, 'hot_dirs')" ng-model="source.dirListValue[dirs.first_dir]['hot_dirs'][val].checked">
+                <input type="checkbox" value="{{val}}" ng-change="onSubDirsClick($event, dirs.first_dir, val, 'hot_dirs')" ng-model="dirListValue[dirs.first_dir]['hot_dirs'][val].checked">
                 {{key}}
             </label>
         </div>
@@ -53,13 +53,17 @@
 
         </div>
     </div>
+
+    <datalist-uploaders source="first_dirs" ng-model="source.first_dirs" display-label="添加一级目录" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传"></datalist-uploaders>
+{{first_dirs}}--
+
     <div class="control-group">
         <label class="control-label" for="">添加一级目录</label>
         <div class="controls form-inline form-group">
             <label>
-                <input type="text" class="medium-input first_dirs" ng-model="source.first_dirs" />
+                <input type="text" class="medium-input" ng-model="source.first_dirs" />
             </label>
-            <label class="adsenseUploader" id="listUploader1">
+            <label class="adsenseUploader">
                 <input type="file" accept="text/plain" />从文件上传<a href="javascript:" title="支持txt，utf-8格式">[?]</a>
             </label>
         </div>
@@ -69,9 +73,9 @@
         <label class="control-label" for="">添加二级目录</label>
         <div class="controls form-inline form-group">
             <label>
-                <input type="text" class="medium-input second_dirs" ng-model="source.second_dirs" />
+                <input type="text" class="medium-input" ng-model="source.second_dirs" />
             </label>
-            <label class="adsenseUploader" id="listUploader2">
+            <label class="adsenseUploader">
                 <input type="file" accept="text/plain" />从文件上传<a href="javascript:" title="支持txt，utf-8格式">[?]</a>
             </label>
         </div>
@@ -81,23 +85,21 @@
         <label class="control-label" for="">添加吧名</label>
         <div class="controls form-inline form-group">
             <label>
-                <input type="text" class="medium-input forum_names" ng-model="source.forum_names" />
+                <input type="text" class="medium-input" ng-model="source.forum_names" />
             </label>
-            <label class="adsenseUploader" id="listUploader3">
+            <label class="adsenseUploader">
                 <input type="file" accept="text/plain" />从文件上传<a href="javascript:" title="支持txt，utf-8格式">[?]</a>
             </label>
         </div>
     </div>
-
-    <!-- <datalistuploader source="datalistuploader" display-label="List" display-tip-text="支持txt，utf-8格式" display-button-text="Frome File"></datalistuloader> -->
     
     <div class="control-group">
         <label class="control-label" for="ad_address">吧黑名单</label>
         <div class="controls form-inline form-group">
             <label >
-                <input type="text" class="medium-input black_names" ng-model="source.black_names" />
+                <input type="text" class="medium-input" ng-model="source.black_names" />
             </label>
-            <label class="adsenseUploader" id="listUploader4">
+            <label class="adsenseUploader">
                 <input type="file" accept="text/plain" />从文件上传<a href="javascript:" title="支持txt，utf-8格式">[?]</a>
             </label>
         </div>
@@ -116,5 +118,6 @@
         </div>
     </div>
 
-    <input type="button" ng-click="source.onSubmitClick()">
+    <input type="button" ng-click="onSubmitClick()" value="submit">
+
 </div>
