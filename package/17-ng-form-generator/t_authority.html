@@ -54,9 +54,18 @@
         </div>
     </div>
 
-    <datalist-uploaders source="first_dirs" ng-model="source.first_dirs" display-label="添加一级目录" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传"></datalist-uploaders>
+    <datalist-uploaders source="first_dirs" display-label="添加一级目录" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传" return-list="datalist.first_dirs"></datalist-uploaders>
+    {{first_dirs}}
+    {{datalist.first_dirs}}
+    <datalist-uploaders source="second_dirs" display-label="添加二级目录" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传" return-list="datalist.second_dirs"></datalist-uploaders>
 
-    <div class="control-group">
+    <datalist-uploaders source="forum_names" display-label="添加吧名" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传" return-list="datalist.forum_names"></datalist-uploaders>
+
+    <datalist-uploaders source="black_names" display-label="吧黑名单" display-tip-text="支持txt，utf-8格式" display-button-text="从文件上传" return-list="datalist.black_names"></datalist-uploaders>
+<!-- 
+ -->
+
+ <!--     <div class="control-group">
         <label class="control-label" for="">添加一级目录</label>
         <div class="controls form-inline form-group">
             <label>
@@ -103,6 +112,7 @@
             </label>
         </div>
     </div>
+ -->
 
     <div class="control-group">
         <label class="control-label" for="">投放时间</label>

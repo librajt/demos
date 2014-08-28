@@ -15,49 +15,122 @@
     <hr>
     forms:
     <hr>
-    <authority output="authority" authority-id="3">sss</authority>
-<pre>
-{{authority|json}}
-</pre>
+    <authority-editor output="authority" authority-id="3">sss</authority-editor>
+    <pre>{{authority|json}}</pre>
+
     <hr>
-    elements:
+    forms:
     <hr>
-    <virtualdireditor source="virtualdireditor"></virtualdireditor>
-<pre>
-{{virtualdireditor|json}}
-</pre>
+    <virtual-dir-editor output="virtualdireditor"></virtual-dir-editor>
+    <pre>{{virtualdireditor|json}}</pre>
+
+    <hr>
+    forms:
+    <hr>
+    <position-editor output="positioneditor"></position-editor>
+    <pre>{{positioneditor|json}}</pre>
 </div>
 
 <script src="http://tb1.bdstatic.com/tb/cms/com/mis/adsense/My97DatePicker/WdatePicker.js"></script>
 <script src="js/angular.js"></script>
 <script src="js/underscore.js"></script>
-<script>
-    // Test DATA
-    window.dirList = [
-        {  
-            'first_dir':'F1',
-            'second_dir':['F1_1','F1_2','F1_3'],
-            'hot_dir':{
-                '1-500热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1',
-                '500-2000热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_2'
-            }
-        },
-        {  
-            'first_dir':'F2',
-            'second_dir':['F2_1','F2_2','F2_3'],
-            'hot_dir':{
-                '1-500热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_3',
-                '500-2000热吧' : 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_4'
-            }
-        }
-    ];
-</script>
+<script src="js/dirlist.js"></script>
+<script src="js/relation.js"></script>
 <script>
 var appModule = angular.module('app', []);
 appModule.controller('appController', function($scope) {
     $scope;
 })
-appModule.directive('authority', function() {
+
+// -----------------------------------
+appModule.directive('datalistUploaders', function() {
+
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {
+            datalist:  attr.returnList || '',
+            label: attr.displayLabel || '',
+            button_text:  attr.displayButtonText ||'',
+            tip_text:  attr.displayTipText || ''
+        };
+        
+        var $upload = elem.find('input:file');
+        
+        function uploadFile(file, formData, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open('post', '/adsense/advert/upload', true);
+            
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        callback(xhr.responseText);
+                    }
+                    else {
+                        alert('error');
+                        $upload.val('');
+                    }
+                }
+            }
+            xhr.send(formData);
+        }
+        
+        function combineDirs(generated, inputed) {
+            var ret = [];
+            if (generated.length > 0) ret.push(generated.join(','));
+            if (inputed) ret.push(inputed);
+            return ret.join(',');
+        };
+        
+        $upload.on('change', function(e) {
+            var files = $upload.get(0).files;
+            if (files.length === 0) {
+                return ;
+            }
+            
+            var formData = new FormData();
+            formData.append('content', files[0]);
+            
+            uploadFile(files[0], formData, function (uploadRst) {
+                uploadRst = JSON.parse(uploadRst);
+                if (uploadRst.errno === 0) {
+                    var res = uploadRst.data;
+                    scope.$apply(function() {
+                        scope.source.dirs = combineDirs(res, scope.source.dirs);
+                        $upload.val('');
+                    });
+                }
+                else {
+                    alert(uploadRst.errmsg);
+                }
+            });
+        });
+        
+        if (attr.virtualDirId) {
+            // $http.get('/adsense/direction/getfirst').success(function(ret){
+                var ret = {
+                    data: [
+                        
+                    ]
+                };
+                scope.source.dirs = ret.data;
+            // });
+        }
+    }
+
+    return {
+        restrict: 'EA',
+        templateUrl: 't_data_list_uploader.html',
+        // require: 'ngModel',
+        link: link,
+        scope:{
+            source:'='
+        },
+        replace: true
+    };
+});
+
+// -----------------------------------
+appModule.directive('authorityEditor', function() {
 
     function link(scope, elem, attr, ctrl) {
         scope.source = {};
@@ -147,10 +220,14 @@ appModule.directive('authority', function() {
                 });
                 values.hot_dirs = _hot_dirs.join(',');
             }
+
+            return values;
         }
 
         // 恢复页面元素值显示
         function restoreValues(values) {
+            values = restoreDirsValues(values);
+
             scope.source.cover_all = values.cover_all;
             scope.source.virtual_dir = values.virtual_dir;
             scope.source.first_dirs = values.first_dirs;
@@ -160,6 +237,13 @@ appModule.directive('authority', function() {
             scope.source.hot_dirs = values.hot_dirs;
             scope.source.start_time = values.start_time;
             scope.source.end_time = values.end_time;
+
+            scope.datalist = {};
+            scope.datalist.first_dirs = values.first_dirs;
+            scope.datalist.second_dirs = values.second_dirs;
+            scope.datalist.forum_names = values.forum_names;
+            scope.datalist.black_names = values.black_names;
+                
         }
 
         // 加载页面时取数据，填充页面展示
@@ -246,8 +330,8 @@ appModule.directive('authority', function() {
                 defaultSettings.second_dirs = 'F1_3,F1_2,FX';
                 defaultSettings.hot_dirs = 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1';
 
-                restoreDirsValues(defaultSettings);
                 restoreValues(defaultSettings);
+
                 getVirtualDirs(function(ret) {
                     scope.virtualDirs = ret.data;
                     scope.source.virtual_dir = ret.data[0];
@@ -261,7 +345,7 @@ appModule.directive('authority', function() {
         };
 
         // 提交时用
-        function getDirsValues() {
+        function getCheckedDirs() {
             var ret = {
                 first_dirs: [],
                 second_dirs: [],
@@ -293,19 +377,19 @@ appModule.directive('authority', function() {
             // console.log(getDirsValues());
 
             var ret = {
-                'cover_all': scope.cover_all,
+                'cover_all': scope.source.cover_all,
                 'virtual_dir': scope.source.virtual_dir,
-                'first_dirs': scope.source.first_dirs,
-                'second_dirs': scope.source.second_dirs,
-                'forum_names': scope.source.forum_names,
-                'black _names': scope.source.black_names,
+                'first_dirs': scope.datalist.first_dirs,
+                'second_dirs': scope.datalist.second_dirs,
+                'forum_names': scope.datalist.forum_names,
+                'black _names': scope.datalist.black_names,
                 'hot_dirs': scope.source.hot_dirs,
                 'start_time': scope.source.start_time,
                 'end_time': scope.source.end_time
             };
 
             // 拼装选择的目录与输入的目录
-            var selectedDirs = getDirsValues();
+            var selectedDirs = getCheckedDirs();
             ret.first_dirs += ret.first_dirs ? ',' : '';
             ret.first_dirs += selectedDirs.first_dirs ? selectedDirs.first_dirs.join(',') : '';
             ret.second_dirs += ret.second_dirs ? ',' : '';
@@ -318,8 +402,6 @@ appModule.directive('authority', function() {
             ret.end_time = formatPickerTime(ret.end_time) / 1000;
 
             scope.output = ret;
-
-            console.log(scope.first_dirs);
         }
 
     }
@@ -336,90 +418,117 @@ appModule.directive('authority', function() {
 });
 
 // -----------------------------------
-appModule.directive('datalistUploaders', function() {
+appModule.directive('virtualDirEditor', function() {
 
     function link(scope, elem, attr, ctrl) {
-        scope.source = {
-            label: attr.displayLabel || '',
-            datalist: '123',
-            button_text:  attr.displayButtonText ||'',
-            tip_text:  attr.displayTipText || ''
-        };
-        
-        var $upload = elem.find('input:file');
-        
-        function uploadFile(file, formData, callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.open('post', '/adsense/advert/upload', true);
-            
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        callback(xhr.responseText);
-                    }
-                    else {
-                        alert('error');
-                        $upload.val('');
-                    }
-                }
+        scope.source = {};
+
+        scope.onSubmitClick = function() {
+            var ret = {
+                'name': scope.source.name,
+                'dirs': scope.dirs.datalist
             }
-            xhr.send(formData);
-        }
-        
-        function combineDirs(generated, inputed) {
-            var ret = [];
-            if (generated.length > 0) ret.push(generated.join(','));
-            if (inputed) ret.push(inputed);
-            return ret.join(',');
-        };
-        
-        $upload.on('change', function(e) {
-            var files = $upload.get(0).files;
-            if (files.length === 0) {
-                return ;
-            }
-            
-            var formData = new FormData();
-            formData.append('content', files[0]);
-            
-            uploadFile(files[0], formData, function (uploadRst) {
-                uploadRst = JSON.parse(uploadRst);
-                if (uploadRst.errno === 0) {
-                    var res = uploadRst.data;
-                    scope.$apply(function() {
-                        scope.source.dirs = combineDirs(res, scope.source.dirs);
-                        $upload.val('');
-                    });
-                }
-                else {
-                    alert(uploadRst.errmsg);
-                }
-            });
-        });
-        
-        if (attr.virtualDirId) {
-            // $http.get('/adsense/direction/getfirst').success(function(ret){
-                var ret = {
-                    data: [
-                        
-                    ]
-                };
-                scope.source.dirs = ret.data;
-            // });
+            scope.output = ret;
         }
     }
 
 
     return {
         restrict: 'EA',
-        templateUrl: 't_data_list_uploader.html',
-        require: 'ngModel',
+        templateUrl: 't_virtual_dir_editor.html',
         link: link,
         scope:{
-            source:'='
-        }
+            output:'='
+        },
+        replace: true
     };
+});
+
+// -----------------------------------
+appModule.directive('positionEditor', function() {
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {};
+
+        scope.DTS = {
+            'cfg': window.RULES_TYPES,
+            'clients': [
+                {
+                    'name': 'PC',
+                    'value': 'PC'
+                },
+                {
+                    'name': '智能版',
+                    'value': 'WAP'
+                },
+                {
+                    'name': '客户端',
+                    'value': 'APP'
+                }
+            ]
+        };
+
+        scope.changeTypeList = function(arg) {
+            var page;
+            // case 里不使用break，正是利用了switch语句的特性
+            switch (arg) {
+                case 'client':
+                    for(page in scope.DTS.cfg[scope.source.client_type]) {
+                        break;  // 随便找到一个值当默认值
+                    }
+                    if (!page) return;
+                case 'page':
+                    if (!scope.source.client_type || !scope.source.page_name) return
+                    scope.source.pos_name = scope.DTS.cfg[scope.source.client_type][scope.source.page_name][0]['pos_name'];
+                case 'pos':
+                    if (!scope.source.pos_name) return
+                    scope.typeids = scope.getTypes(scope.source.pos_name);
+                    scope.source.typeid = scope.typeids[0];
+            }
+        }
+
+        scope.getTypes = function(pos_name){
+            var ret;
+            if (pos_name && scope.source.client_type && scope.source.page_name) {
+                if (!scope.DTS.cfg[scope.source.client_type] || !scope.DTS.cfg[scope.source.client_type][scope.source.page_name]) {
+                    ret = ['err'];
+                }
+                else {
+                    scope.DTS.cfg[scope.source.client_type][scope.source.page_name].forEach(function(pos, index) {
+                        if (pos.pos_name == pos_name) {
+                            // ret = $.extend([], pos.rules);
+                            ret = pos.rules;
+                            return true;
+                        }
+                    });
+                }
+            }
+            return ret;
+        }
+
+        scope.getTypeName=function(typeid){
+            return typeid;
+        };
+
+        scope.onSubmitClick = function() {
+            var ret = {
+                'client': scope.source.client_type,
+                'page': scope.source.page_name,
+                'position': scope.source.pos_name
+            }
+            scope.output = ret;
+        }
+    }
+
+    return {
+        restrict: 'EA',
+        templateUrl: 't_position.html',
+        link: link,
+        scope:{
+            output:'='
+        },
+        replace: true
+    };
+
 });
 
 

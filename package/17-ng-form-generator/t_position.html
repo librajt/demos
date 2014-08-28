@@ -1,0 +1,42 @@
+<div>
+    <div class="control-group">
+        <label class="control-label" for="">投放平台</label>
+
+        <div class="controls form-group">
+            <label class="radio-inline" ng-repeat="client in DTS.clients">
+                <input type="radio" ng-model="source.client_type" value="{{client.value}}" ng-change="changeTypeList('client')">
+                {{client.name}}
+            </label>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="">投放页面</label>
+        <div class="controls form-group">
+            <label class="radio-inline" ng-repeat="(key,val) in DTS.cfg[source.client_type]">
+                <input type="radio" ng-model="source.page_name" value="{{key}}" ng-change="changeTypeList('page')">
+                {{key}} 
+            </label>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="">广告位置</label>
+        <div class="controls form-group">
+            <select  ng-model="source.pos_name" class="form-control small-input" ng-change="changeTypeList('pos')">
+                <option ng-repeat="pos in DTS.cfg[source.client_type][source.page_name]" value="{{pos.pos_name}}" ng-selected="(pos.pos_name == source.pos_name)||(!source.pos_name && $index==0)">{{pos.pos_desc}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="">广告规格</label>
+        <div class="controls form-group">
+            <select ng-model="source.typeid" class="form-control small-input" ng-change="changeTypeList('type')">
+                <option ng-repeat="typeid in typeids" value="{{typeid}}" ng-selected="(typeid == source.typeid)||(!source.typeid&&$index==0)">{{getTypeName(typeid)}}</option>
+            </select>
+        </div>
+    </div>
+
+    <input type="button" ng-click="onSubmitClick()" value="submit">
+</div>
