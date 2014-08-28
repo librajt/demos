@@ -37,13 +37,13 @@
         </div>
         <div class="second_dirs">
             <label class="checkbox-inline checkbox-item" ng-repeat="second_dir in dirs.second_dir">
-                <input type="checkbox" ng-value="second_dir" ng-change="source.onSubDirsClick($event, dirs.first_dir, second_dir, 'second_dirs')" ng-model="source.dirListValue[dirs.first_dir]['sub_dirs'][second_dir].checked">
+                <input type="checkbox" ng-value="second_dir" ng-change="source.onSubDirsClick($event, dirs.first_dir, second_dir, 'second_dirs')" ng-model="source.dirListValue[dirs.first_dir]['second_dirs'][second_dir].checked">
                 {{second_dir}}
             </label>
         </div>
         <div class="hot_dirs">
             <label class="checkbox-inline checkbox-item" ng-repeat="(key, val) in dirs.hot_dir">
-                <input type="checkbox" value="{{val}}" ng-change="source.onSubDirsClick($event, dirs.first_dir, val, 'hot_dirs')" ng-model="source.dirListValue[dirs.first_dir]['sub_dirs'][val].checked">
+                <input type="checkbox" value="{{val}}" ng-change="source.onSubDirsClick($event, dirs.first_dir, val, 'hot_dirs')" ng-model="source.dirListValue[dirs.first_dir]['hot_dirs'][val].checked">
                 {{key}}
             </label>
         </div>
@@ -88,6 +88,8 @@
             </label>
         </div>
     </div>
+
+    <!-- <datalistuploader source="datalistuploader" display-label="List" display-tip-text="支持txt，utf-8格式" display-button-text="Frome File"></datalistuloader> -->
     
     <div class="control-group">
         <label class="control-label" for="ad_address">吧黑名单</label>
@@ -114,5 +116,5 @@
         </div>
     </div>
 
-
+    <input type="button" ng-click="source.onSubmitClick()">
 </div>

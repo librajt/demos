@@ -1,0 +1,22 @@
+<div>
+    <div class="control-group">
+        <label class="control-label" for="ad_address">虚拟目录名称</label>
+        <div class="controls form-inline form-group">
+            <label >
+                <input type="text" class="medium-input" ng-model="source.name" />
+            </label>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="ad_address">虚拟目录列表</label>
+        <div class="controls form-inline form-group">
+            <label >
+                <input type="text" class="medium-input" ng-model="source.dirs" />
+            </label>
+            <label class="adsenseUploader">
+                <input type="file" accept="text/plain" />从文件上传
+            </label>
+            <div>{-{source.tip_text}}</div>
+        </div>
+    </div>
+</div>

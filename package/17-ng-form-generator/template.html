@@ -26,7 +26,7 @@
 </div>
 
 <script src="js/angular.js"></script>
-<script src="json1.js"></script>
+<script src="j_template.js"></script>
 <script>
 var appModule = angular.module('app', []);
 appModule.directive('adsenseproperties', function() {
@@ -69,25 +69,20 @@ appModule.directive('simpletext', function() {
     function getTemplate() {
         // TODO: get attrs
         console.log(arguments);
-        var ret = '<div>simpletext here <span ng-transclude></span></div>';
+        var ret = '';
         ret = [
-            '<div class="row goods_property" data-id="user_name-1">',
+            '<div class="row goods_property">',
                 '<div class="col-md-8">',
                     '<div class="control-group">',
-                        '<label class="control-label" for="form-field-user_name-value-1">',
-                            '用户名',
-                        '</label>',
+                        '<label class="control-label"></label>',
                         '<div class="controls form-group">',
-                            '<input class="small-input" type="text" id="form-field-user_name-value-1">',
+                            '<input class="small-input" type="text">',
                         '</div>',
                     '</div>',
                 '</div>',
                 '<div class="col-md-4">',
-                    '<div class="propertip" id="form-field-user_name-tip-1">',
-                        '最大7汉字字符长度',
-                    '</div>',
-                    '<div class="errmsg" id="form-field-user_name-err-1">',
-                    '</div>',
+                    '<div class="propertip"></div>',
+                    '<div class="errmsg"></div>',
                 '</div>',
             '</div>'
         ].join('');
@@ -95,7 +90,7 @@ appModule.directive('simpletext', function() {
         return ret;
     }
 
-    function link(scope, element, attrs) {
+    function link(scope, element, attrs, ctrls) {
         //
         // console.log(0);
     }
