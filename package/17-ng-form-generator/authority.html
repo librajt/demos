@@ -513,7 +513,8 @@ appModule.directive('positionEditor', function() {
             var ret = {
                 'client': scope.source.client_type,
                 'page': scope.source.page_name,
-                'position': scope.source.pos_name
+                'position': scope.source.pos_name,
+                'typeid': scope.source.typeid
             }
             scope.output = ret;
         }

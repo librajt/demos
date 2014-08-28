@@ -20,9 +20,9 @@
     <hr>
     elements:
     <hr>
-    <simpletext ng-label="用户名" ng-length="10"></simpletext>
-    <simpletext ng-label="内容" ng-dobulelength="30"></simpletext>
-    <simpletext ng-label="地址" ng-pattern="URL"></simpletext>
+    <simpletext display-label="用户名" display-length="10"></simpletext>
+    <simpletext display-label="内容" display-dobulelength="30"></simpletext>
+    <simpletext display-label="地址" display-pattern="URL"></simpletext>
 </div>
 
 <script src="js/angular.js"></script>
@@ -67,14 +67,12 @@ appModule.directive('adsenseProperties', function() {
 
 appModule.directive('simpletext', function() {
     function getTemplate() {
-        // TODO: get attrs
-        console.log(arguments);
         var ret = '';
         ret = [
             '<div class="row goods_property">',
                 '<div class="col-md-8">',
                     '<div class="control-group">',
-                        '<label class="control-label"></label>',
+                        '<label class="control-label">{{source.label}}</label>',
                         '<div class="controls form-group">',
                             '<input class="small-input" type="text">',
                         '</div>',
@@ -90,9 +88,12 @@ appModule.directive('simpletext', function() {
         return ret;
     }
 
-    function link(scope, element, attrs, ctrls) {
-        //
-        // console.log(0);
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {
+            label: attr.displayLabel || '',
+            button_text:  attr.displayButtonText ||'',
+            tip_text:  attr.displayTipText || ''
+        };
     }
 
     return {
