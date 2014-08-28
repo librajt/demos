@@ -150,16 +150,16 @@ appModule.directive('authority', function() {
         }
 
         // 恢复页面元素值显示
-        function restoreValues() {
-            scope.source.cover_all = defaultSettings.cover_all;
-            scope.source.virtual_dir = defaultSettings.virtual_dir;
-            scope.source.first_dirs = defaultSettings.first_dirs;
-            scope.source.second_dirs = defaultSettings.second_dirs;
-            scope.source.forum_names = defaultSettings.forum_names;
-            scope.source.black_names = defaultSettings.black_names;
-            scope.source.hot_dirs = defaultSettings.hot_dirs;
-            scope.source.start_time = defaultSettings.start_time;
-            scope.source.end_time = defaultSettings.end_time;
+        function restoreValues(values) {
+            scope.source.cover_all = values.cover_all;
+            scope.source.virtual_dir = values.virtual_dir;
+            scope.source.first_dirs = values.first_dirs;
+            scope.source.second_dirs = values.second_dirs;
+            scope.source.forum_names = values.forum_names;
+            scope.source.black_names = values.black_names;
+            scope.source.hot_dirs = values.hot_dirs;
+            scope.source.start_time = values.start_time;
+            scope.source.end_time = values.end_time;
         }
 
         // 加载页面时取数据，填充页面展示
@@ -247,8 +247,8 @@ appModule.directive('authority', function() {
                 defaultSettings.hot_dirs = 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1';
 
                 restoreDirsValues(defaultSettings);
-                restoreValues();
-                getVirtualDirs(function(ret){
+                restoreValues(defaultSettings);
+                getVirtualDirs(function(ret) {
                     scope.virtualDirs = ret.data;
                     scope.source.virtual_dir = ret.data[0];
                 });
@@ -318,6 +318,8 @@ appModule.directive('authority', function() {
             ret.end_time = formatPickerTime(ret.end_time) / 1000;
 
             scope.output = ret;
+
+            console.log(scope.first_dirs);
         }
 
     }
