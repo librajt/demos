@@ -20,9 +20,10 @@
     <hr>
     elements:
     <hr>
-    <simpletext display-label="用户名" display-length="10"></simpletext>
-    <simpletext display-label="内容" display-dobulelength="30"></simpletext>
-    <simpletext display-label="地址" display-pattern="URL"></simpletext>
+    <simpletext output="simpletext" display-label="用户名" display-length="10"></simpletext>
+    <simpletext output="simpletext" display-label="内容" display-dobulelength="30"></simpletext>
+    <simpletext output="simpletext" display-label="文案" display-pattern="URL"></simpletext>
+    <richtext output="richtext" display-label="贴子内容" display-dobulelength="35"></richtext>
 </div>
 
 <script src="js/angular.js"></script>
@@ -65,6 +66,7 @@ appModule.directive('adsenseProperties', function() {
     };
 });
 
+// ------------------------------
 appModule.directive('simpletext', function() {
     function getTemplate() {
         var ret = '';
@@ -99,6 +101,97 @@ appModule.directive('simpletext', function() {
     return {
         restrict: 'EA',
         template: getTemplate(),
+        scope:{
+            output:'='
+        },
+        link: link,
+        transclude: true,
+        replace: true
+    };
+});
+
+// ------------------------------
+appModule.directive('richtext', function() {
+    function getTemplate() {
+        var ret = '';
+        ret = [
+            '<div class="row goods_property">',
+                '<div class="col-md-8">',
+                    '<div class="control-group">',
+                        '<label class="control-label">{{source.label}}</label>',
+                        '<div class="controls form-group">',
+                            '<textarea class="small-input"></textarea>',
+                        '</div>',
+                    '</div>',
+                '</div>',
+                '<div class="col-md-4">',
+                    '<div class="propertip"></div>',
+                    '<div class="errmsg"></div>',
+                '</div>',
+            '</div>'
+        ].join('');
+
+        return ret;
+    }
+
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {
+            label: attr.displayLabel || '',
+            button_text:  attr.displayButtonText ||'',
+            tip_text:  attr.displayTipText || ''
+        };
+    }
+
+    return {
+        restrict: 'EA',
+        template: getTemplate(),
+        scope:{
+            output:'='
+        },
+        link: link,
+        transclude: true,
+        replace: true
+    };
+});
+
+// ------------------------------
+appModule.directive('upload', function() {
+    function getTemplate() {
+        var ret = '';
+        ret = [
+            '<div class="row goods_property">',
+                '<div class="col-md-8">',
+                    '<div class="control-group">',
+                        '<label class="control-label">{{source.label}}</label>',
+                        '<div class="controls form-group">',
+                            'uploader...',
+                        '</div>',
+                    '</div>',
+                '</div>',
+                '<div class="col-md-4">',
+                    '<div class="propertip"></div>',
+                    '<div class="errmsg"></div>',
+                '</div>',
+            '</div>'
+        ].join('');
+
+        return ret;
+    }
+
+    function link(scope, elem, attr, ctrl) {
+        scope.source = {
+            label: attr.displayLabel || '',
+            button_text:  attr.displayButtonText ||'',
+            tip_text:  attr.displayTipText || ''
+        };
+    }
+
+    return {
+        restrict: 'EA',
+        template: getTemplate(),
+        scope:{
+            output:'='
+        },
         link: link,
         transclude: true,
         replace: true
