@@ -47,7 +47,7 @@ appModule.directive('datalistUploaders', function() {
 
     function link(scope, elem, attr, ctrl) {
         scope.source = {
-            datalist:  attr.returnList || '',
+            // datalist:  attr.returnList || '',
             label: attr.displayLabel || '',
             button_text:  attr.displayButtonText ||'',
             tip_text:  attr.displayTipText || ''
@@ -123,7 +123,7 @@ appModule.directive('datalistUploaders', function() {
         // require: 'ngModel',
         link: link,
         scope:{
-            source:'='
+            datalist:'=source'
         },
         replace: true
     };
@@ -326,8 +326,8 @@ appModule.directive('authorityEditor', function() {
                     ]
                 };
 
-                defaultSettings.first_dirs = 'F2';
-                defaultSettings.second_dirs = 'F1_3,F1_2,FX';
+                defaultSettings.first_dirs = 'F2,FX';
+                defaultSettings.second_dirs = 'F1_3,F1_2,FX_1';
                 defaultSettings.hot_dirs = 'adsense_hotdir_b0dc2f50672971ce20ffc144c520476f_1';
 
                 restoreValues(defaultSettings);
@@ -336,6 +336,7 @@ appModule.directive('authorityEditor', function() {
                     scope.virtualDirs = ret.data;
                     scope.source.virtual_dir = ret.data[0];
                 });
+
             // });
         }
 
