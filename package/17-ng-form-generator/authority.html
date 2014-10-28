@@ -21,14 +21,11 @@
     <hr>
     forms:
     <hr>
-    <virtual-dir-editor output="virtualdireditor"></virtual-dir-editor>
-    <pre>{{virtualdireditor|json}}</pre>
+    --
 
     <hr>
     forms:
     <hr>
-    <position-editor output="positioneditor"></position-editor>
-    <pre>{{positioneditor|json}}</pre>
 </div>
 
 <script src="http://tb1.bdstatic.com/tb/cms/com/mis/adsense/My97DatePicker/WdatePicker.js"></script>
@@ -43,91 +40,7 @@ appModule.controller('appController', function($scope) {
 })
 
 // -----------------------------------
-appModule.directive('datalistUploaders', function() {
 
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {
-            // datalist:  attr.returnList || '',
-            label: attr.displayLabel || '',
-            button_text:  attr.displayButtonText ||'',
-            tip_text:  attr.displayTipText || ''
-        };
-        
-        var $upload = elem.find('input:file');
-        
-        function uploadFile(file, formData, callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.open('post', '/adsense/advert/upload', true);
-            
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        callback(xhr.responseText);
-                    }
-                    else {
-                        alert('error');
-                        $upload.val('');
-                    }
-                }
-            }
-            xhr.send(formData);
-        }
-        
-        function combineDirs(generated, inputed) {
-            var ret = [];
-            if (generated.length > 0) ret.push(generated.join(','));
-            if (inputed) ret.push(inputed);
-            return ret.join(',');
-        };
-        
-        $upload.on('change', function(e) {
-            var files = $upload.get(0).files;
-            if (files.length === 0) {
-                return ;
-            }
-            
-            var formData = new FormData();
-            formData.append('content', files[0]);
-            
-            uploadFile(files[0], formData, function (uploadRst) {
-                uploadRst = JSON.parse(uploadRst);
-                if (uploadRst.errno === 0) {
-                    var res = uploadRst.data;
-                    scope.$apply(function() {
-                        scope.source.dirs = combineDirs(res, scope.source.dirs);
-                        $upload.val('');
-                    });
-                }
-                else {
-                    alert(uploadRst.errmsg);
-                }
-            });
-        });
-        
-        if (attr.virtualDirId) {
-            // $http.get('/adsense/direction/getfirst').success(function(ret){
-                var ret = {
-                    data: [
-                        
-                    ]
-                };
-                scope.source.dirs = ret.data;
-            // });
-        }
-    }
-
-    return {
-        restrict: 'EA',
-        templateUrl: 't_data_list_uploader.html',
-        // require: 'ngModel',
-        link: link,
-        scope:{
-            datalist:'=source'
-        },
-        replace: true
-    };
-});
 
 // -----------------------------------
 appModule.directive('authorityEditor', function() {
@@ -366,6 +279,7 @@ appModule.directive('authorityEditor', function() {
             return ret;
         }
 
+
         /*
             提交：
                 取复选框里的目录值，与文本框里的合并
@@ -419,119 +333,6 @@ appModule.directive('authorityEditor', function() {
 });
 
 // -----------------------------------
-appModule.directive('virtualDirEditor', function() {
-
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {};
-
-        scope.onSubmitClick = function() {
-            var ret = {
-                'name': scope.source.name,
-                'dirs': scope.dirs.datalist
-            }
-            scope.output = ret;
-        }
-    }
-
-
-    return {
-        restrict: 'EA',
-        templateUrl: 't_virtual_dir_editor.html',
-        link: link,
-        scope:{
-            output:'='
-        },
-        replace: true
-    };
-});
-
-// -----------------------------------
-appModule.directive('positionEditor', function() {
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {};
-
-        scope.DTS = {
-            'cfg': window.RULES_TYPES,
-            'clients': [
-                {
-                    'name': 'PC',
-                    'value': 'PC'
-                },
-                {
-                    'name': '智能版',
-                    'value': 'WAP'
-                },
-                {
-                    'name': '客户端',
-                    'value': 'APP'
-                }
-            ]
-        };
-
-        scope.changeTypeList = function(arg) {
-            var page;
-            // case 里不使用break，正是利用了switch语句的特性
-            switch (arg) {
-                case 'client':
-                    for(page in scope.DTS.cfg[scope.source.client_type]) {
-                        break;  // 随便找到一个值当默认值
-                    }
-                    if (!page) return;
-                case 'page':
-                    if (!scope.source.client_type || !scope.source.page_name) return
-                    scope.source.pos_name = scope.DTS.cfg[scope.source.client_type][scope.source.page_name][0]['pos_name'];
-                case 'pos':
-                    if (!scope.source.pos_name) return
-                    scope.typeids = scope.getTypes(scope.source.pos_name);
-                    scope.source.typeid = scope.typeids[0];
-            }
-        }
-
-        scope.getTypes = function(pos_name){
-            var ret;
-            if (pos_name && scope.source.client_type && scope.source.page_name) {
-                if (!scope.DTS.cfg[scope.source.client_type] || !scope.DTS.cfg[scope.source.client_type][scope.source.page_name]) {
-                    ret = ['err'];
-                }
-                else {
-                    scope.DTS.cfg[scope.source.client_type][scope.source.page_name].forEach(function(pos, index) {
-                        if (pos.pos_name == pos_name) {
-                            // ret = $.extend([], pos.rules);
-                            ret = pos.rules;
-                            return true;
-                        }
-                    });
-                }
-            }
-            return ret;
-        }
-
-        scope.getTypeName=function(typeid){
-            return typeid;
-        };
-
-        scope.onSubmitClick = function() {
-            var ret = {
-                'client': scope.source.client_type,
-                'page': scope.source.page_name,
-                'position': scope.source.pos_name,
-                'typeid': scope.source.typeid
-            }
-            scope.output = ret;
-        }
-    }
-
-    return {
-        restrict: 'EA',
-        templateUrl: 't_position.html',
-        link: link,
-        scope:{
-            output:'='
-        },
-        replace: true
-    };
-
-});
 
 
 </script>
