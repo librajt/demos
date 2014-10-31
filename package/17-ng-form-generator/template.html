@@ -9,103 +9,112 @@
     </style>
     <title>Document</title>
 </head>
-<body>
+<body ng-controller="adsenseController">
 
 <div class="form-horizontal" style="padding:20px;">
     <hr>
     forms:
     <hr>
-    <adsense-properties></adsense-properties>
-
-    <hr>
-    elements:
-    <hr>
-    <simpletext output="simpletext" display-label="用户名" display-length="10"></simpletext>
-    <simpletext output="simpletext" display-label="内容" display-dobulelength="30"></simpletext>
-    <simpletext output="simpletext" display-label="文案" display-pattern="URL"></simpletext>
-    <richtext output="richtext" display-label="贴子内容" display-dobulelength="35"></richtext>
+    <adsense-properties ng-model="clips"></adsense-properties>
+    {{clips|json}}
 </div>
 
 <script src="js/angular.js"></script>
 <script src="j_template.js"></script>
 <script>
 var appModule = angular.module('app', []);
+
+appModule.controller('adsenseController', ['$scope', function($scope) {
+    $scope.clips = {'thread_title': '123'};
+}]);
+
 appModule.directive('adsenseProperties', function() {
-    function getProperties() {
-        var ret = '';  // default value
-
-        var properties = json;  // TODO: get from template
-
-        properties.forEach(function(property, index){
-            ret += getFormLabel(property);
-        });
-
-        return '<div>' + ret + '</div>';
-    }
-
-    function getFormLabel(property) {
+    function getForm(property) {
         var ret = '';
-        var type = property.type || '';
-        var attr = property.attr || '';  // TODO: attr. bind
-        if (type) {
-            ret = '<%%type%% attr1="attr1"></%%type%%>'.replace(/%%type%%/g, type).replace(/%%attr%%/g, attr);
+
+        var type = property.type;
+        var id = property.id;
+        var name = property.name;
+        var options = property.options || [];
+        var defaultValue = property.defaultValue;
+        var validate = property.validate || {};
+        
+        // 抹平变量..由拼写问题引起
+        validate.required = validate.require;
+        validate.pattern = validate.patten;
+
+        var ngModel = '"ngModel.' + id + '"';
+        var ngRequired = '';
+        var ngShow = !property.hide;
+
+        // 准备验证相关
+        if (validate.required) {
+
         }
-        console.log(ret);
+
+        // 开始拼装HTML
+
+        var attr = ' ng-model=' + ngModel + '" ng-required="' + ngRequired + '" ng-show="' + ngShow + '" ';
+
+        if (type == 'simpletext') {
+            ret = '<input type="text"' + attr +'">';
+        }
+        else if (type == 'richtext') {
+            ret = '<textarea' + attr +'"></textarea>';
+        }
+        else if (type == 'select') {
+            ret = '<select' + attr +'"></select>';
+        }
+        else if (type == 'upload') {
+            ret = '<input' + attr +'">';
+        }
         return ret;
     }
 
-    function link(scope, element, attrs) {
-        var a;
-    }
-
-    return {
-        restrict: 'EA',
-        template: getProperties(),
-        link: link,
-        replace: true
-    };
-});
-
-// ------------------------------
-appModule.directive('simpletext', function() {
-    function getTemplate() {
+    function buildForm (element, json) {
         var ret = '';
-        ret = [
-            '<div class="row goods_property">',
-                '<div class="col-md-8">',
-                    '<div class="control-group">',
-                        '<label class="control-label">{{source.label}}</label>',
-                        '<div class="controls form-group">',
-                            '<input class="small-input" type="text">',
+        var id, name, type;
+        json.forEach(function(property, index){
+            ret += [
+                '<div class="row goods_property">',
+                    '<div class="col-md-8">',
+                        '<div class="control-group">',
+                            '<label class="control-label">' + property.name + '</label>',
+                            '<div class="controls form-group">',
+                                getForm(property),
+                            '</div>',
                         '</div>',
                     '</div>',
-                '</div>',
-                '<div class="col-md-4">',
-                    '<div class="propertip"></div>',
-                    '<div class="errmsg"></div>',
-                '</div>',
-            '</div>'
-        ].join('');
-
-        return ret;
+                    '<div class="col-md-4">',
+                        '<div class="propertip"></div>',
+                        '<div class="errmsg"></div>',
+                    '</div>',
+                '</div>'
+            ].join('');
+        });
+        element.append(angular.element(ret));
     }
 
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {
-            label: attr.displayLabel || '',
-            button_text:  attr.displayButtonText ||'',
-            tip_text:  attr.displayTipText || ''
-        };
+    function compile(element, attr, linkFn) {
+
+        attr.argJson = json;
+
+        buildForm(element, attr.argJson);
+
+        function link(scope, element, attr, controller, transcludeFn) {
+            // body
+        }
+
+        return link;
     }
 
     return {
         restrict: 'EA',
-        template: getTemplate(),
-        scope:{
-            output:'='
+        template: '<div></div>',
+        compile: compile,
+        scope: {
+            ngModel: '='
         },
-        link: link,
-        transclude: true,
         replace: true
     };
 });
@@ -120,7 +129,7 @@ appModule.directive('richtext', function() {
                     '<div class="control-group">',
                         '<label class="control-label">{{source.label}}</label>',
                         '<div class="controls form-group">',
-                            '<textarea class="small-input"></textarea>',
+                            '<textarea class="small-input" ng-model="ngModel" ng-required="ngRequired"></textarea>',
                         '</div>',
                     '</div>',
                 '</div>',
@@ -134,69 +143,40 @@ appModule.directive('richtext', function() {
         return ret;
     }
 
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {
-            label: attr.displayLabel || '',
-            button_text:  attr.displayButtonText ||'',
-            tip_text:  attr.displayTipText || ''
+    function compile(elem, attr) {
+        
+        return {
+            pre: function(scope, elem, attr, ctrl) {
+                debugger;
+            },
+            post: function(scope, elem, attr, ctrl) {
+                var properties = JSON.parse(attr.property || '{}');
+                attr.id = properties.id || 'default id';
+                attr.name = properties.name || 'default label';
+                // scope.ngModel = scope.ngModel[attr.id];
+                scope.source = {
+                    label: attr.name || '',
+                    button_text:  attr.displayButtonText ||'',
+                    tip_text:  attr.displayTipText || ''
+                };
+
+            }
         };
     }
 
     return {
         restrict: 'EA',
         template: getTemplate(),
-        scope:{
-            output:'='
+        scope: {
+            ngModel: '=',
+            ngRequired: '='
         },
-        link: link,
+        compile: compile,
         transclude: true,
         replace: true
     };
 });
 
-// ------------------------------
-appModule.directive('upload', function() {
-    function getTemplate() {
-        var ret = '';
-        ret = [
-            '<div class="row goods_property">',
-                '<div class="col-md-8">',
-                    '<div class="control-group">',
-                        '<label class="control-label">{{source.label}}</label>',
-                        '<div class="controls form-group">',
-                            'uploader...',
-                        '</div>',
-                    '</div>',
-                '</div>',
-                '<div class="col-md-4">',
-                    '<div class="propertip"></div>',
-                    '<div class="errmsg"></div>',
-                '</div>',
-            '</div>'
-        ].join('');
-
-        return ret;
-    }
-
-    function link(scope, elem, attr, ctrl) {
-        scope.source = {
-            label: attr.displayLabel || '',
-            button_text:  attr.displayButtonText ||'',
-            tip_text:  attr.displayTipText || ''
-        };
-    }
-
-    return {
-        restrict: 'EA',
-        template: getTemplate(),
-        scope:{
-            output:'='
-        },
-        link: link,
-        transclude: true,
-        replace: true
-    };
-});
 
 </script>
 
