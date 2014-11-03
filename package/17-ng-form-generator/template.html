@@ -12,11 +12,16 @@
 <body ng-controller="adsenseController">
 
 <div class="form-horizontal" style="padding:20px;">
-    <hr>
-    forms:
-    <hr>
-    <adsense-properties ng-model="clips"></adsense-properties>
-    {{clips|json}}
+    <form role="form" name="adb">
+        <input name="aaa" ng-model="aaa" ng-minlength="4" ng-maxlength="22" required="required">
+        <span ng-show="adb.aaa.$invalid">ddd</span>
+        <hr>
+        forms:
+        <hr>
+        <adsense-properties ng-model="clips"></adsense-properties>
+        {{clips|json}}
+        <input type="submit" value="submit">
+    </form>
 </div>
 
 <script src="js/angular.js"></script>
@@ -28,80 +33,101 @@ appModule.controller('adsenseController', ['$scope', function($scope) {
     $scope.clips = {'thread_title': '123'};
 }]);
 
-appModule.directive('adsenseProperties', function() {
-    function getForm(property) {
-        var ret = '';
+function buildControl(pre, copyPre, htmls){
+    var ret = [
+        '<div class="row goods_property">',
+            '<div class="col-md-8">',
+                '<div class="control-group">',
+                    '<label class="control-label"><span ng-bind="label"></span><span ng-show="ngRequired" class="text-warning">*</span></label>',
+                    '<div class="controls form-group">',
+                        '<' + pre + ' name="{{id}}" ng-model="ngModel" ng-required="ngRequired" ng-minlength-="ngMinlength" ng-maxlength-="ngMaxlength"',
+                        (htmls ? 
+                            ('>' + htmls) : 
+                            (copyPre ? 
+                                ('></' + pre + '>') : 
+                                '>'
+                            )
+                        ),
+                    '</div>',
+                '</div>',
+            '</div>',
+            '<div class="col-md-4">',
+                '<div class="propertip"></div>',
+                '<div class="errmsg">',
+                    '<div ng-show="ngRequired">必填</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join('');
+    return ret;
+}
 
-        var type = property.type;
-        var id = property.id;
-        var name = property.name;
-        var options = property.options || [];
-        var defaultValue = property.defaultValue;
-        var validate = property.validate || {};
+appModule.directive('adsenseProperties', function() {
+    function getForm(json) {
+
+        var argJson = encodeURIComponent(JSON.stringify(json));
+
+        var type = json.type;
+        var id = json.id;
+        var name = json.name;
+        var options = json.options || [];
+        var defaultValue = json.defaultValue;
+        var validate = json.validate || {};
         
         // 抹平变量..由拼写问题引起
         validate.required = validate.require;
         validate.pattern = validate.patten;
 
-        var ngModel = '"ngModel.' + id + '"';
+        var ngModel = 'ngModel.' + id + '';
         var ngRequired = '';
-        var ngShow = !property.hide;
+        var ngShow = !json.hide;
 
         // 准备验证相关
-        if (validate.required) {
-
+        if (validate.required == undefined) {
+            ngRequired = true;
         }
+        else if (validate.required && validate.required != 0) {
+            // 关联必填
+            ngRequired += validate.required.map(function(id, index) {
+                return '!ngModel.' + id;
+            }).join('&&');
+        }
+
+
+        var ngMinlength = validate.minLength == undefined ? '' : validate.minLength;
+        var ngMaxlength = validate.maxLength == undefined ? '' : validate.maxLength;
 
         // 开始拼装HTML
+        var ret = [
+            '<adsense-' + type,
+                ' ng-model="' + ngModel + '"',
+                ' ng-required="' + ngRequired + '"',
+                ' ng-minlength="' + ngMinlength + '"',
+                ' ng-maxlength="' + ngMaxlength + '"',
+                ' ng-show="' + ngShow + '"',
+                ' arg-json="' + argJson + '"',
+            '></adsense-' + type + '>'
+        ].join('');
 
-        var attr = ' ng-model=' + ngModel + '" ng-required="' + ngRequired + '" ng-show="' + ngShow + '" ';
-
-        if (type == 'simpletext') {
-            ret = '<input type="text"' + attr +'">';
-        }
-        else if (type == 'richtext') {
-            ret = '<textarea' + attr +'"></textarea>';
-        }
-        else if (type == 'select') {
-            ret = '<select' + attr +'"></select>';
-        }
-        else if (type == 'upload') {
-            ret = '<input' + attr +'">';
-        }
         return ret;
     }
 
-    function buildForm (element, json) {
+    function buildForm (elem, json) {
         var ret = '';
         var id, name, type;
         json.forEach(function(property, index){
-            ret += [
-                '<div class="row goods_property">',
-                    '<div class="col-md-8">',
-                        '<div class="control-group">',
-                            '<label class="control-label">' + property.name + '</label>',
-                            '<div class="controls form-group">',
-                                getForm(property),
-                            '</div>',
-                        '</div>',
-                    '</div>',
-                    '<div class="col-md-4">',
-                        '<div class="propertip"></div>',
-                        '<div class="errmsg"></div>',
-                    '</div>',
-                '</div>'
-            ].join('');
+            ret += getForm(property);
         });
-        element.append(angular.element(ret));
+        elem.append(angular.element(ret));
     }
 
-    function compile(element, attr, linkFn) {
+    function compile(elem, attr, linkFn) {
 
         attr.argJson = json;
 
-        buildForm(element, attr.argJson);
+        buildForm(elem, attr.argJson);
 
-        function link(scope, element, attr, controller, transcludeFn) {
+        function link(scope, elem, attr, ctrl, transcludeFn) {
             // body
         }
 
@@ -120,56 +146,176 @@ appModule.directive('adsenseProperties', function() {
 });
 
 // ------------------------------
-appModule.directive('richtext', function() {
-    function getTemplate() {
-        var ret = '';
-        ret = [
-            '<div class="row goods_property">',
-                '<div class="col-md-8">',
-                    '<div class="control-group">',
-                        '<label class="control-label">{{source.label}}</label>',
-                        '<div class="controls form-group">',
-                            '<textarea class="small-input" ng-model="ngModel" ng-required="ngRequired"></textarea>',
-                        '</div>',
-                    '</div>',
-                '</div>',
-                '<div class="col-md-4">',
-                    '<div class="propertip"></div>',
-                    '<div class="errmsg"></div>',
-                '</div>',
-            '</div>'
-        ].join('');
+appModule.directive('adsenseSimpletext', function() {
 
-        return ret;
+    function buildForm (elem, json) {
+        var ret = buildControl('input');
+        elem.append(angular.element(ret));
     }
 
     function compile(elem, attr) {
-        
-        return {
-            pre: function(scope, elem, attr, ctrl) {
-                debugger;
-            },
-            post: function(scope, elem, attr, ctrl) {
-                var properties = JSON.parse(attr.property || '{}');
-                attr.id = properties.id || 'default id';
-                attr.name = properties.name || 'default label';
-                // scope.ngModel = scope.ngModel[attr.id];
-                scope.source = {
-                    label: attr.name || '',
-                    button_text:  attr.displayButtonText ||'',
-                    tip_text:  attr.displayTipText || ''
-                };
+        var argJson = JSON.parse(decodeURIComponent(attr.argJson || '{}'));
+        buildForm(elem, argJson);
 
+        function link(scope, elem, attr, ctrl, transcludeFn) {
+            // body
+            scope.label = argJson.name;
+            scope.id = argJson.id;
+
+            if (!scope.ngModel && argJson.defaultValue) {
+                scope.ngModel = argJson.defaultValue;
             }
-        };
+        }
+        return link;
+
     }
 
     return {
         restrict: 'EA',
-        template: getTemplate(),
+        template: '<div></div>',
         scope: {
             ngModel: '=',
-            ngRequired: '='
+            ngRequired: '=',
+            ngShow: '=',
+            ngMinlength: '=',
+            ngMaxlength: '='
+        },
+        compile: compile,
+        transclude: true,
+        replace: true
+    };
+});
+
+
+// ------------------------------
+appModule.directive('adsenseRichtext', function() {
+
+    function buildForm (elem, json) {
+        var ret = buildControl('textarea', true);
+        elem.append(angular.element(ret));
+    }
+
+    function compile(elem, attr) {
+        var argJson = JSON.parse(decodeURIComponent(attr.argJson || '{}'));
+        buildForm(elem, argJson);
+
+        function link(scope, elem, attr, ctrl, transcludeFn) {
+            // body
+            scope.label = argJson.name;
+            scope.id = argJson.id;
+
+            if (!scope.ngModel && argJson.defaultValue) {
+                scope.ngModel = argJson.defaultValue;
+            }
+        }
+        return link;
+
+    }
+
+    return {
+        restrict: 'EA',
+        template: '<div></div>',
+        scope: {
+            ngModel: '=',
+            ngRequired: '=',
+            ngShow: '='
+        },
+        compile: compile,
+        transclude: true,
+        replace: true
+    };
+});
+
+
+// ------------------------------
+appModule.directive('adsenseSelect', function() {
+
+    function buildForm (elem, json) {
+        var ret = [
+        ].join('');
+        ret = buildControl(
+            'select', false, [
+                '<option value="">请选择</option>',
+                '<option ng-repeat="obj in options" value="{{obj.val}}">{{obj.key}}</option>',
+            '</select>'].join('')
+        );
+        elem.append(angular.element(ret));
+    }
+
+    function compile(elem, attr) {
+        var argJson = JSON.parse(decodeURIComponent(attr.argJson || '{}'));
+        buildForm(elem, argJson);
+
+        function link(scope, elem, attr, ctrl, transcludeFn) {
+            // body
+            scope.label = argJson.name;
+            scope.id = argJson.id;
+
+            if (!scope.ngModel && argJson.defaultValue) {
+                scope.ngModel = argJson.defaultValue;
+            }
+
+            // 
+            scope.options = argJson.options;
+            if (typeof scope.options[0] != 'object') {
+                angular.forEach(scope.options, function(val, index) {
+                    scope.options[index] = {
+                        'key': val,
+                        'val': val
+                    };
+                });
+            }
+        }
+        return link;
+
+    }
+
+    return {
+        restrict: 'EA',
+        template: '<div></div>',
+        scope: {
+            ngModel: '=',
+            ngRequired: '=',
+            ngShow: '='
+        },
+        compile: compile,
+        transclude: true,
+        replace: true
+    };
+});
+
+// ------------------------------
+appModule.directive('adsenseUpload', function() {
+
+    function buildForm (elem, json) {
+        var ret = buildControl('input');
+        elem.append(angular.element(ret));
+    }
+
+    function compile(elem, attr) {
+        var argJson = JSON.parse(decodeURIComponent(attr.argJson || '{}'));
+        buildForm(elem, argJson);
+
+        function link(scope, elem, attr, ctrl, transcludeFn) {
+            // body
+            scope.label = argJson.name;
+            scope.id = argJson.id;
+
+            if (!scope.ngModel && argJson.defaultValue) {
+                scope.ngModel = argJson.defaultValue;
+            }
+        }
+        return link;
+
+    }
+
+    return {
+        restrict: 'EA',
+        template: '<div></div>',
+        scope: {
+            ngModel: '=',
+            ngRequired: '=',
+            ngShow: '='
         },
         compile: compile,
         transclude: true,
