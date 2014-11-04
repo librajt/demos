@@ -12,7 +12,7 @@
 <body ng-controller="adsenseController">
 
 <div class="form-horizontal" style="padding:20px;">
-    <form role="form" name="adb">
+    <form role="form" name="adb" novalidate>
         <input name="aaa" ng-model="aaa" ng-minlength="4" ng-maxlength="22" required="required">
         <span ng-show="adb.aaa.$invalid">ddd</span>
         <hr>
@@ -30,17 +30,17 @@
 var appModule = angular.module('app', []);
 
 appModule.controller('adsenseController', ['$scope', function($scope) {
-    $scope.clips = {'thread_title': '123'};
+    $scope.clips = {'thread_title': '123',"rank_level": "2"};
 }]);
 
 function buildControl(pre, copyPre, htmls){
     var ret = [
-        '<div class="row goods_property">',
+        '<div class="row goods_property" ng-form="adsense_editor_form">',
             '<div class="col-md-8">',
                 '<div class="control-group">',
                     '<label class="control-label"><span ng-bind="label"></span><span ng-show="ngRequired" class="text-warning">*</span></label>',
                     '<div class="controls form-group">',
-                        '<' + pre + ' name="{{id}}" ng-model="ngModel" ng-required="ngRequired" ng-minlength-="ngMinlength" ng-maxlength-="ngMaxlength"',
+                        '<' + pre + ' name="adsense_editor_input" ng-model="ngModel" ng-required="ngRequired" ng-minlength-="ngMinlength" ng-maxlength-="ngMaxlength"',
                         (htmls ? 
                             ('>' + htmls) : 
                             (copyPre ? 
@@ -54,7 +54,7 @@ function buildControl(pre, copyPre, htmls){
             '<div class="col-md-4">',
                 '<div class="propertip"></div>',
                 '<div class="errmsg">',
-                    '<div ng-show="ngRequired">必填</div>',
+                    '<div ng-show="adsense_editor_form.adsense_editor_input.$error.required">必填</div>',
                 '</div>',
             '</div>',
         '</div>'
@@ -236,7 +236,7 @@ appModule.directive('adsenseSelect', function() {
         ret = buildControl(
             'select', false, [
                 '<option value="">请选择</option>',
-                '<option ng-repeat="obj in options" value="{{obj.val}}">{{obj.key}}</option>',
+                '<option ng-repeat="obj in options" value="{{obj.val}}" ng-selected="ngModel == obj.val">{{obj.key}}</option>',
             '</select>'].join('')
         );
         elem.append(angular.element(ret));
