@@ -61,7 +61,7 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
                     val = ReturnType[type].set(val, format);
                 }
             }
-            element.find('.date_view').val(val);
+            $viewEl.val(val);
         });
         
         element.datetimepicker({
@@ -80,6 +80,7 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
         restrict: 'E',
         templateUrl:'./datetime_picker.html',
         require: 'ngModel',
+        replace: true,
         scope: {
             ngModel: '='
         },
