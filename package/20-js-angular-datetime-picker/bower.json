@@ -1,0 +1,11 @@
+{
+  "name": "angular-smalot-bootstrap-datetimepicker",
+  "version": "1.0.0",
+  "main": "./index.html",
+  "dependencies": {
+    "smalot-bootstrap-datetimepicker": "~2.3.1",
+    "angular": "~1.0.3"
+  },
+  "author": "librajt",
+  "license": "MIT"
+}

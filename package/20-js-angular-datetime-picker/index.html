@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Datetime Picker</title>
+    
+    <link rel="stylesheet" href="bootstrap-datetimepicker-master/sample in bootstrap v3/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css">
+    
+    <script src="bootstrap-datetimepicker-master/sample in bootstrap v3/jquery/jquery-1.8.3.min.js"></script>
+    <script src="bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+    <script src="bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    
+    <script src="angular.min.js"></script>
+    <script src="datetime_picker.js"></script>
+    
+    <script>
+    var app = angular.module('plunker', ['ngAdsenseCommon']);
+
+    app.controller('MainCtrl', function($scope) {
+        setTimeout(function() {
+            $scope.$apply(
+                function() {
+                    $scope.abc = '1421173880000';
+                }
+            );
+        }, 500);
+    });
+
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+
+
+<div class="container">
+    <p>from: http://plnkr.co/edit/jZ6QyrLNajRgIMSlUqsg?p=preview</p>
+    <div class="row">
+        <div class="col-md-4">
+            <datetime-picker 
+                ng-model="abc" 
+                data-date-format="yyyy-mm-dd hh:ii" 
+                data-min-view="0" 
+                data-show-meridian="false" 
+                data-return-type="jsTimeStamp" 
+                class="input-group date">
+            </datetime-picker>
+            abc: {{abc}}
+        </div>
+        <div class="col-md-4">
+            <p>class="input-group date" 中 date 为必须项</p>
+            <p>data-return-type 取值为：phpTimeStamp、jsTimeStamp、formated</p>
+            <p>其它属性设置，直接添加在标签上</p>
+            <p><a href="http://www.bootcss.com/p/bootstrap-datetimepicker/index.htm" target="_blanck">API</a></p>
+            <p></p>
+            <p></p>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>
