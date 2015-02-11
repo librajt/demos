@@ -7,7 +7,8 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
     // 将js时间戳格式化为指定格式
     // 调用组件中未公开的方法。。
     function stringifyTime(stamp, format) {
-        var language = 'zh-CN';
+        //var language = 'zh-CN';
+        var language = 'en';
         var type = 'standard';
         var helper = $.fn.datetimepicker.DPGlobal;
         return helper.formatDate(new Date(stamp), helper.parseFormat(format, type), language, type);
@@ -19,19 +20,23 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
         'jsTimeStamp': {
             // js时间戳
             set: function (time, format) {
-                return stringifyTime(new Date(+time), format);
+                var date = new Date(+time);
+                return stringifyTime(time - date.getTimezoneOffset() * 60 * 1000, format);
             },
             get: function (e, format, $viewEl) {
-                return (+e.date);
+                var ret = +new Date(e.date.toString()) + e.date.getTimezoneOffset() * 60 * 1000;  // 减去时区差
+                return ret;
             }
         },
         'phpTimeStamp': {
             // php时间戳
             set :function (time, format) {
-                return stringifyTime(new Date((+time) * 1000), format);
+                var date = new Date(+time);
+                return stringifyTime(time * 1000 - date.getTimezoneOffset() * 60 * 1000, format);
             },
             get: function (e, format, $viewEl) {
-                return ((+e.date) / 1000).toFixed();
+                var ret = +new Date(e.date.toString()) + e.date.getTimezoneOffset() * 60 * 1000;  // 减去时区差
+                return ret / 1000;
             }
         },
         'formated': {
@@ -69,8 +74,8 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
             todayBtn:  1,
             autoclose: 1,
             todayHighlight: 1,
-            language: 'zh-CN'
-        }).on('changeDate', function(e) {
+            //language: 'zh-CN'
+        }).on('changeDate', function(e) {debugger;
             scope.ngModel = ReturnType[type].get(e, format, $viewEl);
             scope.$apply();
         });
