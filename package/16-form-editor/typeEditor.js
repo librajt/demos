@@ -782,7 +782,7 @@
                         '<a class="close" href="javascript:" title="删除">×</a>',
                         '<a data-toggle="collapse" data-parent="#goods_properties" id="property_pannel_toggle_%%index%%" href="#property_pannel_collapse_%%index%%" class="accordion-toggle">素材#%%index%%</a>',
                     '</div>',
-                    '<div id="property_pannel_collapse_%%index%%" class="panel-collapse collapse">',
+                    '<div id="property_pannel_collapse_%%index%%" class="panel-collapse">',
                         '<div class="panel-body"></div>',
                     '</div>',
                 '</div>'
