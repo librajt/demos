@@ -1,0 +1,18 @@
+<div>
+    <input-image
+        name="form_input" ng-model="$parent.ngModel" ng-required="ngRequiredFn()" class="form-control"
+        upload-to="ngmis/adsense"
+        width-limit="{{widthLimit}}"
+        height-limit="{{heightLimit}}"
+        max-kbytes="{{maxKbbytes}}"
+        enabled-formats="getFormats()">
+    </input-image>
+    <div ng-show="ngModel">
+        <p><a href="{{$parent.ngModel}}" target="_blank"><img ng-src="{{$parent.ngModel}}" alt="" style="max-width:100%;max-height:100px;padding:1px;"></a></p>
+    </div>
+    <div ng-show="!inEmergency"><a href="javascript:;" ng-click="callEmergency()" style="color:#999">紧急输入</a></div>
+    <div ng-show="inEmergency">
+        <div><input type="url" ng-model="$parent.ngModel" class="form-control" placeholder="http://"></div>
+        <div class="text-danger">请自行保证<strong>图片尺寸</strong>及<strong>文件大小</strong>。<a href="javascript:;" ng-click="help()">[?]</a></div>
+    </div>
+</div>

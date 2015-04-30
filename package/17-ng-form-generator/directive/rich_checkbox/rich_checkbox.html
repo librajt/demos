@@ -1,0 +1,21 @@
+<div>
+	<!-- 
+	多选型checkbox，返回的值为已选值以逗号合并，如'小学,初中' 
+	-->
+	<div ng-show="noLimitValue !== undefined">
+		<label class="radio-inline">
+	        <input type="radio" ng-change="noLimitSelect()" value="1" ng-model="isNoLimit">不限
+	    </label>
+	    <label class="radio-inline">
+	        <input type="radio" ng-change="noLimitSelect()" value="0" ng-model="isNoLimit">多选
+	    </label>
+	</div>
+	<div ng-show="noLimitValue == undefined || isNoLimit==0">
+	   	<label class="checkbox-inline">
+	       	<input type="checkbox" ng-click="fullSelect()" ng-checked="isFull"/>全选
+	    </label>
+	    <label class="checkbox-inline" ng-repeat="item in checkboxList">
+	       	<input type="checkbox" ng-click="setValue(item, this)" ng-checked="valueArr['{{item}}']"/>{{item}}
+	    </label>
+	</div>
+</div>

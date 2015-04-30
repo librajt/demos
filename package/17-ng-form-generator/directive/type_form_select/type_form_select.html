@@ -1,0 +1,6 @@
+<div>
+    <select name="form_input" ng-model="$parent.ngModel" ng-required="ngRequiredFn()" class="form-control">
+        <option value="">请选择</option>
+        <option ng-repeat="obj in options" value="{{obj.val}}" ng-selected="$parent.$parent.ngModel == obj.val">{{obj.key}}</option>
+    </select>
+</div>

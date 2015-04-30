@@ -1,0 +1,50 @@
+<div>
+    <div class="row goods_property" ng-form="adsense_type_form" ng-show="ngShow || debugger">
+        <div class="col-md-8">
+            <div class="control-group">
+                <label class="control-label">
+                    <span ng-bind="label"></span>
+                    <span ng-show="ngRequiredFn()" class="text-warning">*</span>
+                </label>
+                <div class="controls form-group">
+                    <div class="col-sm-11" ng-switch on="argJson.type">
+                            
+                        <div ng-switch-when="simpletext">
+                            <type-form-simpletext></type-form-simpletext>
+                        </div>
+                        <div ng-switch-when="richtext">
+                            <type-form-richtext></type-form-richtext>
+                        </div>
+                        <div ng-switch-when="upload">
+                            <type-form-upload></type-form-upload>
+                        </div>
+                        <div ng-switch-when="select">
+                            <type-form-select></type-form-select>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="propertip">
+                <div ng-repeat="t in argJson.tips">{{t}}</div>
+            </div>
+            <div class="errmsg">
+                <div ng-if="argJson.type == 'upload'">
+                    <div>尺寸：{{widthLimit}}*{{heightLimit}}</div>
+                    <div ng-show="formats">支持类型：{{formats.join(', ')}}</div>
+                    <div ng-if="maxKbbytes">大小限制：{{maxKbbytes}}KB</div>
+                </div>
+                <div ng-if="argJson.validate.doubleLength">
+                    <div ng-class="{'text-danger':adsense_type_form.form_input.$error.maxlengthCn}">最大{{maxlengthCn}}个汉字长度</div>
+                </div>
+                <div ng-if="argJson.validate.pattern" ng-class="{'text-danger':adsense_type_form.form_input.$error.pattern}" ng-switch on="argJson.validate.pattern">
+                    <div ng-switch-when="URL">以http://开头的完整url</div>
+                    <div ng-switch-when="数字">只可填写正整数</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+</div>

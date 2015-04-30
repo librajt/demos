@@ -1,0 +1,223 @@
+<div>
+    <div class="control-group">
+        <label class="control-label">属性列表<span class="text-warning">*</span></label>
+        <div class="controls form-group">
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>必填</th>
+                    <th>显示</th>
+                    <th>详情</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in jsonList">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.validate.required == '1' ? '' : 'Yes'}}</td>
+                    <td>{{item.hide == '1' ? '' : 'Yes'}}</td>
+                    <td><pre style="max-height:100px;max-width:300px;">{{item|json}}</pre></td>
+                    <td>
+                        <a href="javascript:" class="btn btn-sm btn-primary" ng-click="move($index, -1)" ng-disabled="$first">上移</a>
+                        <a href="javascript:" class="btn btn-sm btn-primary" ng-click="move($index, 1)" ng-disabled="$last">下移</a>
+                        <a href="javascript:" class="btn btn-sm btn-primary" ng-click="edit(item)">编辑</a>
+                        <a href="javascript:" class="btn btn-sm btn-danger" ng-click="del($index)">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-right">
+                <a href="javascript:" class="btn btn-sm btn-danger" ng-click="add()">添加属性</a>
+            </div>
+        </div>
+        <div class="controls form-group">
+            <textarea class="form-control" ng-model="ngModel" style="height:100px;font-size:14px;font-family:'Microsoft Yahei';"></textarea>
+        </div>
+    </div>
+    
+    <modal ng-show="cfg" style="position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.6);z-index:99;overflow:auto;">
+        <style ng-if="cfg">body{overflow:hidden;padding-right:17px;}</style>
+        
+        <form name="json_form" novalidation class="form-horizontal label-right" style="    margin-bottom: 0;    background: #FFF;    width: 600px;    margin: 30px auto;    padding: 20px;">
+            <modal-header>
+                属性
+            </modal-header>
+
+            <modal-body>
+                    
+                <div class="control-group">
+                    <label class="control-label">id<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <input type="text" name="json_id" ng-model="cfg.id" class="form-control" ng-required="cfg">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">名称<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <input type="text" name="json_name" ng-model="cfg.name" class="form-control" ng-required="cfg">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">类型<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <select name="json_type" ng-model="cfg.type" ng-required="cfg" class="form-control">
+                            <option value="">请选择</option>
+                            <option ng-repeat="(k,v) in jsonTypes" value="{{k}}">{{v}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">隐藏<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <label class="radio-inline" ng-repeat="k in ['否', '是']">
+                            <input type="radio" value="{{$index}}" ng-model="cfg.hide" ng-required="cfg" name="json_hide">{{k}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">必填<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <label class="radio-inline" ng-repeat="k in ['否', '是']">
+                            <input type="radio" value="{{$index}}" ng-model="validate.required" ng-required="cfg" name="required">{{k}}
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">文本验证类型</label>
+                    <div class="controls form-group">
+                        <select name="json_type" ng-model="validate.pattern" class="form-control">
+                            <option value="">请选择</option>
+                            <option ng-repeat="k in pattern_list" value="{{k}}">{{k}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">最大汉字长度</label>
+                    <div class="controls form-group">
+                        <input type="number" ng-model="validate.doubleLength" name="doubleLength" class="form-control">
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.type == 'select'">
+                    <label class="control-label">选项列表<span class="text-warning">*</span></label>
+                    <div class="controls form-group">
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <th ng-show="options_type == 2">key</th>
+                                <th>val<span class="text-warning">*</span></th>
+                            </tr>
+                            <tr ng-repeat="(k,v) in options_list">
+                                <td ng-show="options_type == 2">
+                                    <input type="text" ng-model="options_list[k]['key']" class="form-control" placeholder="不想要留空就好">
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="options_list[k]['val']" class="form-control" placeholder="不想要留空就好">
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <a href="javascript:" class="btn btn-primary" ng-click="onAddOptionsClick()">增加一个</a>
+                            <a href="javascript:" class="btn btn-primary" ng-click="onSetOptionTypeClick(1)" ng-show="options_type == 2">设置为数组（设置key=val）</a>
+                            <a href="javascript:" class="btn btn-primary" ng-click="onSetOptionTypeClick(2)" ng-show="options_type == 1">设置为对像</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.id != 'url_query'">
+                    <label class="control-label">默认值</label>
+                    <div class="controls form-group">
+                        <input type="text" name="json_default" ng-model="cfg.defaultValue" class="form-control">
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.id == 'url_query'">
+                    <label class="control-label" for="tieba_ad_types_querys">
+                        额外参数
+                    </label>
+                    <div class="controls form-group">
+                        <div ng-repeat="(gk, gv) in query_list">
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th colspan="3">{{gk}}</th>
+                                </tr>
+                                <tr ng-repeat="(key, val) in gv">
+                                    <td>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" ng-model="query_list_status[gk][key]">
+                                        </label>
+                                    </td>
+                                    <td>
+                                        {{val}}
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="query_list_paraname[gk][key]" placeholder="{{key}}" ng-init="query_list_paraname[gk][key] = key">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                            
+                        <div ng-show="debugger">{{query_list_status|json}}</div>
+                        <div ng-show="debugger">{{query_list_paraname|json}}</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">其它提示</label>
+                    <div class="controls form-group">
+                        <div ng-repeat="(k,v) in tips_list">
+                            <input type="text" ng-model="tips_list[k]" class="form-control" placeholder="不想要留空就好">
+                        </div>
+                        <div><a href="javascript:" class="btn btn-primary" ng-click="onAddTipsClick()">增加一个</a></div>
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.type == 'upload'">
+                    <label class="control-label">图片宽度</label>
+                    <div class="controls form-group">
+                        <input type="number" name="json_width" ng-model="cfg.width" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.type == 'upload'">
+                    <label class="control-label">图片高度</label>
+                    <div class="controls form-group">
+                        <input type="number" name="json_height" ng-model="cfg.height" class="form-control">
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.type == 'upload'">
+                    <label class="control-label">图片最大体积</label>
+                    <div class="controls form-group">
+                        <input type="number" name="json_height" ng-model="cfg.maxfilesize" class="form-control">
+                    </div>
+                </div>
+
+                <div class="control-group" ng-show="cfg.type == 'upload'">
+                    <label class="control-label">图片格式</label>
+                    <div class="controls form-group">
+                        <input type="text" name="json_whitelist" ng-model="cfg.whitelist" class="form-control" placeholder="用|分隔的小字后缀字符串">
+                    </div>
+                </div>
+                
+            </modal-body>
+
+            <modal-footer>
+                <a href="javascript:" class="btn btn-danger" ng-click="save()" ng-disabled="json_form.$invalid">保存</a>
+                <a href="javascript:" class="btn btn-default" ng-click="cancelEdit()">取消</a>
+            </modal-footer>
+        </modal>
+    </form>
+
+</div>

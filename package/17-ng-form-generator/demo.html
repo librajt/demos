@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/application.min.css">
+    <style>
+        body{background:#FFF;position:relative;}
+        hr{margin:0 0 10px 0;border-top:1px solid #CCC;}
+    </style>
+    <title>Document</title>
+    <script src="lib/underscore.js"></script>
+    <script src="lib/angular.js"></script>
+    
+    <script src="lib/types_list.js"></script>
+    
+    <script src="directive/type_form/type_form.js"></script>
+    <script src="directive/type_form_simpletext/type_form_simpletext.js"></script>
+    <script src="directive/type_form_richtext/type_form_richtext.js"></script>
+    <script src="directive/type_form_select/type_form_select.js"></script>
+    <script src="directive/type_form_upload/type_form_upload.js"></script>
+    
+    <script src="directive/type_json_editor/type_json_editor.js"></script>
+</head>
+<body ng-controller="appController">
+
+<div class="form-horizontal" style="padding:20px;">
+    <hr>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="control-group">
+                <label class="control-label">
+                    <span>typeidJson</span>
+                </label>
+                <div class="controls form-group">
+                    <div class="col-sm-11">
+                        <select name="form_input" ng-model="typeidJson" class="form-control" ng-options="obj.name for obj in typeidJsonList" ng-change="updateTypeidJson(obj)">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+
+
+    <hr>
+    
+    <type-json-editor 
+        ng-model="jsonString"
+        arg-debugger="debugger"
+    >
+    </type-json-editor>
+
+    
+    <hr>
+    
+    <div ng-repeat="cfg in typeidJson.properties">
+        <type-form
+            ng-model="typeFormJson[cfg.id]"
+            arg-json="cfg"
+            arg-debugger="debugger"
+        >
+        </type-form>
+    </div>
+    
+    <pre>{{typeFormJson|json}}</pre>
+
+    <hr>
+    forms:
+    <hr>
+    --
+
+    <hr>
+    forms:
+    <hr>
+</div>
+
+<script>
+var appModule = angular.module('app', ['adsense']);
+appModule.controller('appController', function($scope) {
+    $scope.typeidJsonList = window.TYPES_LIST;
+    
+    $scope.updateTypeidJson = function (obj) {
+        $scope.typeFormJson = {};
+        $scope.jsonString = JSON.stringify($scope.typeidJson.properties || []);
+    };
+    
+    $scope.$watch('jsonString', function() {
+        $scope.typeidJson && ($scope.typeidJson.properties = JSON.parse($scope.jsonString || '[]'));
+    });
+})
+
+// -----------------------------------
+
+
+// -----------------------------------
+appModule.directive('authorityEditor', function() {
+
+    function link(scope, elem, attr, ctrl) {
+
+    }
+
+    return {
+        restrict: 'EA',
+        template: 't_authority.html',
+        link: link,
+        scope:{
+            output:'='
+        },
+        replace: true
+    };
+});
+
+// -----------------------------------
+
+
+</script>
+
+</body>
+</html>
