@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="application.css">
+    <title>Document</title>
+    <script src="jquery-1.8.3.min"></script>
+    <script src="type_list.js"></script>
+    <script src="typeEditor.js"></script>
+</head>
+<body class="background-dark">
+
+<div class="content">
+
+
+<div class="row" ng-controller="AdEditController">
+    <div class="col-md-12">
+        <h2 class="page-title">创建广告</h2>
+        <section class="widget">
+            <div class="body">
+                <form class="form-horizontal" role="form">
+                    <fieldset>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="">广告规格</label>
+                            <div class="controls form-group">
+                                <select id="type_list" class="form-control small-input">
+                                    <option value="">Plaese Select</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="controls form-group">
+                                <div id="goods_properties"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions text-right">
+                            <button id="submit" class="btn">提交</button>
+                        </div>
+
+                        <pre id="result"></pre>
+
+                    </fieldset>
+                </form>
+
+
+            </div>
+        </section>
+    </div>
+</div>
+
+
+
+    <script src="main.js"></script>
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

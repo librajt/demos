@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gbk" />
+		<title>MIS for spreadad - 物料上传</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="assert/bootstrap.min.css?v=20131215" />
+		<link rel="stylesheet" href="assert/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="assert/ace.min.css?v=201312152133" />
+		<link rel="stylesheet" href="assert/ace-responsive.min.css" />
+		<link rel="stylesheet" href="assert/ace-skins.min.css" />
+		<script>
+		if(navigator.userAgent.toUpperCase().indexOf("CHROME") < 0)
+		{
+			alert("请使用Chrome 并且 大于26的浏览器版本 访问MIS，这是统一要求，见谅");
+		}
+		</script>		
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<a href="#" class="brand">
+						<small>
+							<i class="icon-leaf"></i>
+							MIS for spreadads
+						</small>
+					</a><!--/.brand-->
+				</div><!--/.container-fluid-->
+			</div><!--/.navbar-inner-->
+		</div>
+		<div class="main-container container-fluid">
+			<a class="menu-toggler" id="menu-toggler" href="#">
+				<span class="menu-text"></span>
+			</a>
+
+			<div class="sidebar" id="sidebar">
+				<ul class="nav nav-list">
+					<li class="active">
+						<a href="/spread/goodsIndex?tab=upload">
+							<i class="icon-backward"></i>
+							<span class="menu-text"> 物料上传 </span>
+						</a>
+					</li>
+				</ul><!--/.nav-list-->
+
+				<div class="sidebar-collapse" id="sidebar-collapse">
+					<i class="icon-double-angle-left"></i>
+				</div>
+			</div>
+
+			<div class="main-content">
+				
+<style>
+	.bootbox,.modal {
+		width: auto;
+	}
+	.bootbox .modal-body {
+		max-height: inherit;
+	}
+	.row_bordered {
+        padding-top:20px;
+        border-top:1px solid #CCC;
+	}
+    code.template {
+        display:none;
+    }
+    .goods_property_group legend {
+        font-size:18px;
+        text-indent:1em;
+    }
+    .goods_property .propertip {
+        color:#999;
+    }
+    .goods_property .errmsg {
+        color:red;
+    }
+    .error .ace-file-input label {
+        border-color:#f59942;
+    }
+    .controls_upload .ace-file-input{float:left;width:220px;margin-bottom:0;}
+    .controls_upload .ace-file-input + button{float:left;border-width:1px;margin-left:20px;margin-top:2px;}
+</style>
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-backward"></i>
+			<a href="#">物料上传</a>
+
+			<span class="divider"> <i class="icon-angle-right arrow-icon"></i> </span>
+		</li>
+	</ul>
+
+</div>
+
+<div class="page-content">
+	<div class="page-header position-relative">
+		<h1>
+			物料上传
+			<small>
+				<i class="icon-double-angle-right"></i>
+				请填写相关信息
+			</small>
+		</h1>
+	</div>
+	<div class="row-fluid">
+        
+        <form class="form-horizontal">
+            <div class="row-fluid"> 
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-goods-port">投放端</label>
+                        <div class="controls">
+                            <select class="form-select" id="form-field-goods-port">
+                                <option value="-1">请选择</option>
+                                <option value="0">PC</option>
+                                <option value="1">智能版</option>
+                                <option value="2">客户端</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-page">投放页面</label>
+                        <div class="controls">
+                            <select class="form-select" id="form-field-page">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-position">投放位置</label>
+                        <div class="controls">
+                            <select class="form-select" id="form-field-position">
+                            </select>
+                        </div>					
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-business">项目方向</label>
+                        <div class="controls">
+                            <select class="form-select" id="form-field-business">
+                                <option value="游戏">游戏</option>
+                                <option value="彩票">彩票</option>
+                                <option value="其它">其它</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-property_1">检索字段1</label>
+                        <div class="controls">
+                            <input type="text" id="form-field-property_1">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-property_2">检索字段2</label>
+                        <div class="controls">
+                            <input type="text" id="form-field-property_2">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-property_3">检索字段3</label>
+                        <div class="controls">
+                            <input type="text" id="form-field-property_3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row-fluid row_bordered">
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-goods_name">物料名称</label>
+                        <div class="controls">
+                            <input type="text" id="form-field-goods_name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-goods_type">物料类型</label>
+                        <div class="controls">
+                            <select class="form-select" id="form-field-goods_type">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="form-field-good_desc">物料描述</label>
+                        <div class="controls">
+                            <input type="text" id="form-field-good_desc">
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div id="goods_properties" class="row_bordered">
+            </div> 
+            
+            <div class="row-fluid">
+                <div class="form-actions center" style="padding-left: 0;">
+                    <button class="btn btn-small btn-primary" id="spreadads-submit">提交</button>
+                </div>
+            </div> 
+        </form>
+	</div>
+</div>
+
+			</div><!--/.main-content-->
+		</div>
+		<script src="assert/jquery.min.js"></script>
+		<script src="assert/bootstrap.min.js"></script>
+		<script src="assert/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="assert/ace-elements.min.js"></script>
+		<script src="assert/ace.min.js"></script>
+		<script src="assert/bootbox.min.js"></script>
+		<script src="klass.js"></script>
+		<script src="spreadads_config.js"></script>
+		<script src="spreadads_good_type.js"></script>
+		<script src="spreadads.js"></script>
+
+<script>
+$(document).ready(function() {
+spreadads.initial('[{"PB":[{"ad_type":"0","page_name":"PB","pos_name":"PK_FIXED_AD","template_name":"PC_PB_PK_FIXED_AD"},{"ad_type":"0","page_name":"PB","pos_name":"25","template_name":"PC_PB_25"},{"ad_type":"0","page_name":"PB","pos_name":"15","template_name":"PC_PB_15"},{"ad_type":"0","page_name":"PB","pos_name":"3","template_name":"PC_PB_3"}],"FRS":[{"ad_type":"0","page_name":"FRS","pos_name":"PK_FIXED_AD","template_name":"PC_FRS_PK_FIXED_AD"},{"ad_type":"0","page_name":"FRS","pos_name":"25","template_name":"PC_FRS_25"},{"ad_type":"0","page_name":"FRS","pos_name":"15","template_name":"PC_FRS_15"},{"ad_type":"0","page_name":"FRS","pos_name":"3","template_name":"PC_FRS_3"},{"ad_type":"0","page_name":"FRS","pos_name":"POSTER_TOP","template_name":"PC_FRS_POSTER_TOP"},{"ad_type":"0","page_name":"FRS","pos_name":"THREAD_TOP","template_name":"PC_FRS_THREAD_TOP"}]},{"FRS":[{"ad_type":"1","page_name":"FRS","pos_name":"5","template_name":"WAP_FRS_5"},{"ad_type":"1","page_name":"FRS","pos_name":"7","template_name":"WAP_FRS_7"},{"ad_type":"1","page_name":"FRS","pos_name":"3","template_name":"WAP_FRS_3"},{"ad_type":"1","page_name":"FRS","pos_name":"25","template_name":"WAP_FRS_25"},{"ad_type":"1","page_name":"FRS","pos_name":"15","template_name":"WAP_FRS_15"}],"PB":[{"ad_type":"1","page_name":"PB","pos_name":"25","template_name":"WAP_PB_25"},{"ad_type":"1","page_name":"PB","pos_name":"15","template_name":"WAP_PB_15"},{"ad_type":"1","page_name":"PB","pos_name":"3","template_name":"WAP_PB_3"}]},{"PB":[{"ad_type":"2","page_name":"PB","pos_name":"25","template_name":"APP_PB_25"},{"ad_type":"2","page_name":"PB","pos_name":"15","template_name":"APP_PB_15"},{"ad_type":"2","page_name":"PB","pos_name":"3","template_name":"APP_PB_3"}],"FRS":[{"ad_type":"2","page_name":"FRS","pos_name":"25","template_name":"APP_FRS_25"},{"ad_type":"2","page_name":"FRS","pos_name":"15","template_name":"APP_FRS_15"},{"ad_type":"2","page_name":"FRS","pos_name":"3","template_name":"APP_FRS_3"},{"ad_type":"2","page_name":"FRS","pos_name":"TEST","template_name":"APP_FRS_TEST"}]}]');
+});
+</script>
+
+
+			</body>
+</html>
