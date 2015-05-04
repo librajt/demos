@@ -21,7 +21,7 @@
     
     <script src="directive/type_json_editor/type_json_editor.js"></script>
 </head>
-<body ng-controller="appController">
+<body ng-controller="appController" spellcheck="false">
 
 <div class="form-horizontal" style="padding:20px;">
     <hr>
@@ -69,12 +69,12 @@
     <pre>{{typeFormJson|json}}</pre>
 
     <hr>
-    forms:
+    
     <hr>
     --
 
     <hr>
-    forms:
+    
     <hr>
 </div>
 
@@ -97,22 +97,7 @@ appModule.controller('appController', function($scope) {
 
 
 // -----------------------------------
-appModule.directive('authorityEditor', function() {
 
-    function link(scope, elem, attr, ctrl) {
-
-    }
-
-    return {
-        restrict: 'EA',
-        template: 't_authority.html',
-        link: link,
-        scope:{
-            output:'='
-        },
-        replace: true
-    };
-});
 
 // -----------------------------------
 
