@@ -1,0 +1,14 @@
+<div>
+    <div class="ibe-zoomer-controller">
+        <button class="IZV-button btn btn-sm btn-primary" ng-click="zoomUpdate(1)" ng-disabled="zoomLevel==zoomMax">放大</button>
+        <button class="IZV-button btn btn-sm btn-primary" ng-click="zoomUpdate(-1)" ng-disabled="zoomLevel==zoomMin">缩小</button>
+        <button class="IZV-button btn btn-sm btn-primary" ng-click="zoomUpdate(0)" ng-disabled="zoomLevel==zoomInit">复原</button>
+    </div>
+    <div class="ibe-zoomer-content-holder">
+        <div class="content" ng-transclude style="transform:scale({{zoomResult}});"></div>
+    </div>
+<style>
+.ibe-zoomer-content-holder{position:relative;overflow:auto;min-height:200px;max-height:800px;}
+.ibe-zoomer-content-holder > .content{display:inline-block;vertical-align:top;transform-origin:0 0;}
+</style>
+</div>

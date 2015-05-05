@@ -1,0 +1,9 @@
+<div class="ibe-resizer-content-holder">
+    <div class="content" ng-transclude></div>
+    <div class="resizer" ng-show="ngModel.isCurrent"></div>
+<style>
+.ibe-resizer-content-holder{position:relative;}
+.ibe-resizer-content-holder > .content{background:rgba(0,0,0,.4);width:40px;height:40px;}
+.ibe-resizer-content-holder > .resizer{position:absolute;z-index:9;right:0;bottom:0;width:15px;height:15px;border-right:4px solid #B00;border-bottom:4px solid #B00;margin:-4px 0 0 -4px;cursor:nwse-resize;}
+</style>
+</div>

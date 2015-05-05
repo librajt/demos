@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Datetime Picker</title>
+    
+    <link rel="stylesheet" href="bower_lib/bootstrap/dist/css/bootstrap.css">
+    
+    <script src="bower_lib/jquery/dist/jquery.js"></script>
+    <script src="bower_lib/jquery-ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="bower_lib/jquery-ui/themes/base/theme.css">
+    
+    <script src="bower_lib/angular/angular.js"></script>
+    
+    <script>angular.module('ngCommon', []);</script>
+    <script src="directive/ibe-zoomer/ibe-zoomer.js"></script>
+    <script src="directive/ibe-draggable/ibe-draggable.js"></script>
+    <script src="directive/ibe-resizer/ibe-resizer.js"></script>
+    <script src="directive/ibe-content/ibe-content.js"></script>
+    <script src="directive/ibe-setup-panel/ibe-setup-panel.js"></script>
+    
+    <style>
+    .ibe-buttons{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
+    </style>
+    
+    <script>
+    var app = angular.module('app', ['ngCommon']);
+
+    app.controller('MainCtrl', function($scope) {
+        $scope.data = {
+            image: 'http://tb1.bdstatic.com/tb/r/image/2015-04-24/d1a3f08b1d88e613e0323f034b8f19cf.jpg',
+            buttons: [
+                { "size": { "width": 116, "height": 49 }, "position": { "top": 22, "left": 74 } },
+                {},
+            ]
+        };
+
+        $scope.setCurrentButton = function($event, button) {
+            if ($scope.currentButton) {
+                delete $scope.currentButton.isCurrent;
+            }
+            if (button) {
+                $scope.currentButton = button;
+                button.isCurrent = true;
+            }
+            $event.stopPropagation();
+        }
+    });
+
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+
+
+<div class="container">
+    <h1></h1>
+    <p></p>
+    
+    <hr>
+    
+    <div class="row">
+        <div class="col-md-12">
+        
+            <h4></h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <ibe-zoomer>
+                    
+                        <div class="ibe-img"><img ng-src="{{data.image}}" alt></div>
+                        
+                    </ibe-zoomer>
+
+                    <div style="position:relative;display:inline-block;vertical-align:top;">
+                        <div class="ibe-img"><img ng-src="{{data.image}}" alt></div>
+                        <div class="ibe-buttons" ng-click="setCurrentButton($event)">
+                            <div class="ibe-button" ng-click="setCurrentButton($event, button)" ng-repeat="button in data.buttons">
+                                <ibe-draggable
+                                    ng-model="button"
+                                    container-el="'.ibe-buttons'"
+                                   
+                                    >
+                                    <ibe-resizer
+                                        ng-model="button"
+                                        container-el="'.ibe-buttons'"
+                                        >
+                                        <ibe-content
+                                            ng-model="button"
+                                            >
+                                        </ibe-content>
+                                    </ibe-resizer>
+                                </ibe-draggable>
+                            
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <p>ng-model: </p>
+                    <p>image_btn_1={{data.buttons[0]|json}}</p>
+                    <p>image_btn_2={{data.buttons[1]|json}}</p>
+                </div>
+            </div>
+            
+            <div class="row" ng-show="currentButton">
+                <div class="col-md-12">
+                    <ibe-setup-panel
+                        ng-model="currentButton"
+                        >
+                    </ibe-setup-panel>
+                </div>
+            </div>
+            {{currentButton|json}}
+            
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
