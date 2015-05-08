@@ -1,0 +1,71 @@
+<div ng-form="imageBannerEditor" class="">
+    <div class="row" style="min-height:280px;">
+        <div class="col-md-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>吧头图(*)</label>
+                        <div class="">
+                            <input type="text" class="form-control" ng-model="ngModel.image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-primary" ng-click="addNewButton()">新建内容区</button>
+            <button class="btn btn-sm btn-primary" ng-click="cancelEditStatus()" ng-show="currentButton">退出编辑状态</button>
+            <button class="btn btn-sm btn-danger" ng-click="deleteButton()" ng-show="currentButton">删除内容区</button>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="helper.visible" name="helperVisible">
+                    显示按钮区域
+                </label>
+            </div>
+        </div>
+        <div class="col-md-10 form-horizontal">
+            <div class="row" ng-show="currentButton">
+                <div class="col-md-12">
+                    <ibe-setup-panel
+                        ng-model="currentButton"
+                        helper="helper"
+                        >
+                    </ibe-setup-panel>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <ibe-zoomer>
+            </ibe-zoomer> -->
+            <div style="position:relative;display:inline-block;vertical-align:top;">
+                <div class="ibe-img"><img ng-src="{{ngModel.image}}" alt></div>
+                <div class="ibe-buttons" ng-click="setCurrentButton($event)">
+                    <div class="ibe-button" ng-click="setCurrentButton($event, button)" ng-repeat="button in ngModel.buttons">
+                        <ibe-draggable
+                            ng-model="button"
+                            container-el="'.ibe-buttons'"
+                            helper="helper"
+                            >
+                            <ibe-resizer
+                                ng-model="button"
+                                container-el="'.ibe-buttons'"
+                                helper="helper"
+                                >
+                                <ibe-content
+                                    ng-model="button"
+                                    helper="helper"
+                                    >
+                                </ibe-content>
+                            </ibe-resizer>
+                        </ibe-draggable>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<style>
+.ibe-buttons{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
+</style>
+</div>

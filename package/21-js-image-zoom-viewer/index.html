@@ -13,111 +13,53 @@
     <script src="bower_lib/angular/angular.js"></script>
     
     <script>angular.module('ngCommon', []);</script>
+    <script src="directive/image-banner-editor/image-banner-editor.js"></script>
     <script src="directive/ibe-zoomer/ibe-zoomer.js"></script>
     <script src="directive/ibe-draggable/ibe-draggable.js"></script>
     <script src="directive/ibe-resizer/ibe-resizer.js"></script>
     <script src="directive/ibe-content/ibe-content.js"></script>
     <script src="directive/ibe-setup-panel/ibe-setup-panel.js"></script>
     
-    <style>
-    .ibe-buttons{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
-    </style>
-    
-    <script>
-    var app = angular.module('app', ['ngCommon']);
-
-    app.controller('MainCtrl', function($scope) {
-        $scope.data = {
-            image: 'http://tb1.bdstatic.com/tb/r/image/2015-04-24/d1a3f08b1d88e613e0323f034b8f19cf.jpg',
-            buttons: [
-                { "size": { "width": 116, "height": 49 }, "position": { "top": 22, "left": 74 } },
-                {},
-            ]
-        };
-
-        $scope.setCurrentButton = function($event, button) {
-            if ($scope.currentButton) {
-                delete $scope.currentButton.isCurrent;
-            }
-            if (button) {
-                $scope.currentButton = button;
-                button.isCurrent = true;
-            }
-            $event.stopPropagation();
-        }
-    });
-
-    </script>
 </head>
 
 <body ng-controller="MainCtrl">
 
 
 <div class="container">
-    <h1></h1>
+    <h1 ng-switch on="abc">
+        <span ng-switch-when="1">1</span>
+        <span ng-switch-when="2">2</span>
+        <span ng-switch-when="3">3</span>
+    </h1>
     <p></p>
     
     <hr>
     
-    <div class="row">
-        <div class="col-md-12">
-        
-            <h4></h4>
-            <div class="row">
-                <div class="col-md-12">
-                    <ibe-zoomer>
-                    
-                        <div class="ibe-img"><img ng-src="{{data.image}}" alt></div>
-                        
-                    </ibe-zoomer>
-
-                    <div style="position:relative;display:inline-block;vertical-align:top;">
-                        <div class="ibe-img"><img ng-src="{{data.image}}" alt></div>
-                        <div class="ibe-buttons" ng-click="setCurrentButton($event)">
-                            <div class="ibe-button" ng-click="setCurrentButton($event, button)" ng-repeat="button in data.buttons">
-                                <ibe-draggable
-                                    ng-model="button"
-                                    container-el="'.ibe-buttons'"
-                                   
-                                    >
-                                    <ibe-resizer
-                                        ng-model="button"
-                                        container-el="'.ibe-buttons'"
-                                        >
-                                        <ibe-content
-                                            ng-model="button"
-                                            >
-                                        </ibe-content>
-                                    </ibe-resizer>
-                                </ibe-draggable>
-                            
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <p>ng-model: </p>
-                    <p>image_btn_1={{data.buttons[0]|json}}</p>
-                    <p>image_btn_2={{data.buttons[1]|json}}</p>
-                </div>
-            </div>
-            
-            <div class="row" ng-show="currentButton">
-                <div class="col-md-12">
-                    <ibe-setup-panel
-                        ng-model="currentButton"
-                        >
-                    </ibe-setup-panel>
-                </div>
-            </div>
-            {{currentButton|json}}
-            
-        </div>
-
-    </div>
+    <image-banner-editor ng-model="imageBanner"></image-banner-editor>
+    {{imageBanner|json}}
 </div>
 
+    
+    
+    <script>
+    var app = angular.module('app', ['ngCommon']);
+
+    app.controller('MainCtrl', function($scope) {
+        $scope.imageBanner = {
+            image: 'http://tb1.bdstatic.com/tb/r/image/2015-02-13/3e97a6c9bc0c37cb85d0e7d22a3a9488.jpg',
+            buttons: [
+                { "id": 1430981052825 , "size": { "width": 215, "height": 98 }, "position": { "top": 448, "left": 25 }, "data": { "type": 1, "imageTrack": "下载游戏", "imageTarget": "http://down2.baiduwebgame.com/zhanguopohuaishen/zg_baidu_150213_v1.rar", "imageHoverBg": "http://tb1.bdstatic.com/tb/r/image/2015-02-12/c612d4b33d2a7397edb92bf7724234f2.jpg" } }
+            ]
+        };
+
+        $scope.abc = 2;
+
+    });
+
+    </script>
 
 </body>
 
 </html>
+
+

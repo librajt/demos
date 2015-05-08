@@ -1,5 +1,17 @@
-<div class="ibe-content">
+<div class="ibe-content ibe-content-{{ngModel.id}}">
 <style>
-.ibe-content{position:absolute;width:100%;height:100%;}
+.ibe-content{position:absolute;width:100%;height:100%;background:no-repeat;}
 </style>
+<style ng-if="helper.visible">
+.ibe-content{background:rgba(0,0,0,.6);}
+.ibe-dragable-content-holder > .content.editting .ibe-content{background:rgba(255,255,0,.6);}
+</style>
+
+<style ng-if="ngModel.data.imageNormalBg">
+.ibe-content-{{ngModel.id}}{background-image:url({{ngModel.data.imageNormalBg}});}
+</style>
+<style ng-if="ngModel.data.imageHoverBg">
+.ibe-content-{{ngModel.id}}:hover{background-image:url({{ngModel.data.imageHoverBg}});}
+</style>
+
 </div>

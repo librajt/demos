@@ -5,11 +5,12 @@ angular.module('ngCommon').directive('ibeDraggable', [ function() {
     
     
     function linkFn(scope, element, attrs, ngModelCtrl) {
-        scope.ngModel = scope.ngModel || {};
-        scope.ngModel.position = scope.ngModel.position || {
-            left: element.position().left,
-            top: element.position().top
-        };
+        if (scope.ngModel && !scope.ngModel.position) {
+            scope.ngModel.position = scope.ngModel.position || {
+                left: element.position().left,
+                top: element.position().top
+            };
+        }
         
         element.disableSelection();
         
@@ -39,6 +40,7 @@ angular.module('ngCommon').directive('ibeDraggable', [ function() {
         transclude: true,
         scope: {
             ngModel: '=',
+            helper: '=',
             containerEl: '='
         },
         replace: true,

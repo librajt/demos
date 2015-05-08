@@ -5,11 +5,12 @@ angular.module('ngCommon').directive('ibeResizer', [ function() {
     
     
     function linkFn(scope, element, attrs, ngModelCtrl) {
-        scope.ngModel = scope.ngModel || {};
-        scope.ngModel.size = scope.ngModel.size || {
-            width: element.width(),
-            height: element.height()
-        };
+        if (scope.ngModel && !scope.ngModel.size) {
+            scope.ngModel.size = scope.ngModel.size || {
+                width: element.width(),
+                height: element.height()
+            };
+        }
         
         element.disableSelection();
         
@@ -63,6 +64,7 @@ angular.module('ngCommon').directive('ibeResizer', [ function() {
         transclude: true,
         scope: {
             ngModel: '=',
+            helper: '=',
             containerEl: '='
         },
         link: linkFn
