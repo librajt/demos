@@ -75,7 +75,7 @@ angular.module('ngAdsenseCommon').directive('datetimePicker', [ function() {
             autoclose: 1,
             todayHighlight: 1,
             //language: 'zh-CN'
-        }).on('changeDate', function(e) {debugger;
+        }).on('changeDate', function(e) {
             scope.ngModel = ReturnType[type].get(e, format, $viewEl);
             scope.$apply();
         });
