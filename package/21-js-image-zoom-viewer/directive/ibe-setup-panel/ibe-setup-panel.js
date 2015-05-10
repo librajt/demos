@@ -50,6 +50,7 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
             40: 'Down'
         };
         var isControlPress = false;
+        var keyStep = 1;
 
         function keyDownEvent(e) {
             if (!scope.ngModel || !scope.helper || !scope.helper.visible) {
@@ -78,17 +79,20 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
                     isControlPress = false;
                     break;
                 case 37:
-                    isControlPress ? scope.ngModel.size.width-- : scope.ngModel.position.left--;
+                    isControlPress ? scope.ngModel.size.width-=keyStep : scope.ngModel.position.left-=keyStep;
                     break;
                 case 39:
-                    isControlPress ? scope.ngModel.size.width++ : scope.ngModel.position.left++;
+                    isControlPress ? scope.ngModel.size.width+=keyStep : scope.ngModel.position.left+=keyStep;
                     break;
                 case 38:
-                    isControlPress ? scope.ngModel.size.height-- : scope.ngModel.position.top--;
+                    isControlPress ? scope.ngModel.size.height-=keyStep : scope.ngModel.position.top-=keyStep;
                     break;
                 case 40:
-                    isControlPress ? scope.ngModel.size.height++ : scope.ngModel.position.top++;
+                    isControlPress ? scope.ngModel.size.height+=keyStep : scope.ngModel.position.top+=keyStep;
                     break;
+                default:
+                    return;
+
             }
 
             scope.$apply();

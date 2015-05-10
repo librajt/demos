@@ -54,6 +54,11 @@ angular.module('ngCommon').directive('ibeResizer', [ function() {
 
         scope.$watch('ngModel', function() {
             scope.$content.css(scope.ngModel.size);
+            var fix = scope.$el.width();
+            scope.$el.css({
+                left: scope.ngModel.size.width - fix,
+                top: scope.ngModel.size.height - fix
+            });
         }, true);
     }
 
