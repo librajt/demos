@@ -26,17 +26,10 @@
 
 
 <div class="container">
-    <h1 ng-switch on="abc">
-        <span ng-switch-when="1">1</span>
-        <span ng-switch-when="2">2</span>
-        <span ng-switch-when="3">3</span>
-    </h1>
-    <p></p>
-    
     <hr>
     
     <image-banner-editor ng-model="imageBanner"></image-banner-editor>
-    {{imageBanner|json}}
+    <pre>{{imageBanner|json}}</pre>
 </div>
 
     
@@ -57,7 +50,7 @@
     });
 
     </script>
-
+http://fedev.baidu.com/~liquan02/game_banner_auto_set/index.html
 </body>
 
 </html>

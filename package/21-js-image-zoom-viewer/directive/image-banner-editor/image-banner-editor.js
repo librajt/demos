@@ -41,6 +41,29 @@ angular.module('ngCommon').directive('imageBannerEditor', [ function() {
         scope.helper = {};
         scope.helper.visible = true;
         
+        $(document).on('keyup', keyUpEvent);
+
+        var keyMap = {
+            46: 'Delete',
+        };
+
+        function keyUpEvent(e) {
+            if (!scope.ngModel || !scope.helper || !scope.helper.visible) {
+                return;
+            }
+
+            var keyCode = e.keyCode;
+            switch (keyCode) {
+                case 46:
+                    if (scope.currentButton) scope.deleteButton();
+                    break;
+                default:
+                    return;
+            }
+
+            scope.$apply();
+            e.preventDefault();
+        }
     }
 
     return {

@@ -43,13 +43,16 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
         $(document).on('keyup', keyUpEvent);
 
         var keyMap = {
+            16: 'Shift',
             17: 'Control',
             37: 'Left',
             38: 'Up',
             39: 'Right',
-            40: 'Down'
+            40: 'Down',
+            46: 'Delete',
         };
-        var isControlPress = false;
+        var isShiftPressing = false;
+        var isControlPressing = false;
         var keyStep = 1;
 
         function keyDownEvent(e) {
@@ -59,9 +62,15 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
 
             var keyCode = e.keyCode;
             switch (keyCode) {
-                case 17:
-                    isControlPress = true;
+                case 16:
+                    isShiftPressing = true;
+                    keyStep = 10;
                     break;
+                case 17:
+                    isControlPressing = true;
+                    break;
+                default:
+                    return;
             }
 
             scope.$apply();
@@ -75,24 +84,27 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
 
             var keyCode = e.keyCode;
             switch (keyCode) {
+                case 16:
+                    isShiftPressing = false;
+                    keyStep = 1;
+                    break;
                 case 17:
-                    isControlPress = false;
+                    isControlPressing = false;
                     break;
                 case 37:
-                    isControlPress ? scope.ngModel.size.width-=keyStep : scope.ngModel.position.left-=keyStep;
+                    isControlPressing ? scope.ngModel.size.width-=keyStep : scope.ngModel.position.left-=keyStep;
                     break;
                 case 39:
-                    isControlPress ? scope.ngModel.size.width+=keyStep : scope.ngModel.position.left+=keyStep;
+                    isControlPressing ? scope.ngModel.size.width+=keyStep : scope.ngModel.position.left+=keyStep;
                     break;
                 case 38:
-                    isControlPress ? scope.ngModel.size.height-=keyStep : scope.ngModel.position.top-=keyStep;
+                    isControlPressing ? scope.ngModel.size.height-=keyStep : scope.ngModel.position.top-=keyStep;
                     break;
                 case 40:
-                    isControlPress ? scope.ngModel.size.height+=keyStep : scope.ngModel.position.top+=keyStep;
+                    isControlPressing ? scope.ngModel.size.height+=keyStep : scope.ngModel.position.top+=keyStep;
                     break;
                 default:
                     return;
-
             }
 
             scope.$apply();
