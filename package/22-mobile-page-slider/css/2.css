@@ -1,0 +1,68 @@
+.ani-image{transform:scale(0);}
+.ani-image img{display:block;width:100%;}
+.z-animate .ani-image{transform:scale(1);}
+
+.ani-title{position:absolute;width:18px;text-align:center;padding:12px 0;
+	-webkit-transition-delay:.4s;
+	        transition-delay:.4s;
+}
+.ani-title .title{font-size:18px;color:#646464;word-wrap:break-word;line-height:1.1;}
+
+.ani-paragraph{padding:10px 20px;
+	-webkit-transition-delay:.6s;
+	        transition-delay:.6s;
+}
+.ani-paragraph .paragraph{font-size:12px;color:#646464;word-wrap:break-word;line-height:1.5;}
+
+
+.page-con .image{overflow:hidden;}
+
+.page-i-t-p .image{height:180px;}
+.page-i-t-p .text{position:relative;padding-left:58px;}
+.page-i-t-p .text .ani-title{left:20px;}
+.page-i-t-p .text .ani-paragraph{padding-left:0;}
+
+.page-p-t-i .image{height:240px;position:absolute;left:0;bottom:0;right:0;}
+.page-p-t-i .text{position:relative;padding-right:58px;padding-bottom:240px;}
+.page-p-t-i .text .ani-paragraph{padding-right:0;}
+.page-p-t-i .text .ani-title{right:20px;}
+
+.page-start .text{position:absolute;top:220px;left:35px;
+	-webkit-animation: bounceIn 1s ease .2s 1 both;
+	        animation: bounceIn 1s ease .2s 1 both;
+}
+.page-start .text .title{padding:0 8px;font-size:24px;color:#FFF;line-height:1;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.7);margin-bottom:12px;}
+.page-start .text .sub-title{padding:0 8px;font-size:12px;color:#FFF;line-height:1;}
+
+.page-end .author{position:absolute;top:120px;left:50%;margin-left:-140px;width:250px;background:rgba(0,0,0,.5);border-radius:15px;padding:15px;transform:scale(0);}
+.page-end .author .portrait{text-align:center;margin-top:-55px;}
+.page-end .author .portrait img{vertical-align:center;width:120px;height:120px;border-radius:999px;overflow:hidden;}
+.page-end .author .uname{font-size:14px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;}
+.page-end .author .sign{font-size:12px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;}
+.page-end .author .operations{text-align:center;margin-top:10px;}
+.page-end .author .operations .btn{display:inline-block;vertical-align:middle;width:40%;margin:0 3%;line-height:2;border-radius:10px;}
+.page-end .author .operations .btn-join{background:#9FF695;color:#000;font-size:14px;}
+.page-end .author .operations .btn-create{background:#F9D332;color:#000;font-size:14px;}
+
+.page-end .support{text-align:center;font-size:12px;color:#FFF;padding:10px;line-height:1.5;position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);}
+.page-end .support a{color:#23a3d3;}
+
+.page-end .author .ani{
+	-webkit-transition-delay:.4s;
+	        transition-delay:.4s;
+}
+.z-animate .page-end .author{transform:scale(1);}
+.z-animate .page-end .author .portrait{
+	-webkit-transition-delay:.6s;
+	        transition-delay:.6s;
+}
+.z-animate .page-end .author .uname,
+.z-animate .page-end .author .sign{
+	-webkit-transition-delay:.8s;
+	        transition-delay:.8s;
+}
+.z-animate .page-end .author .operations{
+	-webkit-animation: bounceIn 1s ease 1s 1 both;
+	        animation: bounceIn 1s ease 1s 1 both;
+}
+
