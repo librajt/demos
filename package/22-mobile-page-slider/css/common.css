@@ -96,11 +96,6 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
 }
 
 
-.ani {opacity:0;
-	-webkit-transition:all .8s;
-	        transition:all .8s;
-}
-.z-animate .ani{opacity:1;}
 
 
 
