@@ -1757,6 +1757,19 @@ var car2 = {
 	   //              window.scrollTo(0, 1);
 	   //          }, 0);
 
+				$('#j_audio').on('click', function() {
+                    var audio = $('#media').get(0);
+                    var $me = $(this);
+                    if ($me.hasClass('playing')) {
+                        audio.pause();
+                        $me.removeClass('playing');
+                    }
+                    else {
+                        audio.play();
+                        $me.addClass('playing');
+                    }
+				}).click();
+				
 				// media初始化
 				car2.media_init();
 

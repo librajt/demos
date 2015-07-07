@@ -78,6 +78,14 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
 }
 
 
+.audio{position:absolute;top:15px;right:15px;z-index:99;width:40px;height:40px;}
+.audio-icon{width:22px;height:22px;position:absolute;top:50%;left:50%;margin:-11px;background:url(../images/music_off.png) no-repeat center;background-size:100% 100%;}
+.audio.playing{background:url(../images/music.gif) no-repeat center;background-size:100% 100%;}
+.audio.playing .audio-icon{
+    -webkit-animation: rotating 1.2s linear infinite;
+            animation: rotating 1.2s linear infinite;
+}
+
 
 /**
  * = modle 模块样式
@@ -190,5 +198,26 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
         opacity: 1;
         -webkit-transform: scale3d(1,1,1);
         transform: scale3d(1,1,1)
+    }
+}
+
+
+@-webkit-keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(360deg)
+    }
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg)
+    }
+
+    to {
+        transform: rotate(360deg)
     }
 }

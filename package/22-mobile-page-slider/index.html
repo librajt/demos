@@ -21,16 +21,30 @@
     <section class="u-arrow">
         <p class=""></p>
     </section>
+    <section class="audio" id="j_audio">
+        <div class="audio-icon"></div>
+        <audio src="media/1.mp3" id="media" autoplay="" preload=""></audio>
+    </section>
     <section class="p-ct transformNode-2d">
         <div class="translate-back">
             <!-- 以下为单个页面 -->
 
             <!-- 所有页面都有 m-page fhide 两个类名 -->
             <div class="m-page f-hide" id="j-start"> <!-- 首页，id必须 -->
-                <div class="page-con page-single-vertical-title" style="background-image:url(img/1.jpeg);"> <!-- page-con 为固定，之后的 page- 为不同页面结构名称，与各内部HTML结构一致 --> <!-- 有背景图时写在style里 -->
-                    <div class="text flex-center">
-                        <div class="ani ani-opacity ani-inDown ani-delay-2"> <!-- 动画定义：基本，透明，从下方切入，延迟0.2s --> <!-- 这个div可以与 【下面】 的div合并，只因class太多，拆分一下 -->
-                            <div class="title">面朝大海春暖花开</div>
+                <div class="page-con page-right-vertical-title" style="background-image:url(img/1.jpeg);"> <!-- page-con 为固定，之后的 page- 为不同页面结构名称，与各内部HTML结构一致 --> <!-- 有背景图时写在style里 -->
+                    <div class="text">
+                        <div class="ani ani-opacity ani-inUp ani-delay-2"> <!-- 动画定义：基本，透明，从下方切入，延迟0.2s -->
+                            <div class="title">面朝大海</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-page f-hide">
+                <div class="page-con page-left-vertical-title" style="background-image:url(img/11.jpeg);">
+                    <div class="text">
+                        <div class="ani ani-opacity ani-inDown ani-delay-2">
+                            <div class="title">春暖花开</div>
                         </div>
                     </div>
                 </div>
@@ -39,12 +53,12 @@
             <div class="m-page f-hide">
                 <div class="page-con page-round-image-center-text">
                     <div class="image flex-center">
-                        <div class="ani ani-opacity ani-zoomIn"> <!-- 动画定义：基本，透明，放大 -->
-                            <img src="images/blank.gif" alt="" style="background-image:url(img/2.jpg);"> <!-- 行内图片用这种方式显示 --> <!-- 这个div可以与 【上面】 的div合并，只因class太多，拆分一下 -->
+                        <div class="ani ani-opacity ani-zoomIn">
+                            <img src="images/blank.gif" alt="" style="background-image:url(img/2.jpg);">
                         </div>
                     </div>
                     <div class="text">
-                        <div class="ani ani-opacity ani-inUp ani-delay-6"> <!-- 动画定义：基本，透明，从上方切入，延迟0.6s --> <!-- 这个div可以与 【下面】 的div合并，只因class太多，拆分一下 -->
+                        <div class="ani ani-opacity ani-inUp ani-delay-6">
                             <div class="title">小小的甜蜜</div>
                         </div>
                         <div class="ani ani-opacity ani-inDown ani-delay-8">
@@ -58,23 +72,30 @@
                     </div>
                 </div>
             </div>
+
             <div class="m-page f-hide">
-                <div class="page-con page-brand-image-left-text">
+                <div class="page-con page-brand-image-vertical-text">
                     <div class="image">
                         <div class="ani ani-opacity ani-inDown">
                             <img src="images/blank.gif" alt="" style="background-image:url(img/3.jpg);">
                         </div>
                     </div>
                     <div class="text">
-                        <div class="ani ani-opacity ani-inUp ani-delay-6">
-                            <div class="title">期望，途中的何时</div>
+                        <div class="title">
+                            <div class="ani ani-opacity ani-inUp ani-delay-6">
+                                <div class="title-wrap">期望，途中的何时</div>
+                            </div>
                         </div>
                         <div class="ani ani-opacity ani-inLeft ani-delay-8">
                             <div class="paragraph">
-                                <p>当晚风吹过的时候，伤感增添了一丝丝忧愁</p>
-                                <p>当夕阳挥手的那一刻，眼里描绘了淡淡的昏色</p>
-                                <p>当从孤单到寂寞时，心中的黎明何时光明</p>
-                                <p>没有人回应的世界，光明何时降临，绽放</p>
+                                <p>当晚风吹过的时候</p>
+                                <p>伤感增添了一丝丝忧愁</p>
+                                <p>当夕阳挥手的那一刻</p>
+                                <p>眼里描绘了淡淡的昏色</p>
+                                <p>当从孤单到寂寞时</p>
+                                <p>心中的黎明何时光明</p>
+                                <p>没有人回应的世界</p>
+                                <p>光明何时降临，绽放</p>
                             </div>
                         </div>
                     </div>
@@ -83,10 +104,14 @@
 
             <div class="m-page f-hide">
                 <div class="page-con page-bottom-text-block" style="background-image:url(img/4.jpeg);">
-                    <div class="text ani ani-inLeft ani-opacity"><!-- 这个div不可拆分 -->
-                        <div class="title">如果可以</div>
-                        <div class="paragraph">
-                            <p>如果可以，我希望有一颗太阳，只为你放光芒。如果可以，我希望有一轮月亮，只为你一人升起</p>
+                    <div class="text">
+                        <div class="ani ani-inLeft ani-opacity">
+                            <div class="title">如果可以</div>
+                        </div>
+                        <div class="ani ani-inLeft ani-opacity ani-delay-2">
+                            <div class="paragraph">
+                                <p>如果可以，我希望有一颗太阳，只为你放光芒。如果可以，我希望有一轮月亮，只为你一人升起</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,10 +119,14 @@
             
             <div class="m-page f-hide">
                 <div class="page-con page-top-text-block" style="background-image:url(img/5.jpeg);">
-                    <div class="text ani ani-inRight ani-opacity"><!-- 这个div不可拆分 -->
-                        <div class="title">一方水土</div>
-                        <div class="paragraph">
-                            <p>一方水土傻笑着旅人的眸子，南方似水的殷切。秀色江南形释自由之风，吹拂着密不透风的玻璃</p>
+                    <div class="text">
+                        <div class="ani ani-inRight ani-opacity">
+                            <div class="title">一方水土</div>
+                        </div>
+                        <div class="ani ani-inRight ani-opacity ani-delay-2">
+                            <div class="paragraph">
+                                <p>一方水土傻笑着旅人的眸子，南方似水的殷切。秀色江南形释自由之风，吹拂着密不透风的玻璃</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -125,10 +154,10 @@
             </div>
 
             <div class="m-page f-hide" id="j-end">
-                <div class="page-con page-end" style="background-image:url(images/yq0KEVV2BzyAd-deAAgqyI39EgE630.jpg);">
+                <div class="page-con page-end" style="background-image:url(img/yq0KEVV2BzyAd-deAAgqyI39EgE630.jpg);">
                     <div class="ani ani-zoomIn ani-delay-2 author">
                         <div class="portrait">
-                            <div class="ani ani-zoomIn ani-delay-4 "><img src="images/yq0KEVV2rfaAcqpZAABFaKvX_nY953.jpg" alt=""></div>
+                            <div class="ani ani-zoomIn ani-delay-4 "><img src="img/yq0KEVV2rfaAcqpZAABFaKvX_nY953.jpg" alt=""></div>
                         </div>
                         <div class="uname">
                             <div class="ani ani-opacity ani-inDown ani-delay-6">作者：燕子</div>
