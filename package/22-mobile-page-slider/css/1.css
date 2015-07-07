@@ -3,24 +3,54 @@
 	        transition:all .8s;
 }
 
-.ani-zoomIn{transform:scale(0);}
-.z-animate .ani-zoomIn{transform:scale(1);}
+.ani-zoomIn{
+	-webkit-transform:scale(0);
+			transform:scale(0);
+}
+.z-animate .ani-zoomIn{
+	-webkit-transform:scale(1);
+			transform:scale(1);
+}
 
 .ani-opacity{opacity:0;}
 .z-animate .ani-opacity{opacity:1;}
 
 
-.ani-inUp{transform:translateY(-100%);}
-.z-animate .ani-inUp{transform:translateY(0);}
+.ani-inUp{
+	-webkit-transform:translateY(-100%);
+			transform:translateY(-100%);
+}
+.z-animate .ani-inUp{
+	-webkit-transform:translateY(0);
+			transform:translateY(0);
+}
 
-.ani-inDown{transform:translateY(100%);}
-.z-animate .ani-inDown{transform:translateY(0);}
+.ani-inDown{
+	-webkit-transform:translateY(100%);
+			transform:translateY(100%);
+}
+.z-animate .ani-inDown{
+	-webkit-transform:translateY(0);
+			transform:translateY(0);
+}
 
-.ani-inLeft{transform:translateX(-100%);}
-.z-animate .ani-inLeft{transform:translateX(0);}
+.ani-inLeft{
+	-webkit-transform:translateX(-100%);
+			transform:translateX(-100%);
+}
+.z-animate .ani-inLeft{
+	-webkit-transform:translateX(0);
+			transform:translateX(0);
+}
 
-.ani-inRight{transform:translateX(100%);}
-.z-animate .ani-inRight{transform:translateX(0);}
+.ani-inRight{
+	-webkit-transform:translateX(100%);
+			transform:translateX(100%);
+}
+.z-animate .ani-inRight{
+	-webkit-transform:translateX(0);
+			transform:translateX(0);
+}
 
 .z-animate .ani-bounceIn{
 	-webkit-animation: bounceIn 1s ease 0 1 both;
