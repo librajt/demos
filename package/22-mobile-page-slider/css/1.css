@@ -89,8 +89,13 @@
 	        animation-delay:1s;
 }
 
+.flex{
+	-webkit-box-orient:vertical;-moz-box-orient:vertical;-webkit-box-direction:normal;-moz-box-direction:normal;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;flex-direction:column;
+    -webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;align-items:center;
+    -webkit-box-pack:center;-moz-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;justify-content:center;
+    text-align: center;
+}
 .flex-center{
-	display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:-ms-flex;display:flex;
 	-webkit-box-orient:vertical;-moz-box-orient:vertical;-webkit-box-direction:normal;-moz-box-direction:normal;-webkit-flex-direction:column;-moz-flex-direction:column;-ms-flex-direction:column;flex-direction:column;
     -webkit-box-align:center;-moz-box-align:center;-ms-flex-align:center;-webkit-align-items:center;-moz-align-items:center;-ms-align-items:center;align-items:center;
     -webkit-box-pack:center;-moz-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;-moz-justify-content:center;-ms-justify-content:center;justify-content:center;
@@ -112,10 +117,11 @@
 
 
 .page-brand-image-vertical-text{}
-.page-brand-image-vertical-text .image{height:214px;position:relative;z-index:1;}
+.page-brand-image-vertical-text .flex{height:100%;}
+.page-brand-image-vertical-text .image{height:40%;position:relative;z-index:1;}
 .page-brand-image-vertical-text .image > div{width:100%;height:100%;}
 .page-brand-image-vertical-text .image img{width:100%;height:100%;background:no-repeat center;background-size:cover;overflow:hidden;}
-.page-brand-image-vertical-text .text{position:relative;word-break:break-word;}
+.page-brand-image-vertical-text .text{height:60%;position:relative;word-break:break-word;}
 .page-brand-image-vertical-text .title{position:absolute;right:15px;top:15px;width:24px;font-size:24px;line-height:24px;color:#000000;}
 .page-brand-image-vertical-text .paragraph{padding:20px 50px 20px 0;font-size:13px;line-height:16px;color:#333333;overflow:hidden;}
 .page-brand-image-vertical-text .paragraph p{float:right;width:22px;}
@@ -130,10 +136,12 @@
 .page-top-text-block .paragraph{padding:8px 15px;font-size:13px;line-height:24px;color:#FFF;background:rgba(0,0,0,.6);}
 
 
-.page-brand-image-text-no-title .image{height:330px;position:relative;z-index:1;}
+.page-brand-image-text-no-title{width:256px!important;margin:auto;}
+.page-brand-image-text-no-title .flex{height:100%;}
+.page-brand-image-text-no-title .image{width:256px;height:60%;position:relative;z-index:1;margin-top:10px;}
 .page-brand-image-text-no-title .image > div{width:100%;height:100%;}
 .page-brand-image-text-no-title .image img{width:100%;height:100%;background:no-repeat center;background-size:cover;overflow:hidden;}
-.page-brand-image-text-no-title .paragraph{margin:8px 15px;font-size:13px;line-height:24px;color:#333333;}
+.page-brand-image-text-no-title .paragraph{height:40%;margin:8px 15px;font-size:13px;line-height:24px;color:#333333;text-align:left;}
 
 
 .page-end .author{position:absolute;top:120px;left:50%;margin-left:-140px;width:250px;background:rgba(0,0,0,.5);border-radius:15px;padding:15px;}
