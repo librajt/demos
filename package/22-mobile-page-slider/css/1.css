@@ -141,7 +141,7 @@
 .page-brand-image-text-no-title .image{width:100%;height:60%;position:relative;z-index:1;margin-top:10px;}
 .page-brand-image-text-no-title .image > div{width:100%;height:100%;}
 .page-brand-image-text-no-title .image img{width:100%;height:100%;background:no-repeat center;background-size:cover;overflow:hidden;}
-.page-brand-image-text-no-title .paragraph{height:40%;margin:8px 15px;font-size:13px;line-height:24px;color:#333333;text-align:left;}
+.page-brand-image-text-no-title .paragraph{height:40%;margin:8px 0;font-size:13px;line-height:24px;color:#333333;text-align:left;}
 
 
 .page-end .author{position:absolute;top:120px;left:50%;margin-left:-140px;width:250px;background:rgba(0,0,0,.5);border-radius:15px;padding:15px;}
