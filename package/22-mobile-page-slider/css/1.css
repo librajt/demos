@@ -147,10 +147,10 @@
 .page-end .author{position:absolute;top:120px;left:50%;margin-left:-140px;width:250px;background:rgba(0,0,0,.5);border-radius:15px;padding:15px;}
 .page-end .author .portrait{text-align:center;margin-top:-55px;}
 .page-end .author .portrait img{vertical-align:center;width:120px;height:120px;border-radius:999px;overflow:hidden;}
-.page-end .author .uname{font-size:14px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;}
-.page-end .author .sign{font-size:12px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;}
-.page-end .author .operations{text-align:center;margin-top:10px;}
-.page-end .author .operations .btn{display:inline-block;vertical-align:middle;width:40%;margin:0 3%;line-height:2;border-radius:10px;}
+.page-end .author .uname{font-size:14px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;margin:10px 0;}
+.page-end .author .sign{font-size:12px;text-align:center;color:#FFF;word-break:break-all;line-height:1.5;margin:10px 0;}
+.page-end .author .operations{text-align:center;margin-top:20px;}
+.page-end .author .operations .btn{display:inline-block;vertical-align:middle;width:40%;margin:0 3%;line-height:2;border-radius:5px;}
 .page-end .author .operations .btn-join{background:#9FF695;color:#000;font-size:14px;}
 .page-end .author .operations .btn-create{background:#F9D332;color:#000;font-size:14px;}
 
