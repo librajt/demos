@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Datetime Picker</title>
+    <script src="../lib/angular.js"></script>
+    <script src="contenteditable.js"></script>
+    
+    <script>
+    var app = angular.module('plunker', ['appDirective']);
+    app.controller('MainCtrl', function($scope) {
+        $scope.aa = function(image_urls) {
+            $scope.image_urls = image_urls;
+        }
+        
+        $scope.ta = 'abc';
+    });
+
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+input:
+<div contenteditable strip-br="true" ng-model="ta" style="border:1px solid #CCC;"></div>
+
+value:
+<div>{{ta}}</div>
+
+</body>
+
+</html>
