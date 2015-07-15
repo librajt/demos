@@ -1,0 +1,38 @@
+<div>
+	<div class="directive_multi_choices_left">
+		<section class="panel-group" ng-form="adsense_type_formList">
+     	    <div class="panel panel-info" ng-repeat="(province,citys) in choicesList" ng-init="json_id = $index">
+     	        <div class="panel-heading directive_multi_choices_item">
+      	           	<a data-toggle="collapse" href="#typeid_json_{{specailId}}_{{province}}" class="accordion-toggle">
+      	           		{{province}}
+      	           		<span ng-show="citys.length!=1" class="directive_multi_select_btn" ng-click="selectFirst( province);">加入</span>
+      	           	</a>
+     	        </div>
+               	<div id="typeid_json_{{specailId}}_{{province}}" class="panel-collapse collapse">
+               	    <div class="panel-body">
+               	    	<div class="directive_multi_choices_item" ng-repeat="city in citys">
+               	    		{{city}}
+      	           			<span class="directive_multi_select_btn" ng-click="selectSecond( city, province);">加入</span>
+               	    	</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+	</div>
+	<div class="directive_multi_choices_right">
+		<div>
+			<b>一级</b>
+			<div ng-repeat="content in firstContent" class="directive_multi_choices_item">
+        {{content}}
+        <span class="directive_multi_select_btn" ng-click="deleteFirst( content);">删除</span>
+      </div>
+		</div>
+		<div>
+			<b>二级</b>
+			<div ng-repeat="content in secondContent" class="directive_multi_choices_item">
+        {{content}}
+        <span class="directive_multi_select_btn" ng-click="deleteSecond( content);">删除</span>
+      </div>
+		</div>
+	</div>
+</div>

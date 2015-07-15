@@ -69,6 +69,11 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
                 case 17:
                     isControlPressing = true;
                     break;
+                case 37:
+                case 38:
+                case 39:
+                case 40:
+                    break;
                 default:
                     return;
             }
@@ -92,16 +97,16 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
                     isControlPressing = false;
                     break;
                 case 37:
-                    isControlPressing ? scope.ngModel.size.width-=keyStep : scope.ngModel.position.left-=keyStep;
+                    isControlPressing ? (scope.ngModel.size.width-=keyStep) : (scope.ngModel.position.left-=keyStep);
                     break;
                 case 39:
-                    isControlPressing ? scope.ngModel.size.width+=keyStep : scope.ngModel.position.left+=keyStep;
+                    isControlPressing ? (scope.ngModel.size.width+=keyStep) : (scope.ngModel.position.left+=keyStep);
                     break;
                 case 38:
-                    isControlPressing ? scope.ngModel.size.height-=keyStep : scope.ngModel.position.top-=keyStep;
+                    isControlPressing ? (scope.ngModel.size.height-=keyStep) : (scope.ngModel.position.top-=keyStep);
                     break;
                 case 40:
-                    isControlPressing ? scope.ngModel.size.height+=keyStep : scope.ngModel.position.top+=keyStep;
+                    isControlPressing ? (scope.ngModel.size.height+=keyStep) : (scope.ngModel.position.top+=keyStep);
                     break;
                 default:
                     return;
@@ -109,6 +114,8 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
 
             scope.$apply();
             e.preventDefault();
+            // e.stopPropagation();
+            // return false;
         }
 
         scope.$watch('ngModel', function() {
