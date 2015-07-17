@@ -1,71 +1,90 @@
-<div ng-form="imageBannerEditor" class="">
-    <div class="row" style="min-height:280px;">
-        <div class="col-md-2">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>吧头图(*)</label>
-                        <div class="">
+<div ng-form="imageBannerEditor" class="image-banner-editor">
+    <div class="ibe-preview-area">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibe-preview">
+                <!-- 
+                <ibe-zoomer>
+                </ibe-zoomer>
+                 -->
+                    <div class="ibe-img"><img ng-src="{{ngModel.image}}" alt></div>
+                    <div class="ibe-areas" ng-click="setCurrentArea($event)">
+                        <div class="ibe-area" ng-click="setCurrentArea($event, area)" ng-repeat="area in ngModel.areas">
+                            <ibe-draggable
+                                ng-model="area"
+                                container-el="'.ibe-areas'"
+                                helper="helper"
+                                >
+                                <ibe-resizer
+                                    ng-model="area"
+                                    container-el="'.ibe-areas'"
+                                    helper="helper"
+                                    >
+                                    <ibe-area
+                                        ng-model="area"
+                                        helper="helper"
+                                        >
+                                    </ibe-area>
+                                </ibe-resizer>
+                            </ibe-draggable>
+                        
+                        </div>
+                    </div>
+                    <div class="ibe-area-opts">
+                        <button class="btn btn-sm btn-primary btn-block" ng-click="setupBanner()">吧头图配置</button>
+                        <div ng-show="ngModel.image">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="helper.visible" name="helperVisible">
+                                    显示按钮区
+                                </label>
+                            </div>
+                            <button class="btn btn-sm btn-success btn-block" ng-click="addNewArea()">新建内容区</button>
+                            <button class="btn btn-sm btn-primary btn-block" ng-click="cancelEditStatus()" ng-show="currentArea">退出编辑状态</button>
+                            <button class="btn btn-sm btn-danger btn-block" ng-click="deleteArea()" ng-show="currentArea">删除内容区</button>
                             <input type="text" class="form-control" ng-model="ngModel.image">
                         </div>
                     </div>
-                </div>
-            </div>
-            <button class="btn btn-sm btn-primary" ng-click="addNewButton()">新建内容区</button>
-            <button class="btn btn-sm btn-primary" ng-click="cancelEditStatus()" ng-show="currentButton">退出编辑状态</button>
-            <button class="btn btn-sm btn-danger" ng-click="deleteButton()" ng-show="currentButton">删除内容区</button>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" ng-model="helper.visible" name="helperVisible">
-                    显示按钮区域
-                </label>
-            </div>
-        </div>
-        <div class="col-md-10 form-horizontal">
-            <div class="row" ng-show="currentButton">
-                <div class="col-md-12">
-                    <ibe-setup-panel
-                        ng-model="currentButton"
-                        helper="helper"
-                        >
-                    </ibe-setup-panel>
+                    <div class="ibe-area-opt-tip">
+                        <p>- 灰色区域为内容区，淡黄色高亮为当前操作项，可通过左侧“显示按钮区”切换显示</p>
+                        <p>- 方向键上、下、左、右按1px微调选中项位置</p>
+                        <p>- 组合Shift+方向键按10px调整选中项位置</p>
+                        <p>- 组合Ctrl+方向键调整选中项尺寸</p>
+                        <p>- 也可在页面顶部面板中修改数字调整各参数</p>
+                        <p>- delete键删除当前选中项</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <!-- <ibe-zoomer>
-            </ibe-zoomer> -->
-            <div style="position:relative;display:inline-block;vertical-align:top;">
-                <div class="ibe-img"><img ng-src="{{ngModel.image}}" alt></div>
-                <div class="ibe-buttons" ng-click="setCurrentButton($event)">
-                    <div class="ibe-button" ng-click="setCurrentButton($event, button)" ng-repeat="button in ngModel.buttons">
-                        <ibe-draggable
-                            ng-model="button"
-                            container-el="'.ibe-buttons'"
+    <div class="ibe-config-area" style="{{hideConfigArea ? 'transform: translateY(-100%);' : ''}}" ng-show="currentArea">
+        <div class="row">
+            <div class="col-md-12 form-horizontal">
+                <div class="row" ng-show="currentArea">
+                    <div class="col-md-12">
+                        <ibe-setup-panel
+                            ng-model="currentArea"
                             helper="helper"
                             >
-                            <ibe-resizer
-                                ng-model="button"
-                                container-el="'.ibe-buttons'"
-                                helper="helper"
-                                >
-                                <ibe-content
-                                    ng-model="button"
-                                    helper="helper"
-                                    >
-                                </ibe-content>
-                            </ibe-resizer>
-                        </ibe-draggable>
-                    
+                        </ibe-setup-panel>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="toggleConfigArea">
+            <button class="btn btn-success btn-block" ng-click="hideConfigArea = !hideConfigArea;">折叠/展开 内容区配置面板</button>
         </div>
     </div>
 
 <style>
-.ibe-buttons{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
+.ibe-preview-area{margin:340px auto;text-align:center;}
+.ibe-preview{position:relative;display:inline-block;vertical-align:top;min-width:980px;min-height:200px;}
+
+.ibe-config-area{position:fixed;top:0;left:0;margin:0;z-index:99;background:#EEE;width:100%;box-shadow:1px 1px 3px #003BBB;padding:0 15px;transition:transform .4s;}
+.ibe-config-area .toggleConfigArea{position:absolute;top:100%;left:0;right:0;}
+
+.ibe-areas{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
+.ibe-area-opts{position:absolute;right:100%;top:0;z-index:9;width:8em;margin-right:5px;}
+.ibe-area-opt-tip{position:absolute;left:100%;top:0;z-index:9;width:12em;margin-left:5px;text-align:left;}
 </style>
 </div>

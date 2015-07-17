@@ -6,33 +6,33 @@ angular.module('ngCommon').directive('imageBannerEditor', [ function() {
     
     function linkFn(scope, element, attrs, ngModelCtrl) {
         
-        scope.addNewButton = function() {
-            var button = {};
-            scope.setCurrentButton(null, button);
-            scope.ngModel.buttons.push(button);
+        scope.addNewArea = function() {
+            var area = {};
+            scope.setCurrentArea(null, area);
+            scope.ngModel.areas.push(area);
         };
 
-        scope.deleteButton = function() {
-            var index = scope.ngModel.buttons.indexOf(scope.currentButton);
-            scope.setCurrentButton();
-            scope.ngModel.buttons.splice(index, 1);
+        scope.deleteArea = function() {
+            var index = scope.ngModel.areas.indexOf(scope.currentArea);
+            scope.setCurrentArea();
+            scope.ngModel.areas.splice(index, 1);
         };
 
         scope.cancelEditStatus = function() {
-            scope.setCurrentButton();
+            scope.setCurrentArea();
         };
 
-        scope.setCurrentButton = function($event, button) {
-            if (scope.currentButton) {
-                delete scope.currentButton.isCurrent;
+        scope.setCurrentArea = function($event, area) {
+            if (scope.currentArea) {
+                delete scope.currentArea.isCurrent;
             }
 
-            if (button) {
-                scope.currentButton = button;
-                button.isCurrent = true;
+            if (area) {
+                scope.currentArea = area;
+                area.isCurrent = true;
             }
             else {
-                scope.currentButton = null;
+                scope.currentArea = null;
             }
 
             $event && $event.stopPropagation();
@@ -55,7 +55,7 @@ angular.module('ngCommon').directive('imageBannerEditor', [ function() {
             var keyCode = e.keyCode;
             switch (keyCode) {
                 case 46:
-                    if (scope.currentButton) scope.deleteButton();
+                    if (scope.currentArea) scope.deleteArea();
                     break;
                 default:
                     return;

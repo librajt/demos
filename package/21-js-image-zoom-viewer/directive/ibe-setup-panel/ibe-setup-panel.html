@@ -40,10 +40,10 @@
                 <div class="panel-heading">内容和样式</div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group form-group-sm">
-                                <label class="col-sm-4 control-label">内容类型(*)</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 control-label">内容类型(*)</label>
+                                <div class="col-sm-10">
                                     <label class="radio-inline" ng-repeat="type in typeList" >
                                         <input type="radio" ng-model="ngModel.data.type" value="{{type.val}}" name="typeid_input">
                                         {{type.label}}
@@ -56,15 +56,15 @@
                     <div class="row" ng-show="ngModel.data.type == 1">
                         <div class="col-md-6">
                             <div class="form-group form-group-sm">
-                                <label class="col-sm-4 control-label">跳转链接(*)</label>
+                                <label class="col-sm-4 control-label">按钮名称(*)</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="ngModel.data.imageTarget" placeholder="跳转链接">
+                                    <input type="text" class="form-control" ng-model="ngModel.data.imageTrack" placeholder="按钮名称">
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
-                                <label class="col-sm-4 control-label">统计参数(*)</label>
+                                <label class="col-sm-4 control-label">跳转链接(*)</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="ngModel.data.imageTrack" placeholder="按钮名称">
+                                    <input type="url" class="form-control" ng-model="ngModel.data.imageTarget" placeholder="跳转链接">
                                 </div>
                             </div>
                         </div>
@@ -108,6 +108,52 @@
                                         <input type="radio" ng-model="ngModel.data.videoAutoPlay" value="{{type.val}}" name="videoAutoPlay">
                                         {{type.label}}
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="ngModel.data.type == 3">
+                        <div class="col-md-6">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-4 control-label">倒数时间(*)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="ngModel.data.counterTime" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-4 control-label">字体(*)</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" ng-model="ngModel.data.counterFont" ng-options="value.val as value.label for value in counterFontList">
+                                        <option value="">请选择</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-4 control-label">字号(*)</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" ng-model="ngModel.data.counterSize" placeholder="介于12-72号之间，单位px" min="12" max="72">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-4 control-label">对齐方式(*)</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline" ng-repeat="type in counterAlignList" >
+                                        <input type="radio" ng-model="ngModel.data.counterAlign" value="{{type.val}}" name="videoAutoPlay">
+                                        {{type.label}}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-4 control-label">颜色(*)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="ngModel.data.counterColor" placeholder="以#号开头的16进制颜色">
                                 </div>
                             </div>
                         </div>

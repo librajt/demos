@@ -1,0 +1,35 @@
+<div class="ibe-content ibe-content-{{ngModel.id}}">
+    <div class="ibe-content-counter" ng-if="ngModel.data.type==3">99天23时59分</div>
+<style>
+.ibe-content{position:absolute;width:100%;height:100%;background:no-repeat;}
+</style>
+<style ng-if="helper.visible">
+.ibe-content{background:rgba(0,0,0,.6) no-repeat;}
+.ibe-dragable-content-holder > .content.editting .ibe-content{background-color:rgba(255,255,0,.6);}
+</style>
+
+<div ng-if="ngModel.data.type==1">
+    <style ng-if="ngModel.data.imageNormalBg">
+    .ibe-content-{{ngModel.id}}{background-image:url({{ngModel.data.imageNormalBg}});}
+    </style>
+    <style ng-if="ngModel.data.imageHoverBg">
+    .ibe-content-{{ngModel.id}}:hover{background-image:url({{ngModel.data.imageHoverBg}});}
+    </style>
+</div>
+
+<div ng-if="ngModel.data.type==3">
+    <style ng-if="ngModel.data.counterAlign">
+    .ibe-content-{{ngModel.id}} .ibe-content-counter{text-align:{{counterAlignMap[ngModel.data.counterAlign]}};}
+    </style>
+    <style ng-if="ngModel.data.counterFont">
+    .ibe-content-{{ngModel.id}} .ibe-content-counter{font-family:{{counterFontMap[ngModel.data.counterFont]}};}
+    </style>
+    <style ng-if="ngModel.data.counterSize">
+    .ibe-content-{{ngModel.id}} .ibe-content-counter{font-size:{{ngModel.data.counterSize}}px;}
+    </style>
+    <style ng-if="ngModel.data.counterColor">
+    .ibe-content-{{ngModel.id}} .ibe-content-counter{color:{{ngModel.data.counterColor}};}
+    </style>
+</div>
+
+</div>

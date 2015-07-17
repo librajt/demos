@@ -5,7 +5,7 @@
         <button class="IZV-button btn btn-sm btn-primary" ng-click="zoomUpdate(0)" ng-disabled="zoomLevel==zoomInit">复原</button>
     </div>
     <div class="ibe-zoomer-content-holder">
-        <div class="content" ng-transclude style="transform:scale({{zoomResult}});"></div>
+        <div class="content" ng-transclude style="zoom:{{zoomResult}};"></div>
     </div>
 <style>
 .ibe-zoomer-content-holder{position:relative;overflow:auto;min-height:200px;max-height:800px;}

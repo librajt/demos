@@ -25,6 +25,10 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
             {
                 val: '2',
                 label: '视频区'
+            },
+            {
+                val: '3',
+                label: '倒计时'
             }
         ];
 
@@ -36,6 +40,40 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
             {
                 val: '2',
                 label: 'iframe'
+            }
+        ];
+
+        scope.counterAlignList = [
+            {
+                val: '1',
+                label: '居左'
+            },
+            {
+                val: '2',
+                label: '居中'
+            },
+            {
+                val: '3',
+                label: '居右'
+            }
+        ];
+
+        scope.counterFontList = [
+            {
+                val: '1',
+                label: '非衬线字体'
+            },
+            {
+                val: '2',
+                label: '衬线字体'
+            },
+            {
+                val: '3',
+                label: '等宽字体'
+            },
+            {
+                val: '4',
+                label: '微软雅黑'
             }
         ];
 
@@ -63,11 +101,10 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
             var keyCode = e.keyCode;
             switch (keyCode) {
                 case 16:
-                    isShiftPressing = true;
-                    keyStep = 10;
+                    toggleShift(true);
                     break;
                 case 17:
-                    isControlPressing = true;
+                    toggleControl(true);
                     break;
                 case 37:
                 case 38:
@@ -90,11 +127,10 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
             var keyCode = e.keyCode;
             switch (keyCode) {
                 case 16:
-                    isShiftPressing = false;
-                    keyStep = 1;
+                    toggleShift(false);
                     break;
                 case 17:
-                    isControlPressing = false;
+                    toggleControl(false);
                     break;
                 case 37:
                     isControlPressing ? (scope.ngModel.size.width-=keyStep) : (scope.ngModel.position.left-=keyStep);
@@ -114,8 +150,15 @@ angular.module('ngCommon').directive('ibeSetupPanel', [ function() {
 
             scope.$apply();
             e.preventDefault();
-            // e.stopPropagation();
-            // return false;
+        }
+
+        function toggleShift(pressing) {
+            isShiftPressing = pressing;
+            keyStep = isShiftPressing ? 10 : 1;
+        }
+
+        function toggleControl(pressing) {
+            isControlPressing = pressing;
         }
 
         scope.$watch('ngModel', function() {
