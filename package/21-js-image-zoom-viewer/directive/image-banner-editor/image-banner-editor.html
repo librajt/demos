@@ -57,7 +57,10 @@
             </div>
         </div>
     </div>
-    <div class="ibe-config-area" style="{{hideConfigArea ? 'transform: translateY(-100%);' : ''}}" ng-show="currentArea">
+    <div class="ibe-config-area" style="{{hideConfigArea ? 'transform: translateY(100%);' : ''}}" ng-show="currentArea">
+        <div class="toggleConfigArea">
+            <button class="btn btn-success btn-block" ng-init="hideConfigArea=true;" ng-click="hideConfigArea = !hideConfigArea;">折叠/展开 内容区配置面板</button>
+        </div>
         <div class="row">
             <div class="col-md-12 form-horizontal">
                 <div class="row" ng-show="currentArea">
@@ -71,17 +74,14 @@
                 </div>
             </div>
         </div>
-        <div class="toggleConfigArea">
-            <button class="btn btn-success btn-block" ng-click="hideConfigArea = !hideConfigArea;">折叠/展开 内容区配置面板</button>
-        </div>
     </div>
 
 <style>
-.ibe-preview-area{margin:340px auto;text-align:center;}
+.ibe-preview-area{margin:0 auto 400px auto;text-align:center;}
 .ibe-preview{position:relative;display:inline-block;vertical-align:top;min-width:980px;min-height:200px;}
 
-.ibe-config-area{position:fixed;top:0;left:0;margin:0;z-index:99;background:#EEE;width:100%;box-shadow:1px 1px 3px #003BBB;padding:0 15px;transition:transform .4s;}
-.ibe-config-area .toggleConfigArea{position:absolute;top:100%;left:0;right:0;}
+.ibe-config-area{position:fixed;bottom:0;left:0;margin:0;z-index:99;background:#EEE;width:100%;box-shadow:1px 1px 3px #003BBB;padding:0 15px;transition:transform .4s;}
+.ibe-config-area .toggleConfigArea{position:absolute;bottom:100%;left:0;right:0;}
 
 .ibe-areas{position:absolute;left:0;top:0;right:0;bottom:0;z-index:9;}
 .ibe-area-opts{position:absolute;right:100%;top:0;z-index:9;width:8em;margin-right:5px;}
