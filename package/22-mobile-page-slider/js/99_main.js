@@ -1757,8 +1757,8 @@ var car2 = {
 	   //              window.scrollTo(0, 1);
 	   //          }, 0);
 
+                var audio = $('#media').get(0);
 				$('#j_audio').on('click', function() {
-                    var audio = $('#media').get(0);
                     var $me = $(this);
                     if ($me.hasClass('playing')) {
                         audio.pause();
@@ -1768,7 +1768,21 @@ var car2 = {
                         audio.play();
                         $me.addClass('playing');
                     }
+                    touchFix = true;
 				}).click();
+				if (audio.paused) audio.play();
+				
+				var touchFix = false;
+				$('.m-page').on('touchstart mousedown', function(e) {
+                    if (touchFix) return;
+                    var target = e.currentTarget;
+                    if (target.className !== 'audio' && audio.paused) {
+                        audio.play();
+                        $('#j_audio').addClass('playing');
+                        touchFix = true;
+                        return false;
+                    }
+				});
 				
 				// media初始化
 				car2.media_init();
