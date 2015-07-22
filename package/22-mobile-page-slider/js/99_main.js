@@ -1757,8 +1757,8 @@ var car2 = {
 	   //              window.scrollTo(0, 1);
 	   //          }, 0);
 
+                var audio = $('#media').get(0);
 				$('#j_audio').on('click', function() {
-                    var audio = $('#media').get(0);
                     var $me = $(this);
                     if ($me.hasClass('playing')) {
                         audio.pause();
@@ -1769,6 +1769,7 @@ var car2 = {
                         $me.addClass('playing');
                     }
 				}).click();
+				if (audio.paused) audio.play();
 				
 				// media初始化
 				car2.media_init();
