@@ -95,80 +95,85 @@ html, body.haswheel{height:100%;}
 <script src="jquery-1.10.2.min.js"></script>
 <script src="jquery.mousewheel.js"></script>
 <script>
-    var canuse = function () {
-            var b = document.createElement("div"),
-                a = "Khtml Ms O Moz Webkit".split(" ");
-            return function (c) {
-                if (c in b.style) return true;
-                for (var c = c.replace(/^[a-z]/, function (b) {
-                    return b.toUpperCase()
-                }), d = a.length; d--;) if (a[d] + c in b.style) return true;
-                return false
-            }
-        }();
-    if (!canuse("transform") || !canuse("transition")) return;
-    $("body").addClass("haswheel");
-    var f = {},
-        e = null,
-        c = 0,
-        h = function () {
-            var b = [0],
-                c = 0,
-                a = $(window).height(); 
-            a = a > 720 ? a : 720;
-            $(".page").each(function (a, b) {
-                c += $(b).height()
-            });
-            c += 50;
-            for (var d = c % a, e = Math.floor(c / a), h = d === 0 ? e : Math.ceil(c / a), g = 0; g < e - 1;) b.push(a + b[g]), g++;
-            d && b.push(d + b[e - 1]);
-            f.arr = b;
-            f.inds = h;
-            return f
-        },
-        i = function (b) {
-            c += b;
-            b = f.inds - 1;
-            if (c < 0 || c === 0) c = 0;
-            else if (c === b || c > b) c = b;
-            $(".topNav").find("li").removeClass('it_on').eq(c).addClass("it_on");
-            var v = "translate(0px, -" + f.arr[c] + "px)";
-            $(".pageBodyWrap").css({
-                "-webkit-transform": v,
-                "-moz-transform": v,
-                "-o-transform": v,
-                "-ms-transform": v,
-                "transform": v
-            });
-        };
-    
-    h();
-    $(window).resize(function () {
+    var init = function () {
+        var canuse = function () {
+                var b = document.createElement("div"),
+                    a = "Khtml Ms O Moz Webkit".split(" ");
+                return function (c) {
+                    if (c in b.style) return true;
+                    for (var c = c.replace(/^[a-z]/, function (b) {
+                        return b.toUpperCase()
+                    }), d = a.length; d--;) if (a[d] + c in b.style) return true;
+                    return false
+                }
+            }();
+        if (!canuse("transform") || !canuse("transition")) return;
+        $("body").addClass("haswheel");
+        var f = {},
+            e = null,
+            c = 0,
+            h = function () {
+                var b = [0],
+                    c = 0,
+                    a = $(window).height(); 
+                //a = a > 720 ? a : 720;
+                $(".page").each(function (a, b) {
+                    c += $(b).height()
+                });
+                c += 50;
+                for (var d = c % a, e = Math.floor(c / a), h = d === 0 ? e : Math.ceil(c / a), g = 0; g < e - 1;) b.push(a + b[g]), g++;
+                d && b.push(d + b[e - 1]);
+                f.arr = b;
+                f.inds = h;
+                return f
+            },
+            i = function (b) {
+                c += b;
+                b = f.inds - 1;
+                if (c < 0 || c === 0) c = 0;
+                else if (c === b || c > b) c = b;
+                $(".topNav").find("li").removeClass('it_on').eq(c).addClass("it_on");
+                var v = "translate(0px, -" + f.arr[c] + "px)";
+                $(".pageBodyWrap").css({
+                    "-webkit-transform": v,
+                    "-moz-transform": v,
+                    "-o-transform": v,
+                    "-ms-transform": v,
+                    "transform": v
+                });
+            };
+        
         h();
-        i(0);
-    });
-    $(window).mousewheel(function (b, c, a, d) {
-        e && window.clearTimeout(e);
-        e = window.setTimeout(function () {
-            d < 0 ? i(1) : i(-1)
-        }, 300);
-    });
-    $(window).keydown(function (b) {
-        switch (b.keyCode || b.which || b.charCode) {
-        case 38:
-            i(-1);
-            b.preventDefault();
-            break;
-        case 40:
-            i(1)
-            b.preventDefault();
-        }
-    });
-    $('.topNav li').click(function(e){
-        var idx = $(e.currentTarget).index();
-        i(idx - c);
-        return false;
-    });
+        $(window).resize(function () {
+            h();
+            i(0);
+        });
+        $(window).mousewheel(function (b, c, a, d) {
+            e && window.clearTimeout(e);
+            e = window.setTimeout(function () {
+                d < 0 ? i(1) : i(-1)
+            }, 300);
+        });
+        $(window).keydown(function (b) {
+            switch (b.keyCode || b.which || b.charCode) {
+            case 38:
+                i(-1);
+                b.preventDefault();
+                break;
+            case 40:
+                i(1)
+                b.preventDefault();
+            }
+        });
+        $('.topNav li').click(function(e){
+            var idx = $(e.currentTarget).index();
+            i(idx - c);
+            return false;
+        });
+    
+    }
+    
+    init();
 
 
 </script>
