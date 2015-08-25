@@ -178,6 +178,9 @@ body{background:#000;height:100%;}
                 $('.page').removeClass('z-animate');
                 $('.page' + (current + 1)).addClass('z-animate');
                 
+                $('.nav').removeClass('active');
+                $($('.nav').eq(current)).addClass('active');
+                
                 animateFun();
                 setTimeout(function() {
                     animating = null;
@@ -228,8 +231,6 @@ body{background:#000;height:100%;}
             if (to == current) return;
             
             doAnimate(to - current);
-            $el.siblings().removeClass('active');
-            $el.addClass('active');
         });
 
         var audio = $('#media').get(0);
