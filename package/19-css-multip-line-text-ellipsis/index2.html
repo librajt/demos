@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+	<title>css multip line text ellipsis</title>
+	<style>
+*{padding: 0;margin: 0;line-height: 24px;}
+
+.maskHelp:before{content:'';height:24px;width:0;float:right;}
+.maskHelp:after{content:'\2193';height:24px;margin-left:20px;float:right;clear:right;margin-bottom:-23px;}
+.showMore:before{content:'';display:inline-block;vertical-align:middle;width:100%;height:1em;margin-right:-100%;background:#fff;}
+.toggleWrap{overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical;display:-webkit-box;}
+.toggleWrap.singleLine .maskHelp,.toggleWrap.singleLine .showMore{display:none;}
+.toggleWrap.active{display:block;}
+.toggleWrap.active .showMore:before{display:none;}
+.toggleWrap.active .showMore:after{content:'\2191';float:right;width:20px;height:24px;}
+.toggleWrap.active .maskHelp{display:none;}
+
+	</style>
+</head>
+<body>
+    <p>readme:</p>
+    <p>两行示例，缩放浏览器尺寸以查看不同状态下的效果</p>
+    <a href="index.html">静态展示原理</a>
+    <hr>
+    <div class="toggleWrap">
+        <span class="groupTitle">这是一个很长很长的标题标题标题标题标题这是一个很长很长的标题标题标题标题标题</span>
+    </div>
+    <hr>
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function checkGroupTitleHeight() {
+        var $title = $('.groupTitle');
+        var $toggleWrap = $('.toggleWrap');
+
+        var toggleFn = function() {
+            if ($toggleWrap.hasClass('singleLine')) {
+                $toggleWrap.off('click', toggleFn);
+                $toggleWrap.removeClass('active');
+                return;
+            }
+            
+            $toggleWrap.toggleClass('active');
+
+            if ($toggleWrap.hasClass('active')) {
+                if ($toggleWrap.height() <= 48) {
+                    $toggleWrap.addClass('singleLine');
+                }
+                else {
+                    $toggleWrap.removeClass('singleLine');
+                }
+            }
+        };
+
+        if ($title.height() < 24) {  // 行内元素，高度因字体而异，这里只与行高做比较，大于行高则一定多于一行
+            $toggleWrap.addClass('singleLine');
+        }
+        else {
+            $title.before('<span class="maskHelp"></span>').after('<span class="showMore"></span>');
+            $toggleWrap.on('click', toggleFn);
+        }
+    }
+
+    checkGroupTitleHeight();
+
+</script>
+</body>
+</html>
