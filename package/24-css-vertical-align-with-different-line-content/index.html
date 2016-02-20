@@ -1,0 +1,34 @@
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8">
+
+<style>
+*{margin: 0;padding: 0;}
+body{-webkit-text-size-adjust:none;}
+.wrap{width: 100%;margin: 20px 0;line-height: 20px;display: table;}
+.wrap .tag{display: table-cell;vertical-align: top;width: 20px;height: 40px;}
+.wrap .symble{display: inline-block;vertical-align: middle;width: 5px;height: 35px;margin-top: 2px;background: #000;}
+.wrap .cnt{display: table-cell;vertical-align: middle;min-height: 40px;font-size: 16px;}
+
+</style>
+
+<div class="notice">不能用伪元素</div>
+
+<div class="wrap">
+    <div class="tag"><div class="symble"></div></div>
+    <div class="cnt">abc abc</div>
+</div>
+
+<div class="wrap">
+    <div class="tag"><div class="symble"></div></div>
+    <div class="cnt">abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc</div>
+</div>
+
+<div class="wrap">
+    <div class="tag"><div class="symble"></div></div>
+    <div class="cnt">中国 中国</div>
+</div>
+
+<div class="wrap">
+    <div class="tag"><div class="symble"></div></div>
+    <div class="cnt">中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国 中国</div>
+</div>
