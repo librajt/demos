@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Datetime Picker</title>
+    <script src="DatePicker/PC_version/jquery.min.js"></script>
+    <script src="../lib/angular.js"></script>
+    <script src="DatePicker/PC_version/dateRange.js"></script>
+    <link rel="stylesheet" type="text/css" href="DatePicker/PC_version/dateRange.css" />
+    <link rel="stylesheet" type="text/css" href="manual.css" />
+    <script src="ngDatePicker.js"></script>
+
+    <script>
+    var app = angular.module('app', ['appDirective']);
+    app.controller('MainCtrl', function($scope) {
+        $scope.destroy = function() {
+            $scope.hide = true;
+        };
+
+        $scope.defaultDate = {
+            startDate: '2016-2-9',
+            endDate: '2016-5-21'
+        };
+
+        $scope.onDateChange = function(obj) {
+            console.log('changed: ', obj);
+        };
+    });
+
+
+    // ---
+    var dateRange;
+    function init() {
+
+        dateRange = new pickerDateRange('date_demo', {
+            defaultText : ' 至 ',
+            target: 'form',
+            success : function(obj) {
+                console.info(obj);
+            }
+        });
+
+    }
+
+    function change() {
+        dateRange.updateSelectedDate('2016-01-10', '2016-02-20');
+    }
+
+    function destroy() {
+        dateRange.destroy();
+    }
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+
+    <div><button onclick="init()">INIT</button></div>
+    <div><button onclick="change()">CHANGE</button></div>
+    <div><button id="aRecent30Days">aRecent30Days</button></div>
+    <div><button onclick="destroy()">destroy</button></div>
+
+    <div class="form">
+        <div id="date_demo" style="border:1px solid #CCC;display:block;height: 30px;"></div>
+    </div>
+
+    <div>ng-version</div>
+    <div><button ng-click="destroy()">destroy</button></div>
+    <ng-date-picker on-date-change="onDateChange" ng-if="!hide"></ng-date-picker>
+    <ng-date-picker on-date-change="onDateChange" ng-if="!hide" default-recent="9"></ng-date-picker>
+    <ng-date-picker on-date-change="onDateChange" ng-if="!hide" default-date="defaultDate"></ng-date-picker>
+
+</body>
+
+</html>

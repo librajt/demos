@@ -1,0 +1,69 @@
+.ta_calendar {
+    border-color: #d9dadc;
+}
+.ta_calendar table {
+    margin: 0;
+    border-left: 1px solid #e7e7e7;
+}
+.ta_calendar table:first-child {
+    border-left-width: 0
+}
+.ta_calendar table caption {
+    border-bottom: 1px solid #e7e7e7;
+}
+.ta_calendar table thead tr {
+    border-width: 0;
+    background-color: #fff;
+    box-shadow: none;
+}
+.ta_calendar table thead th {
+    border-top-width: 0;
+    border-bottom-width: 0;
+    color: #2196f3;
+}
+.ta_calendar tbody {
+    background-color: #fff
+}
+.ta_calendar_footer {
+    padding-top: 6px;
+    padding-bottom: 10px;
+    border-top-color: #e7e7e7;
+    background-color: #fff
+}
+.ta_calendar_footer .frm_btn {
+    float: none;
+    text-align: center;
+    padding-right: 0
+}
+.ta_calendar_footer .frm_msg{display: none;}
+
+.ta_btn {
+    min-width: 84px;
+    display: inline-block;
+    padding: 0 22px;
+    height: 32px;
+    line-height: 28px;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer;
+    background-color: #eee;
+    border-color: #e6e7ec;
+    color: #222
+}
+.ta_btn_primary {
+    background-color: #2196f3;
+    border-color: #2196f3;
+    color: #fff
+}
+
+.ta_btn_primary:hover {
+    background-color: #008eff;
+    border-color: #008eff;
+}
+
+

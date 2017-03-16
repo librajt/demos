@@ -1,0 +1,14 @@
+{
+  "name": "25-js-angularjs-date-picker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ngDatePicker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "abc": "git://github.com/librajt/DatePicker"
+  },
+  "author": "",
+  "license": "ISC"
+}
