@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex">
+    <title>wx</title>
+    <style>html,body{height: 100%;}</style>
+    <script type='text/javascript' src="vue.js"></script>
+    <script type='text/javascript'>
+
+        // ---- touch related ----
+        var isTouch = document.ontouchstart === null,
+            isClick = document.onclick === null,
+            defaultsTouch = {
+                tapGesture: 'tap',
+                startGesture: 'touchstart',
+                moveGesture: 'touchmove',
+                stopGesture: 'touchend'
+            },
+
+            defaultsMouse = {
+                tapGesture: 'click',
+                startGesture: 'mousedown',
+                moveGesture: 'mousemove',
+                stopGesture: 'mouseup'
+            };
+
+        function eventWrap(e) {
+            if (isTouch) {
+                if (!e.touches || !e.touches[0]) return;
+                e.x = e.touches[0].clientX;
+                e.y = e.touches[0].clientY;
+            }
+            else {
+                e.x = e.clientX;
+                e.y = e.clientY;
+            }
+            return e;
+        }
+
+        // ---- touch related ----/
+
+        window.onload = function() {
+            var counter = Vue.extend({
+                template: '<div>longTapping: {{longTapping|json}}</div><div>{{log}}</div>',
+                data: function() {
+                    return {
+                        longTapping: false,
+                        log: 'log: '
+                    }
+                },
+                methods: {
+                    init: function() {
+                        var index = 0;
+                        var self = this;
+                        function add() {
+                            self.log += ' ' + index++;
+                            setTimeout(add, 1000);
+                        }
+                        add();
+                    },
+                },
+                created: function() {
+                },
+                beforeCompile: function() {
+                },
+                compiled: function() {
+                },
+                ready: function() {
+                    this.init();
+
+                    return;
+
+
+                    var doc = document.body;
+                    var self = this;
+
+                    function bindEvents(type) {
+                        doc.addEventListener(type.startGesture, function() {
+                            console.log('tap+');
+                            self.longTapping = true;
+                        }, false);
+                        doc.addEventListener(type.stopGesture, function() {
+                            console.log('tap-');
+                            self.longTapping = false;
+                        }, false);
+                    }
+
+                    if (isTouch) {
+                        bindEvents(defaultsTouch);
+                    }
+
+
+
+
+                },
+                beforeDestroy: function() {
+                },
+                destroyed: function() {
+                }
+
+            });
+            var app = new Vue({
+                el: '#app',
+                components: {
+                    'counter': counter
+                },
+                data: {
+                },
+                methods: {
+                    init: function() {
+                    },
+                },
+                created: function() {
+                },
+                beforeCompile: function() {
+                },
+                compiled: function() {
+                },
+                ready: function() {
+                    this.init();
+                },
+                beforeDestroy: function() {
+                },
+                destroyed: function() {
+                }
+
+            });
+        };
+    </script>
+
+</head>
+
+<body>
+    <div id="app">
+        <counter></counter>
+    </div>
+
+    <div id="timeout"></div>
+    <script>
+        var index = 1;
+        function add() {
+            var el = document.getElementById('timeout');
+            if (el) {
+                el.innerHTML = index++;
+            }
+            setTimeout(add, 1000);
+        }
+        add();
+    </script>
+</body>
+
+</html>

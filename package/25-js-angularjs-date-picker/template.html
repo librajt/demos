@@ -1,0 +1,12 @@
+<div class="ng-date-picker">
+    <div class="picker-rencent" ng-if="recentDaysData.length > 0">
+        <select-box
+            data="recentDaysData"
+            selected="selectedRencentDayKey"
+            selected-value="selectedRencentDayValue"
+            click="onRecentDaysChange"
+        ></select-box>
+    </div>
+    <div class="picker-value" style="border:1px solid #CCC;display:block;height: 30px;">
+    </div>
+</div>

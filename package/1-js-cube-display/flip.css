@@ -69,7 +69,7 @@
 }
 .potPlayer .pot {
   -webkit-backface-visibility: hidden;
-  -webkit-animation: potAnimi 12s linear 0 infinite normal;
+  -webkit-animation: potAnimi 12s linear 0s infinite normal;
 }
 .pot:nth-child(1) {
   -webkit-animation-delay: -0.5s;
@@ -102,5 +102,5 @@
   }
 }
 .potPlayer .stats {
-  -webkit-animation: potStats 12s linear 0 infinite normal;
+  -webkit-animation: potStats 12s linear 0s infinite normal;
 }

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Test is dom element in page view</title>
+
+    <style>
+        li{padding: 15px;background: #EEE;font-size: 14px;margin: 10px;height: 20px;}
+        ul > li.chosen{background: #00d8ad;color: #FFF;}
+        ul > li.large{height: 1200px;}
+    </style>
+</head>
+
+<body>
+    <ul></ul>
+
+
+    <script>
+
+        function now() {
+            return (Date.now && Date.now()) || new Date().getTime();
+        }
+
+        function throttle(func, wait, options) {
+            var context, args, result;
+            var timeout = null;
+            var previous = 0;
+            if (!options) options = {};
+            var later = function() {
+                previous = options.leading === false ? 0 : now();
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+            var newFunction = function () {
+                var nowTime = now();
+                if (!previous && options.leading === false) previous = nowTime;
+                var remaining = wait - (nowTime - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    previous = nowTime;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    timeout = setTimeout(later, remaining);
+                }
+                return result;
+            };
+            newFunction.cancel = function() {
+                clearTimeout(timeout);
+            };
+            return newFunction;
+        }
+
+        var isInView = function(el) {
+
+            var offset = 50;  // 在视图内至少多高才算可见
+
+            var elHeight = el.clientHeight;
+            var windowHeight = window.innerHeight;
+
+            var head = el.offsetTop;
+            var foot = head + elHeight;
+            var top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+            var bottom = windowHeight + top;
+
+            var ret = false;
+
+            if ((head >= top + offset && head <= bottom - offset)  // 头可视
+                || (foot >= top + offset && foot <= bottom - offset)  // 尾可视
+                || (head <= top + offset && foot >= bottom - offset)  // 头尾都不可视，但身体可视
+                ) {
+                console.log(elHeight, windowHeight, head, foot, top, bottom);
+                ret = true;
+            }
+
+            return ret;
+        };
+
+        var theChosenOne = [30, 40, 70];
+        var theLargeOne = [70];
+
+        function initInViewCheck() {
+            var els = document.querySelectorAll('li.chosen');
+            els = [].slice.call(els);
+            els.forEach(function(el, idx) {
+                window.addEventListener('scroll', throttle(function() {
+                    if (isInView(el)) {
+                        console.log(theChosenOne[idx] + ' is in view');
+                    }
+                }, 200), false);
+            });
+        }
+
+        function init() {
+
+            var ul = document.querySelector('ul');
+            var li;
+
+            for (var i = 1; i <= 100; i++) {
+
+                li = document.createElement('li');
+                li.innerHTML = i;
+
+                if (theChosenOne.indexOf(i) >= 0) {
+                    li.classList.add('chosen');
+                }
+                if (theLargeOne.indexOf(i) >= 0 && theChosenOne.indexOf(i) >= 0) {
+                    li.classList.add('large');
+                }
+
+                ul.append(li);
+            }
+
+            initInViewCheck();
+        }
+
+        init();
+
+
+    </script>
+</body>
+
+</html>

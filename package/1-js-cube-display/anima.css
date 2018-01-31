@@ -81,7 +81,7 @@
   }
 }
 .potPlayer .wrap {
-  -webkit-animation: potsAnimi 12s linear 0 infinite normal;
+  -webkit-animation: potsAnimi 12s linear 0s infinite normal;
 }
 .potPlayer .pot:nth-child(1) {
   -webkit-transform: rotate3d(1, 0, 0, 0deg) translate3d(0px, 0px, 92.37px);
@@ -116,7 +116,7 @@
   }
 }
 .potPlayer .stats {
-  -webkit-animation: potStats 12s linear 0 infinite normal;
+  -webkit-animation: potStats 12s linear 0s infinite normal;
 }
 /* version3 for 4-pot pots */
 @-webkit-keyframes pots2Animi {
@@ -208,5 +208,5 @@
 .potPlayer2 .stats {
   height: 120px;
   margin-top: -60px;
-  -webkit-animation: pot2Stats 16s linear 0 infinite normal;
+  -webkit-animation: pot2Stats 16s linear 0s infinite normal;
 }

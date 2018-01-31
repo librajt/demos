@@ -109,7 +109,7 @@
 	   10%	{ opacity:0; }
 }
 
-.card.on .body,.card.on .scope,.card.on .main,.card.on .mask,.card.on .cnt,.card.on .com,.card.on .num,.card.on .logo,.card.on .logo img,.card.on .pv,.card.on .uv{-webkit-animation:blank 1s ease-out 0 1 normal both;}
+.card.on .body,.card.on .scope,.card.on .main,.card.on .mask,.card.on .cnt,.card.on .com,.card.on .num,.card.on .logo,.card.on .logo img,.card.on .pv,.card.on .uv{-webkit-animation:blank 1s ease-out 0s 1 normal both;}
 .card.on .body{-webkit-animation-name:body;}
 .card.on .scope{-webkit-animation-name:circle;}
 .card.on .main{-webkit-animation-name:main;}
