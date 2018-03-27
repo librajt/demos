@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title></title>
+
+    <style>
+        /* reset */
+        *{margin:0;padding:0;border:0;border-collapse:collapse;border-spacing:0;}
+
+        /* frame - stage */
+        html, body{height: 100%;overflow: hidden;}
+        .stage-viewport{height: 100%;}
+        .stage-landscape{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%) center;background-size:30px 30px;}
+        .stage-space{position:relative;margin:auto;background:#EEE;}
+
+        /* 区分比例方式 */
+        .viewport-ratio-16-9{}
+        .viewport-ratio-4-3{}
+
+    </style>
+    <style>
+        /* demo */
+        .stage-demo-info{font-size: 32px;position: absolute;top: 0;left: 0;width: 100%;height: 100%;}
+        .stage-demo-info .stage-demo{display: none;color: #D50;position: relative;}
+        .stage-demo-info .stage-demo .info{position: absolute;}
+        .stage-demo-info .stage-demo img{display: block;width: 100%;}
+        .viewport-ratio-16-9 .stage-16-9{display: block;}
+        .viewport-ratio-4-3 .stage-4-3{display: block;}
+        #debugger{position: absolute;top: 0;right: 0;}
+    </style>
+</head>
+
+<body>
+
+    <div class="stage">
+        <div class="stage-landscape">
+            <pre id="debugger"></pre>
+        </div>
+        <div class="stage-space j_stage-space">
+            <div class="stage-demo-info">
+                <div class="stage-demo stage-16-9">
+                    <div class="info">16:9</div>
+                    <img src="http://via.placeholder.com/320x180?text=16:9" alt="">
+                </div>
+                <div class="stage-demo stage-4-3">
+                    <div class="info">4:3</div>
+                    <img src="http://via.placeholder.com/400x300?text=4:3" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function now() {
+            return (Date.now && Date.now()) || new Date().getTime();
+        }
+
+        function throttle(func, wait, options) {
+            var context, args, result;
+            var timeout = null;
+            var previous = 0;
+            if (!options) options = {};
+            var later = function() {
+                previous = options.leading === false ? 0 : now();
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+            var newFunction = function () {
+                var nowTime = now();
+                if (!previous && options.leading === false) previous = nowTime;
+                var remaining = wait - (nowTime - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    previous = nowTime;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    timeout = setTimeout(later, remaining);
+                }
+                return result;
+            };
+            newFunction.cancel = function() {
+                clearTimeout(timeout);
+            };
+            return newFunction;
+        }
+    </script>
+    <script>
+        function setClass(el, value) {
+            el.className = value;
+        }
+        function setStyle(el, name, value) {
+            el.style[name] = value;
+        }
+    </script>
+    <script>
+        function gcd (a, b) {
+            return (b == 0) ? a : gcd (b, a%b);
+        }
+        function getRatioInfo({width, height}) {
+            var r = gcd (width, height);
+            var result = '';
+            result += ['Size   = ', width, ' x ', height].join('') + '\n';
+            result += ['Aspect = ', width/r, ':', height/r].join('') + '\n';
+            result += ['Ratio  = ', width/height].join('') + '\n';
+            return result;
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        // 设定 ratio 为宽高比
+        function getRatio({width, height}) {
+            return width / height;
+        }
+
+        // VGA: 4:3 = 1.333
+        // HD: 16:9 = 1.778
+        const VGA_RATIO = 4 / 3;
+        const HD_RATIO = 16 / 9;
+        const stageSizeMap = {
+            'VGA': { width: 1440, height: 1080 },
+            'HD': { width: 1920, height: 1080 }
+        };
+
+        const SCALE_BASE_WIDTH = 'width';
+        const SCALE_BASE_HEIGHT = 'height';
+
+        function initStage() {
+
+            let viewportEl = document.documentElement;
+
+            // 设置 viewport 比例
+            let viewportSize = {
+                width: viewportEl.clientWidth,
+                height: viewportEl.clientHeight
+            };
+            let viewportRatio = getRatio(viewportSize);
+            let isViewportHd = (viewportRatio >= HD_RATIO);
+            let viewportRateMode = 'viewport-ratio-' + (isViewportHd ? '16-9' : '4-3');
+            window.setClass(viewportEl, viewportRateMode);
+
+            // 计算 stage 尺寸
+            let stageSize = isViewportHd ? stageSizeMap['HD'] : stageSizeMap['VGA'];
+
+            let stageEl = document.querySelector('.j_stage-space');
+            stageEl.style.width = stageSize.width + 'px';
+            stageEl.style.height = stageSize.height + 'px';
+
+            // 确定 stage 在缩放时，是否宽度铺满
+            // 假定宽度不变，高度从无穷大缩小至0，ratio 从0增大至无穷大
+            // 在 VGA_RATIO 之前，宽度铺满，之后高度铺满
+            let isStageWidthFit = (viewportRatio < VGA_RATIO);
+
+            // 计算缩放和位移
+            let translateX = (viewportSize.width - stageSize.width) / 2;
+            let translateY = (viewportSize.height - stageSize.height) / 2;
+
+            let scaleBase = isStageWidthFit ? SCALE_BASE_WIDTH : SCALE_BASE_HEIGHT;
+            let scaleRatio = viewportSize[scaleBase] / stageSize[scaleBase];
+
+            // 设置样式
+            window.setStyle(stageEl, 'transform', `translate3D(${translateX}px, ${translateY}px, 0) scale(${scaleRatio})`);
+
+            // debugger
+            document.querySelector('#debugger').innerText = window.getRatioInfo(viewportSize);
+        }
+
+        window.addEventListener('resize', window.throttle(initStage, 100), false);
+        window.addEventListener('orientationchange', window.throttle(initStage, 100), false);
+        initStage();
+
+    </script>
+
+
+</body>
+
+</html>

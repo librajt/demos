@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title></title>
+
+    <style>
+        *{margin:0;padding:0;border:0;border-collapse:collapse;border-spacing:0;}
+    </style>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div>
+        <p>via: http://blog.csdn.net/mr_orange_klj/article/details/47625727</p>
+        <p>open console to see the result</p>
+    </div>
+
+    <script>
+        // 问题：
+        // 现有n个组，每个小组分别有c1、c2、...、cn个数，从每个小组中取一个数，共取n个。
+        // 将所有可能的组合列出。
+        var A = [
+            ['A1', 'A2'],
+            ['B1', 'B2', 'B3'],
+            ['C1'],
+            ['D1', 'D2']
+        ];
+
+        // 解决方案：
+        // 如果我们去掉第一组，由第2组到n组每组跳出一个人组成领导小组，把这个小组的所有可能组合列出一张表，我们打印c1张这个表（也就是第一组成员数量），在第一张的所有组合前面都缀上第一组第一各成员的名字，第二张缀第一组第二个成员的名字，以此类推。那么第一组到第二组的可能组合也就都列出来了。
+        // 那么第2组到第n组的组合怎么列出来呢？对于第二组来说，只要求出第3组到第n组的组合，再用刚才的方法缀上组员的名字就可以列出了。
+        // 那么依次类推，3-n组，4-n组，…，n-1组到n组的组合都可以这样得出。最后，只需求第n组的组合。那么第n组的组合就简单了，就是所有组员的名字。然后把该组合列表交给第n-1组，n-1组即可得出n-1组到n组的所有可能组合，再交给n-2组。。。依次类推。
+        function getMap(list) {
+
+            // 取列表中第一组
+            var handleGroup = list && list[0];
+            if (!handleGroup) {
+                return list;
+            }
+
+            // 取其它组生成的排序好了的列表
+            var restMap = getMap(list.slice(1));
+
+            // 把该组的每一个元素拼到其它组生成的列表前面
+            if (restMap.length) {
+                var ret = [];
+                for (var i = 0; i < handleGroup.length; i++) {
+                    for (var j = 0; j < restMap.length; j++) {
+                        var temp = [handleGroup[i]];
+                        temp = temp.concat(restMap[j]);
+                        ret.push(temp);
+                    }
+                }
+                return ret;
+            }
+            else {
+                return handleGroup;
+            }
+        }
+        console.log(getMap(A));
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-latest.js"></script> -->
+    <title></title>
+
+    <style>
+        *{margin:0;padding:0;border:0;border-collapse:collapse;border-spacing:0;}
+    </style>
+    <style>
+        .cloud{text-align:center;width:300px;}
+        .tag{white-space:nowrap;display:inline-block;padding:0 20px;line-height:1.5;}
+        .tag.align0{vertical-align:top;}
+        .tag.align1{vertical-align:bottom;}
+        .tag.color0{color:#688690;}
+        .tag.color1{color:#3A808F;}
+        .tag.color2{color:#AA3D8C;}
+        .tag.color3{color:#3D94C0;}
+        .tag.color4{color:#D39150;}
+        .tag.color5{color:#AAAAAA;}
+        .tag.color6{color:#8C4848;}
+        .tag.color7{color:#8C4848;}
+        .tag.size0{font-size:48px;}
+        .tag.size1{font-size:36px;}
+        .tag.size2{font-size:24px;}
+        .tag.size3{font-size:20px;}
+        .tag.size4{font-size:20px;}
+        .tag.size5{font-size:18px;}
+        .tag.size6{font-size:12px;}
+        .tag.size7{font-size:12px;}
+    </style>
+</head>
+
+<body>
+
+    <div class="cloud" id="j_cloud"></div>
+
+    <script>
+        var CHOICE = 8;
+        function getRandom(n) {
+            n = n || CHOICE;
+            return Math.floor(n * Math.random());
+        }
+        function getTagList(list) {
+            var ret = [];
+            var ratio = CHOICE / list.length;
+            for (var i = 0; i < list.length; i++) {
+                ret.push({
+                    order: i,
+                    text: list[i],
+                    size: 'size' + Math.ceil(i * ratio),
+                    color: 'color' + getRandom(CHOICE),
+                    align: 'align' + getRandom(2)
+                });
+            }
+            do {
+                ret = ret.sort(function() {
+                    return Math.random() > 0.5;
+                });
+            } while (ret[0].order == 0);
+
+            return ret;
+        }
+        function buildTagList(dataList, domId) {
+            var rootEl = document.getElementById(domId);
+            if (!rootEl) {
+                return;
+            }
+
+            var list = getTagList(dataList);
+            for (var i = 0; i < list.length; i++) {
+                var tag = document.createElement('span');
+                tag.setAttribute('class', ['tag', list[i].size, list[i].color, list[i].align].join(' '));
+                tag.innerText = list[i].text;
+                rootEl.appendChild(tag);
+            }
+        }
+
+        var cloudList = [
+            '商业价值',
+            '产品',
+            '沟通',
+            '交互设计',
+            '用户体验',
+            '项目管理',
+            '需求',
+            '责任心'
+        ];
+        buildTagList(cloudList, 'j_cloud');
+    </script>
+
+</body>
+
+</html>

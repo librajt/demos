@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title></title>
+
+    <style>
+        *{margin:0;padding:0;border:0;border-collapse:collapse;border-spacing:0;}
+    </style>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="screen-viewport">
+        <div class="screen-stage">
+            <div>页面小于650宽度时，整个 screen-stage 会等比缩放</div>
+            <div>via: QQ Mail</div>
+        </div>
+    </div>
+
+    <script>
+
+        function PageScale() {
+
+            var frameElement = document.documentElement;
+            var containerElement = document.body.querySelector('.screen-stage');
+
+            var initScaleRatio = 1;
+            var minWidth = 650;
+
+            function init() {
+                window.addEventListener('resize', doResize, false);
+            }
+
+            function doResize() {
+                var currentFrameWidth = frameElement.clientWidth;
+                if (currentFrameWidth <= minWidth) {
+                    doScale();
+                } else {
+                    resetScale();
+                }
+            }
+
+            function doScale() {
+                var currentFrameWidth = frameElement.clientWidth;
+                var scaleRatio = currentFrameWidth / minWidth;
+                containerElement.style.minWidth = currentFrameWidth / scaleRatio + 'px';
+                containerElement.style.minHeight = frameElement.clientHeight / scaleRatio + 'px';
+                containerElement.style.WebkitTransformOrigin = containerElement.style.MozTransformOrigin = containerElement.style.TransformOrigin = '0 0';
+                containerElement.style.WebkitTransform = containerElement.style.MozTransform = containerElement.style.Transform = 'scale(' + scaleRatio + ')';
+            }
+
+            function resetScale() {
+                var scaleRatio = initScaleRatio;
+                doScale(scaleRatio);
+                containerElement.style.minWidth = '';
+                containerElement.style.minHeight = '';
+                containerElement.style.WebkitTransformOrigin = '';
+                containerElement.style.WebkitTransform = '';
+            }
+
+            init();
+        }
+
+        PageScale();
+
+    </script>
+</body>
+
+</html>
