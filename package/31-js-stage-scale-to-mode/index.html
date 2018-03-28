@@ -97,7 +97,16 @@
             el.className = value;
         }
         function setStyle(el, name, value) {
-            el.style[name] = value;
+            if (typeof name == 'string') {
+                el.style[name] = value;
+            }
+            else if (typeof name == 'object') {
+                for (let key in name) {
+                    if (name.hasOwnProperty(key)) {
+                        el.style[key] = name[key];
+                    }
+                }
+            }
         }
     </script>
     <script>
@@ -168,6 +177,28 @@
 
             // 设置样式
             window.setStyle(stageEl, 'transform', `translate3D(${translateX}px, ${translateY}px, 0) scale(${scaleRatio})`);
+
+            // 设置样式方式2
+            // if (isStageWidthFit) {
+            //     translateX = 0;
+            //     translateY = (viewportSize.height / scaleRatio - stageSize.height) / 2;
+            // } else {
+            //     translateY = 0;
+            //     translateX = (viewportSize.width / scaleRatio - stageSize.width) / 2;
+            // }
+
+            // if (typeof document.documentElement.style.transform == 'undefined') {
+            //     setStyle(stageEl, {
+            //         'zoom': `${scaleRatio}`,
+            //         'marginTop': `${translateY}px`,
+            //         'marginLeft': `${translateX}px`
+            //     });
+            // } else {
+            //     setStyle(stageEl, {
+            //         'transformOrigin': `0 0 0`,
+            //         'transform': `scale(${scaleRatio}) translate3D(${translateX}px, ${translateY}px, 0)`
+            //     });
+            // }
 
             // debugger
             document.querySelector('#debugger').innerText = window.getRatioInfo(viewportSize);
